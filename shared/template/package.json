@@ -34,6 +34,7 @@
         "typescript": "catalog:",
         "typescript-eslint": "catalog:",
         "vite": "catalog:",
-        "vite-tsconfig-paths": "catalog:"
+        "vite-tsconfig-paths": "catalog:",
+        "vite-plugin-svgr": "catalog:"
     }
 }

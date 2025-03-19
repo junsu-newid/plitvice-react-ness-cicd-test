@@ -46,6 +46,12 @@ button {
     padding: 0;
     overflow: visible;
     cursor: pointer;
+} 
+input {
+    background: inherit;
+    border: none;
+    outline: none;
+    padding: 0;
 }
 a {
   text-decoration: none;

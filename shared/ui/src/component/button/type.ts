@@ -1,10 +1,13 @@
-import React, { ButtonHTMLAttributes, ReactNode } from 'react';
+import React, { JSX, ReactNode } from 'react';
 
-export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
-    size?: 'sm' | 'md' | 'lg';
+// FIXME : - 공통 타입 경로 이동
+export type CustomComponentProps<T extends keyof JSX.IntrinsicElements> = Omit<React.ComponentProps<T>, 'className'>;
+export type Size = 'sm' | 'md' | 'lg';
+
+export interface ButtonProps extends CustomComponentProps<'button'> {
+    size?: Extract<Size, 'sm' | 'md' | 'lg'>;
     variant?: 'fill' | 'stroke';
     children?: ReactNode;
-    ref?: React.Ref<HTMLButtonElement>;
 }
 
 export interface ButtonStyleProps {

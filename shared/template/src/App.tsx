@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { CommonButton } from '@plitvice/ui';
+import { CommonButton, SearchIcon, theme } from '@plitvice/ui';
+import { TextField } from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
@@ -11,6 +12,16 @@ function App() {
             <CommonButton size="lg" variant="stroke">
                 {t('common.welcome')}
             </CommonButton>
+
+            <TextField size="lg">
+                <TextField.InputBox>
+                    <TextField.Label>Label</TextField.Label>
+                    <TextField.Input placeholder="Placeholder" />
+                </TextField.InputBox>
+                <TextField.Icon>
+                    <SearchIcon style={{ color: theme.colors.grey50 }} />
+                </TextField.Icon>
+            </TextField>
         </Container>
     );
 }
@@ -26,6 +37,7 @@ const Container = styled.div`
     max-width: 1200px;
     margin: 0 auto;
     height: 100dvh;
+    gap: 12px;
 `;
 
 const NewidTitle = styled.h1`
