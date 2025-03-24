@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { reset } from '@/style/reset';
+import { reset } from '@/styles/reset';
 
 export const GlobalStyle = createGlobalStyle`
     ${reset}
@@ -24,5 +24,13 @@ export const GlobalStyle = createGlobalStyle`
         font-style: normal;
         font-weight: bold;
         src: url('https://paro-cdn.its-newid.net/font/pretendard_bold_subset.woff2') format('woff2');
+    }
+    
+    .non-draggable {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
 `;

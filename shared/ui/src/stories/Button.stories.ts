@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { CommonButton } from '@/component/button/CommonButton.tsx';
+import { Button } from '@/components/button/Button.tsx';
 
-const meta: Meta<typeof CommonButton> = {
-    title: 'Shared/CommonButton',
-    component: CommonButton,
+const meta: Meta<typeof Button> = {
+    title: 'Shared/Button',
+    component: Button,
     parameters: {
         layout: 'centered',
     },
@@ -11,11 +11,11 @@ const meta: Meta<typeof CommonButton> = {
     argTypes: {
         size: {
             control: { type: 'radio' },
-            options: ['sm', 'md', 'lg'],
+            options: ['small', 'middle', 'large'],
             description: '버튼 크기',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'md' },
+                defaultValue: { summary: 'middle' },
             },
         },
         variant: {
@@ -52,13 +52,13 @@ const meta: Meta<typeof CommonButton> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof CommonButton>;
+type Story = StoryObj<typeof Button>;
 
 // 크기 변형
 export const Default: Story = {
     args: {
         variant: 'fill',
-        size: 'md',
+        size: 'middle',
         children: 'Button',
     },
 };
@@ -66,7 +66,7 @@ export const Default: Story = {
 export const Small: Story = {
     args: {
         ...Default,
-        size: 'sm',
+        size: 'small',
         children: 'Small',
         variant: 'stroke',
     },
@@ -75,7 +75,7 @@ export const Small: Story = {
 export const Medium: Story = {
     args: {
         ...Default,
-        size: 'md',
+        size: 'middle',
         children: 'Medium',
         disabled: true,
     },
@@ -84,7 +84,7 @@ export const Medium: Story = {
 export const Large: Story = {
     args: {
         ...Default,
-        size: 'lg',
+        size: 'large',
         children: 'Large',
     },
 };

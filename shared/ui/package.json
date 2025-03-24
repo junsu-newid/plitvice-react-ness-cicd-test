@@ -45,7 +45,8 @@
     "peerDependencies": {
         "react": "catalog:",
         "react-dom": "catalog:",
-        "styled-components": "catalog:"
+        "styled-components": "catalog:",
+        "vite-plugin-svgr": "catalog:"
     },
     "eslintConfig": {
         "extends": [

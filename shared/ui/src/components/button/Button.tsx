@@ -1,37 +1,27 @@
 import styled from 'styled-components';
-import { theme } from '@/style/theme.ts';
-import { ButtonProps, ButtonStyleProps } from '@/component/button/type.ts';
+import { theme } from '@/styles/theme.ts';
+import { ButtonProps } from '@/components/button/Button.types.ts';
 
-const StyledButton = styled.button<ButtonStyleProps>`
-    background-color: ${(props) => props.$enabledBG};
-    color: ${(props) => props.$enabledColor};
-    border-color: ${(props) => props.$enabledBorder};
-    &:hover {
-        background-color: ${(props) => props.$hoverBG};
-        color: ${(props) => props.$hoverColor};
-        border-color: ${(props) => props.$hoverBorder};
-    }
-    // &:focus {
-    //     background-color: ${(props) => props.$focusedBG};
-    //     color: ${(props) => props.$focusedColor};
-    //     border-color: ${(props) => props.$focusedBorder};
-    // }
-    &:active {
-        background-color: ${(props) => props.$pressedBG};
-        color: ${(props) => props.$pressedColor};
-        border-color: ${(props) => props.$pressedBorder};
-    }
-    font-size: ${(props) => props.$fontSize}px;
-    font-weight: 500;
-    height: ${(props) => props.$height}px;
-    padding: 0 ${(props) => props.$padding}px;
-    border: ${(props) => props.$border};
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.1s ease;
-`;
+export interface ButtonStyleProps {
+    $enabledBG: string;
+    $enabledColor: string;
+    $enabledBorder: string;
+    $hoverBG: string;
+    $hoverColor: string;
+    $hoverBorder: string;
+    $focusedBG: string;
+    $focusedColor: string;
+    $focusedBorder: string;
+    $pressedBG: string;
+    $pressedColor: string;
+    $pressedBorder: string;
+    $fontSize: number;
+    $height: number;
+    $padding: number;
+    $border: string;
+}
 
-export const CommonButton = ({ size = 'md', variant = 'fill', children, ref, ...props }: ButtonProps) => {
+export const Button = ({ size = 'middle', variant = 'fill', children, ref, ...props }: ButtonProps) => {
     const styleProps: ButtonStyleProps = {
         $enabledBG: theme.colors.white,
         $enabledColor: theme.colors.grey60,
@@ -78,17 +68,17 @@ export const CommonButton = ({ size = 'md', variant = 'fill', children, ref, ...
         styleProps.$border = 'none';
     }
     switch (size) {
-        case 'sm':
+        case 'small':
             styleProps.$fontSize = 12;
             styleProps.$height = 26;
             styleProps.$padding = 10;
             break;
-        case 'md':
+        case 'middle':
             styleProps.$fontSize = 12;
             styleProps.$height = 32;
             styleProps.$padding = 14;
             break;
-        case 'lg':
+        case 'large':
             styleProps.$fontSize = 16;
             styleProps.$height = 54;
             styleProps.$padding = 20;
@@ -101,3 +91,32 @@ export const CommonButton = ({ size = 'md', variant = 'fill', children, ref, ...
         </StyledButton>
     );
 };
+
+const StyledButton = styled.button<ButtonStyleProps>`
+    background-color: ${(props) => props.$enabledBG};
+    color: ${(props) => props.$enabledColor};
+    border-color: ${(props) => props.$enabledBorder};
+    &:hover {
+        background-color: ${(props) => props.$hoverBG};
+        color: ${(props) => props.$hoverColor};
+        border-color: ${(props) => props.$hoverBorder};
+    }
+    // &:focus {
+    //     background-color: ${(props) => props.$focusedBG};
+    //     color: ${(props) => props.$focusedColor};
+    //     border-color: ${(props) => props.$focusedBorder};
+    // }
+    &:active {
+        background-color: ${(props) => props.$pressedBG};
+        color: ${(props) => props.$pressedColor};
+        border-color: ${(props) => props.$pressedBorder};
+    }
+    font-size: ${(props) => props.$fontSize}px;
+    font-weight: 500;
+    height: ${(props) => props.$height}px;
+    padding: 0 ${(props) => props.$padding}px;
+    border: ${(props) => props.$border};
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+`;

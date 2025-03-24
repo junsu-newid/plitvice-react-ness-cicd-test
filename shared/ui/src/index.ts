@@ -1,13 +1,13 @@
-export * from './style/GlobalStyle';
-export * from './style/theme';
+export * from '@/styles/GlobalStyle';
+export { theme } from '@/styles/theme';
 
 //icon
-export { default as SearchIcon } from './asset/icSearch.svg?react';
+export { default as SearchIcon } from './assets/icSearch.svg?react';
 
-// button
-export * from './component/button/CommonButton.tsx';
+// common
+export { Button } from '@/components/button/Button.tsx';
 
-// textfield
-export * from './component/textfield/TextField.tsx';
+// combo box
+export { ComboBox } from '@/components/textfield/ComboBox.tsx';
 
 // table ...

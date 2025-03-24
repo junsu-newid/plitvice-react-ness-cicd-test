@@ -5,6 +5,9 @@ const colors = {
     primary: '#0571F7',
     secondary: '#2F89F8',
 
+    // transparent
+    transparent: '#FFFFFF00',
+
     // white
     white: '#FFFFFF',
 
@@ -56,7 +59,7 @@ const fonts = {
 
     size: {
         xs: '12px',
-        sm: '14px',
+        small: '14px',
         md: '16px',
         lg: '18px',
         xl: '20px',

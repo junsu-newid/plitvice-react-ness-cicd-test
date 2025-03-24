@@ -1,27 +1,27 @@
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { CommonButton, SearchIcon, theme } from '@plitvice/ui';
-import { TextField } from '@plitvice/ui';
+import { Button, ComboBox } from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
+    const defaultOptions = [
+        { value: 'item01', label: 'Item01' },
+        { value: 'item02', label: 'Item02' },
+        { value: 'item03', label: 'Item03' },
+    ];
 
     return (
         <Container>
             <NewidTitle>NEWID</NewidTitle>
-            <CommonButton size="lg" variant="stroke">
+            <Button size="large" variant="stroke">
                 {t('common.welcome')}
-            </CommonButton>
+            </Button>
 
-            <TextField size="lg">
-                <TextField.InputBox>
-                    <TextField.Label>Label</TextField.Label>
-                    <TextField.Input placeholder="Placeholder" />
-                </TextField.InputBox>
-                <TextField.Icon>
-                    <SearchIcon style={{ color: theme.colors.grey50 }} />
-                </TextField.Icon>
-            </TextField>
+            <ComboBox size="large" label="Label" width={240} labelPosition="inner" />
+
+            <ComboBox size="large" label="Label" width={240} labelPosition="inner">
+                <ComboBox.List optionList={defaultOptions} />
+            </ComboBox>
         </Container>
     );
 }
