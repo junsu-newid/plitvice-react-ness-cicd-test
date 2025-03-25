@@ -2,25 +2,25 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ComboBox } from '@/components/textfield/ComboBox.tsx';
 import {
     ComboBoxStoryProps,
-    commonComboBoxArgTypes,
     commonComboBoxMeta,
     commonSelectBoxArgTypes,
-    commonTextFieldArgTypes,
+    commonSelectBoxControls,
 } from '@/stories/ComboBox.stories.config.tsx';
 import { defaultComboBoxOptions } from '@/stories/ComboBox.stories.config.tsx';
 
-const sizes = ['middle', 'large'] as const;
+const sizes = ['small', 'middle'] as const;
 
 const meta: Meta<ComboBoxStoryProps> = {
-    title: 'Shared/ComboBox',
+    title: 'Shared/SelectBox',
     ...commonComboBoxMeta,
     tags: ['autodocs'],
     parameters: {
         layout: 'centered',
+        controls: {
+            include: commonSelectBoxControls,
+        },
     },
     argTypes: {
-        ...commonComboBoxArgTypes,
-        ...commonTextFieldArgTypes,
         ...commonSelectBoxArgTypes,
         size: {
             control: { type: 'radio' },
@@ -29,20 +29,6 @@ const meta: Meta<ComboBoxStoryProps> = {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: sizes[0] },
-            },
-        },
-        noResultMessage: {
-            control: 'text',
-            description: '검색 결과 없을때 카피',
-            table: {
-                type: { summary: 'string' },
-            },
-        },
-        showAllOptionsOnFocus: {
-            control: 'boolean',
-            description: '인풋에 어떤 값이 들어오든 관계없이 모든 리스트 출력',
-            table: {
-                type: { summary: 'boolean' },
             },
         },
     },
@@ -62,7 +48,9 @@ export const Default: Story = {
         );
     },
     args: {
-        size: 'middle',
+        size: 'small',
+        value: defaultComboBoxOptions[0].value,
+        readonly: true,
         optionList: defaultComboBoxOptions,
     },
 };

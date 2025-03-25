@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@/components/button/Button.tsx';
 
+const sizes = ['large', 'middle', 'small'] as const;
+const variants = ['fill', 'stroke'] as const;
+
 const meta: Meta<typeof Button> = {
     title: 'Shared/Button',
     component: Button,
@@ -11,16 +14,16 @@ const meta: Meta<typeof Button> = {
     argTypes: {
         size: {
             control: { type: 'radio' },
-            options: ['small', 'middle', 'large'],
+            options: sizes,
             description: '버튼 크기',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'middle' },
+                defaultValue: { summary: sizes[0] },
             },
         },
         variant: {
             control: { type: 'radio' },
-            options: ['fill', 'stroke'],
+            options: variants,
             description: '버튼 스타일',
             table: {
                 type: { summary: 'string' },
@@ -54,37 +57,8 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-// 크기 변형
 export const Default: Story = {
     args: {
-        variant: 'fill',
-        size: 'middle',
         children: 'Button',
-    },
-};
-
-export const Small: Story = {
-    args: {
-        ...Default,
-        size: 'small',
-        children: 'Small',
-        variant: 'stroke',
-    },
-};
-
-export const Medium: Story = {
-    args: {
-        ...Default,
-        size: 'middle',
-        children: 'Medium',
-        disabled: true,
-    },
-};
-
-export const Large: Story = {
-    args: {
-        ...Default,
-        size: 'large',
-        children: 'Large',
     },
 };
