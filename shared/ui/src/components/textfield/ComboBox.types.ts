@@ -32,7 +32,7 @@ export interface ComboBoxInputStyleProps extends ComboBoxFontStyleProps {
     $cursor: string;
 }
 
-export interface ComboBoxContainerStyledProps {
+export interface ComboBoxContainerStyleProps {
     $width: string;
 }
 

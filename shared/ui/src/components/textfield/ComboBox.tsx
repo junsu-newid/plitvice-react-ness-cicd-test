@@ -5,7 +5,7 @@ import { CustomComponentProps, Size } from '@/types/common.ts';
 import useComboBox from '@/components/textfield/ComboBox.hooks.ts';
 import {
     ComboBoxProps,
-    ComboBoxContainerStyledProps,
+    ComboBoxContainerStyleProps,
     ComboBoxLabelProps,
     TextFieldSize,
     ComboBoxDropdownContainerProps,
@@ -99,7 +99,7 @@ const ComboBox = ({
     children,
 }: ComboBoxProps) => {
     const state = useComboBox(value, onChange, onInputChange, showAllOptionsOnFocus, allowCustomValue);
-    const containerStyledProps: ComboBoxContainerStyledProps = {
+    const containerStyleProps: ComboBoxContainerStyleProps = {
         $width: width > 0 ? `${width}px` : '100%',
     };
 
@@ -116,7 +116,7 @@ const ComboBox = ({
                 invalid,
             }}
         >
-            <StyledContainer ref={state.containerRef} {...containerStyledProps}>
+            <StyledContainer ref={state.containerRef} {...containerStyleProps}>
                 {labelPosition === 'outer' && label !== '' ? (
                     <OuterLabel label={label} labelColor={labelColor} />
                 ) : (

@@ -1,0 +1,49 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import { SearchField } from '@/components/textfield/SearchField.tsx';
+
+const sizes = ['middle', 'large'] as const;
+
+const meta: Meta<typeof SearchField> = {
+    title: 'Shared/SearchField',
+    component: SearchField,
+    tags: ['autodocs'],
+    parameters: {
+        layout: 'centered',
+    },
+    argTypes: {
+        size: {
+            control: { type: 'radio' },
+            options: sizes,
+            description: '박스 및 폰트 사이즈',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: sizes[0] },
+            },
+        },
+        width: {
+            control: { type: 'number' },
+            description: '박스 가로 픽셀',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '240' },
+            },
+        },
+        placeholder: {
+            control: 'text',
+            description: '공백 표시자',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Search' },
+            },
+        },
+    },
+};
+
+export default meta;
+type Story = StoryObj<typeof SearchField>;
+
+export const Default: Story = {
+    args: {
+        size: 'middle',
+    },
+};

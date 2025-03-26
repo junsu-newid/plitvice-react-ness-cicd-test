@@ -1,0 +1,34 @@
+import React from 'react';
+
+export interface SideNavBarProps {
+    width?: number;
+    defaultSelected?: string;
+    onChange?: (value: string) => void;
+    children: React.ReactNode;
+}
+
+export interface SideNavBarStyleProps {
+    $width?: string;
+}
+
+export interface SideNavBarItemProps {
+    id: string;
+    label: string;
+    children?: React.ReactNode;
+}
+
+export interface SideNavBarItemStyleProps {
+    $fontColor: string;
+    $bgColor: string;
+    $hoverBgColor: string;
+}
+
+export interface SideNavBarDropdownStyleProps {
+    $expanded?: boolean;
+}
+
+export interface SideNavBarDropdownItemProps {
+    id: string;
+    label: string;
+    parentId?: string;
+}

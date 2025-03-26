@@ -1,27 +1,28 @@
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { Button, ComboBox } from '@plitvice/ui';
+import { SearchField, SideNavBar } from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
-    const defaultOptions = [
-        { value: 'item01', label: 'Item01' },
-        { value: 'item02', label: 'Item02' },
-        { value: 'item03', label: 'Item03' },
-    ];
 
     return (
         <Container>
-            <NewidTitle>NEWID</NewidTitle>
-            <Button size="large" variant="stroke">
-                {t('common.welcome')}
-            </Button>
+            <NewidTitle>{t('common.appName')}</NewidTitle>
 
-            <ComboBox size="large" label="Label" width={240} labelPosition="inner" />
+            <SearchField width={240} />
 
-            <ComboBox size="large" label="Label" width={240} labelPosition="inner">
-                <ComboBox.List optionList={defaultOptions} />
-            </ComboBox>
+            <Side>
+                <SideNavBar defaultSelected={'drop 1'}>
+                    <SideNavBar.Item id={'menu 1'} label={'menu 1'} />
+                    <SideNavBar.Item id={'menu 2'} label={'menu 2'}>
+                        <SideNavBar.DropdownItem id={'drop 1'} label={'drop 1'} />
+                        <SideNavBar.DropdownItem id={'drop 2'} label={'drop 2'} />
+                        <SideNavBar.DropdownItem id={'drop 3'} label={'drop 3'} />
+                    </SideNavBar.Item>
+                    <SideNavBar.Item id={'menu 3'} label={'menu 3'} />
+                    <SideNavBar.Item id={'menu 4'} label={'menu 4'} />
+                </SideNavBar>
+            </Side>
         </Container>
     );
 }
@@ -42,7 +43,7 @@ const Container = styled.div`
 
 const NewidTitle = styled.h1`
     font-size: 10rem;
-    background: -webkit-linear-gradient(left, rgb(0, 111, 185), rgb(111, 44, 135), rgb(221, 37, 20));
+    background: linear-gradient(to right, rgb(0, 111, 185), rgb(111, 44, 135), rgb(221, 37, 20));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -52,4 +53,10 @@ const NewidTitle = styled.h1`
     width: 100%;
     line-height: 1.2;
     white-space: nowrap;
+`;
+
+const Side = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
 `;

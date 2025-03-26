@@ -46,7 +46,11 @@ button {
     padding: 0;
     overflow: visible;
     cursor: pointer;
-} 
+}
+button::-moz-focus-inner {
+    padding: 0;
+    border: none;
+}
 input {
     background: inherit;
     border: none;
