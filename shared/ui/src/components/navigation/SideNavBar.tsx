@@ -47,7 +47,7 @@ const SideNavBar = ({ width = 240, defaultSelected = '', onChange = () => {}, ch
     );
 };
 
-const NavItem = ({ id, label, children }: SideNavBarItemProps) => {
+const NavItem = ({ id, label, onClick, children }: SideNavBarItemProps) => {
     const {
         expandedItems,
         selectedItem,
@@ -81,7 +81,17 @@ const NavItem = ({ id, label, children }: SideNavBarItemProps) => {
 
     return (
         <>
-            <StyledItemWrapper onClick={() => (expandable ? toggleDropdown(id) : handleItemClick(id))} {...styleProps}>
+            <StyledItemWrapper
+                onClick={() => {
+                    if (expandable) {
+                        toggleDropdown(id);
+                    } else {
+                        handleItemClick(id);
+                        onClick?.();
+                    }
+                }}
+                {...styleProps}
+            >
                 {label}
                 {expandable && <StyledDropdownIcon $expanded={isExpanded} />}
             </StyledItemWrapper>
@@ -93,7 +103,7 @@ const NavItem = ({ id, label, children }: SideNavBarItemProps) => {
     );
 };
 
-const DropdownItem = ({ id, label, parentId }: SideNavBarDropdownItemProps) => {
+const DropdownItem = ({ id, label, parentId, onClick }: SideNavBarDropdownItemProps) => {
     const { selectedItem, handleItemClick, registerNavItem } = useSideNavBarContext();
     const isSelected = selectedItem === id;
     const styleProps: SideNavBarItemStyleProps = {
@@ -109,7 +119,13 @@ const DropdownItem = ({ id, label, parentId }: SideNavBarDropdownItemProps) => {
     }, [id, parentId]);
 
     return (
-        <StyledDropdownItem onClick={() => handleItemClick(id)} {...styleProps}>
+        <StyledDropdownItem
+            onClick={() => {
+                handleItemClick(id);
+                onClick?.();
+            }}
+            {...styleProps}
+        >
             {label}
         </StyledDropdownItem>
     );
@@ -125,7 +141,6 @@ const StyledContainer = styled.nav<SideNavBarStyleProps>`
     padding: 16px 24px;
     width: ${(props) => props.$width};
     height: 100vh;
-    border-right: 1px solid ${theme.colors.grey20};
     overflow-y: scroll;
 `;
 
