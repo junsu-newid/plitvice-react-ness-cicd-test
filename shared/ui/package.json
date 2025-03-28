@@ -34,19 +34,23 @@
         "eslint-plugin-react-refresh": "catalog:",
         "eslint-plugin-storybook": "^0.11.4",
         "globals": "catalog:",
+        "prettier": "catalog:",
+        "prettier-plugin-tailwindcss": "catalog:",
         "storybook": "^8.6.4",
         "typescript": "catalog:",
         "typescript-eslint": "catalog:",
         "vite": "catalog:",
         "vite-plugin-dts": "catalog:",
-        "vite-tsconfig-paths": "catalog:",
-        "vite-plugin-svgr": "catalog:"
+        "vite-plugin-svgr": "catalog:",
+        "vite-tsconfig-paths": "catalog:"
     },
     "peerDependencies": {
         "react": "catalog:",
         "react-dom": "catalog:",
         "styled-components": "catalog:",
-        "vite-plugin-svgr": "catalog:"
+        "vite-plugin-svgr": "catalog:",
+        "@tailwindcss/vite": "catalog:",
+        "tailwindcss": "catalog:"
     },
     "eslintConfig": {
         "extends": [

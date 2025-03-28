@@ -19,7 +19,9 @@
         "react-dom": "catalog:",
         "react-i18next": "catalog:",
         "react-router": "catalog:",
-        "styled-components": "catalog:"
+        "styled-components": "catalog:",
+        "@tailwindcss/vite": "catalog:",
+        "tailwindcss": "catalog:"
     },
     "devDependencies": {
         "@eslint/js": "catalog:",
@@ -31,6 +33,7 @@
         "eslint-plugin-react-refresh": "catalog:",
         "globals": "catalog:",
         "prettier": "catalog:",
+        "prettier-plugin-tailwindcss": "catalog:",
         "typescript": "catalog:",
         "typescript-eslint": "catalog:",
         "vite": "catalog:",

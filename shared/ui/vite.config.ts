@@ -4,10 +4,10 @@ import viteTsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 import { resolve } from 'path';
 import svgr from 'vite-plugin-svgr';
-
+import tailwindcss from '@tailwindcss/vite';
 // https://vite.dev/config/
 export default defineConfig({
-    plugins: [react(), viteTsConfigPaths(), dts(), svgr()],
+    plugins: [react(), viteTsConfigPaths(), dts(), svgr(), tailwindcss()],
     build: {
         lib: {
             entry: resolve(__dirname, 'src/index.ts'),

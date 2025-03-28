@@ -1,0 +1,88 @@
+@import 'tailwindcss';
+
+@font-face {
+    font-family: 'pretendard';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://paro-cdn.its-newid.net/font/pretendard_regular_subset.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'pretendard';
+    font-style: normal;
+    font-weight: 700;
+    src: url('https://paro-cdn.its-newid.net/font/pretendard_bold_subset.woff2') format('woff2');
+}
+
+@layer components {
+    .non-draggable {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+}
+
+@theme {
+    /* 폰트 설정 */
+    --font-family-pretendard: 'pretendard';
+
+    /* 메인 색상 */
+    --color-primary: #0571f7;
+    --color-secondary: #2f89f8;
+
+    /* 투명 */
+    --color-transparent: #ffffff00;
+
+    /* 흰색 */
+    --color-white: #ffffff;
+
+    /* 그레이 스케일 */
+    --color-grey-5: #fafafa;
+    --color-grey-10: #f2f2f2;
+    --color-grey-20: #e5e5e6;
+    --color-grey-25: #d5d6d7;
+    --color-grey-30: #cbcbcd;
+    --color-grey-40: #adadae;
+    --color-grey-50: #8e8e90;
+    --color-grey-60: #707071;
+    --color-grey-70: #515152;
+    --color-grey-80: #2d2d2e;
+    --color-grey-90: #1c1c1c;
+
+    /* 검정 */
+    --color-black: #000000;
+
+    /* 파란색 */
+    --color-blue-100: #e6f1fe;
+    --color-blue-200: #c3ddfd;
+    --color-blue-300: #94c2fc;
+    --color-blue-400: #62a6fa;
+    --color-blue-500: #2f89f8;
+    --color-blue-600: #0571f7;
+    --color-blue-700: #0460d2;
+    --color-blue-800: #0450af;
+    --color-blue-900: #03408d;
+    --color-blue-1000: #02336f;
+
+    /* 빨간색 */
+    --color-red-100: #fee9e9;
+    --color-red-200: #fcc8c9;
+    --color-red-300: #fa9c9e;
+    --color-red-400: #f76f72;
+    --color-red-500: #f5222d;
+    --color-red-600: #e01a1f;
+    --color-red-700: #c2171b;
+    --color-red-800: #a31316;
+    --color-red-900: #8a1012;
+    --color-red-1000: #700d0e;
+}
+
+@layer base {
+    body {
+        font-family: var(--font-family-pretendard);
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 1.125rem;
+    }
+}

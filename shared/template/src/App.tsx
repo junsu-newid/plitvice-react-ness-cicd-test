@@ -10,6 +10,7 @@ function App() {
             <NewidTitle>{t('common.appName')}</NewidTitle>
 
             <SearchField width={240} />
+            <h1 className="text-primary text-3xl font-bold">Hello Tailwind</h1>
 
             <Side>
                 <SideNavBar defaultSelected={'drop 1'}>
