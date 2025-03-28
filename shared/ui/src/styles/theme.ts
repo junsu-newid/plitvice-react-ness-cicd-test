@@ -38,6 +38,18 @@ const colors = {
     blue800: '#0450AF',
     blue900: '#03408D',
     blue1000: '#02336F',
+
+    // red
+    red100: '#FEE9E9',
+    red200: '#FCC8C9',
+    red300: '#FA9C9E',
+    red400: '#F76F72',
+    red500: '#F5222D',
+    red600: '#E01A1F',
+    red700: '#C2171B',
+    red800: '#A31316',
+    red900: '#8A1012',
+    red1000: '#700D0E',
 };
 
 const fonts = {

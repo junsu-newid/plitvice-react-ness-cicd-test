@@ -28,6 +28,7 @@
         "husky": "catalog:",
         "lint-staged": "catalog:",
         "prettier": "catalog:",
+        "prettier-plugin-tailwindcss": "catalog:",
         "typescript": "catalog:",
         "typescript-eslint": "catalog:"
     },
