@@ -1,122 +1,48 @@
-import styled from 'styled-components';
-import { theme } from '@/styles/theme.ts';
 import { ButtonProps } from '@/components/button/Button.types.ts';
 
-export interface ButtonStyleProps {
-    $enabledBG: string;
-    $enabledColor: string;
-    $enabledBorder: string;
-    $hoverBG: string;
-    $hoverColor: string;
-    $hoverBorder: string;
-    $focusedBG: string;
-    $focusedColor: string;
-    $focusedBorder: string;
-    $pressedBG: string;
-    $pressedColor: string;
-    $pressedBorder: string;
-    $fontSize: number;
-    $height: number;
-    $padding: number;
-    $border: string;
-}
-
 export const Button = ({ size = 'middle', variant = 'fill', children, ref, ...props }: ButtonProps) => {
-    const styleProps: ButtonStyleProps = {
-        $enabledBG: theme.colors.white,
-        $enabledColor: theme.colors.grey60,
-        $enabledBorder: theme.colors.grey60,
-        $hoverBG: theme.colors.blue100,
-        $hoverColor: theme.colors.blue600,
-        $hoverBorder: theme.colors.blue600,
-        $focusedBG: theme.colors.white,
-        $focusedColor: theme.colors.blue600,
-        $focusedBorder: theme.colors.blue600,
-        $pressedBG: theme.colors.blue200,
-        $pressedColor: theme.colors.blue700,
-        $pressedBorder: theme.colors.blue700,
-        $fontSize: 14,
-        $height: 32,
-        $padding: 14,
-        $border: '1px solid',
-    };
-    if (props.disabled) {
-        styleProps.$enabledBG = theme.colors.grey20;
-        styleProps.$enabledColor = theme.colors.grey40;
-        styleProps.$enabledBorder = theme.colors.grey40;
-        styleProps.$hoverBG = theme.colors.grey20;
-        styleProps.$hoverColor = theme.colors.grey40;
-        styleProps.$hoverBorder = theme.colors.grey40;
-        styleProps.$focusedBG = theme.colors.grey20;
-        styleProps.$focusedColor = theme.colors.grey40;
-        styleProps.$focusedBorder = theme.colors.grey40;
-        styleProps.$pressedBG = theme.colors.grey20;
-        styleProps.$pressedColor = theme.colors.grey40;
-        styleProps.$pressedBorder = theme.colors.grey40;
-        if (variant === 'fill') {
-            styleProps.$border = 'none';
-        }
-    } else if (variant === 'fill') {
-        styleProps.$enabledBG = theme.colors.blue600;
-        styleProps.$enabledColor = theme.colors.white;
-        styleProps.$hoverBG = theme.colors.blue500;
-        styleProps.$hoverColor = theme.colors.white;
-        styleProps.$focusedBG = theme.colors.blue700;
-        styleProps.$focusedColor = theme.colors.white;
-        styleProps.$pressedBG = theme.colors.blue700;
-        styleProps.$pressedColor = theme.colors.white;
-        styleProps.$border = 'none';
-    }
+    // Base classes that will be applied to all buttons
+    const baseClasses = 'font-medium rounded cursor-pointer transition-colors duration-100';
+
+    // Size-specific classes
+    let sizeClasses = '';
     switch (size) {
         case 'small':
-            styleProps.$fontSize = 12;
-            styleProps.$height = 26;
-            styleProps.$padding = 10;
+            sizeClasses = 'text-xs h-[26px] px-[10px]';
             break;
         case 'middle':
-            styleProps.$fontSize = 12;
-            styleProps.$height = 32;
-            styleProps.$padding = 14;
+            sizeClasses = 'text-xs h-[32px] px-[14px]';
             break;
         case 'large':
-            styleProps.$fontSize = 16;
-            styleProps.$height = 54;
-            styleProps.$padding = 20;
+            sizeClasses = 'text-base h-[54px] px-[20px]';
             break;
     }
 
+    // Style classes based on variant and disabled state
+    let styleClasses = '';
+
+    if (props.disabled) {
+        // Disabled state styling
+        if (variant === 'fill') {
+            styleClasses = 'bg-gray-200 text-gray-400 border-none';
+        } else {
+            styleClasses = 'bg-gray-200 text-gray-400 border border-solid border-gray-400';
+        }
+    } else if (variant === 'fill') {
+        // Fill variant (non-disabled)
+        styleClasses = 'bg-blue-600 text-white border-none hover:bg-blue-500 active:bg-blue-700';
+    } else {
+        // Outline variant (non-disabled)
+        styleClasses =
+            'bg-white text-gray-500 border border-solid border-gray-500 hover:bg-blue-100 hover:text-blue-600 hover:border-blue-600 active:bg-blue-200 active:text-blue-700 active:border-blue-700';
+    }
+
+    // Combine all classes
+    const buttonClasses = `${baseClasses} ${sizeClasses} ${styleClasses}`;
+
     return (
-        <StyledButton role="button" ref={ref} {...props} {...styleProps}>
+        <button role="button" ref={ref} className={buttonClasses} {...props}>
             {children || ''}
-        </StyledButton>
+        </button>
     );
 };
-
-const StyledButton = styled.button<ButtonStyleProps>`
-    background-color: ${(props) => props.$enabledBG};
-    color: ${(props) => props.$enabledColor};
-    border-color: ${(props) => props.$enabledBorder};
-    &:hover {
-        background-color: ${(props) => props.$hoverBG};
-        color: ${(props) => props.$hoverColor};
-        border-color: ${(props) => props.$hoverBorder};
-    }
-    // &:focus {
-    //     background-color: ${(props) => props.$focusedBG};
-    //     color: ${(props) => props.$focusedColor};
-    //     border-color: ${(props) => props.$focusedBorder};
-    // }
-    &:active {
-        background-color: ${(props) => props.$pressedBG};
-        color: ${(props) => props.$pressedColor};
-        border-color: ${(props) => props.$pressedBorder};
-    }
-    font-size: ${(props) => props.$fontSize}px;
-    font-weight: 500;
-    height: ${(props) => props.$height}px;
-    padding: 0 ${(props) => props.$padding}px;
-    border: ${(props) => props.$border};
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.1s ease;
-`;

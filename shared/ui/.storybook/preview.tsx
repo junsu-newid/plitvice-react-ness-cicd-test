@@ -1,6 +1,5 @@
 import type { Preview } from '@storybook/react';
-import { ThemeProvider } from 'styled-components';
-import { GlobalStyle, theme } from '../src';
+import '../src/styles/global.css';
 
 const preview: Preview = {
     // 모든 story 공통 지정
@@ -15,14 +14,8 @@ const preview: Preview = {
     // styled-components의 theme와 globalStyle 적용
     decorators: [
         (Story, context) => {
-            return (
-                <ThemeProvider theme={theme}>
-                    <GlobalStyle />
-                    <Story {...context} />
-                </ThemeProvider>
-            );
+            return <Story {...context} />;
         },
     ],
 };
-
 export default preview;

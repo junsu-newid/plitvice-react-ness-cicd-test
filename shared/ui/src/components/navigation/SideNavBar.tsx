@@ -1,16 +1,11 @@
 import React, { Children, createContext, useContext, useEffect } from 'react';
-import styled from 'styled-components';
 import { useSideBar } from '@/components/navigation/SideNavBar.hooks.ts';
 import {
     SideNavBarDropdownItemProps,
     SideNavBarItemProps,
     SideNavBarProps,
-    SideNavBarItemStyleProps,
-    SideNavBarStyleProps,
-    SideNavBarDropdownStyleProps,
 } from '@/components/navigation/SideNavBar.types.ts';
 import DropdownIcon from '@/assets/icDropdownArrow.svg?react';
-import { theme } from '@/styles/theme.ts';
 
 interface SideNavBarContextType {
     expandedItems: Record<string, boolean>;
@@ -34,15 +29,11 @@ const useSideNavBarContext = () => {
 
 const SideNavBar = ({ width = 240, defaultSelected = '', onChange = () => {}, children }: SideNavBarProps) => {
     const state = useSideBar(defaultSelected, onChange);
-    const styleProps: SideNavBarStyleProps = {
-        $width: width > 0 ? `${width}px` : '100%',
-    };
+    const widthStyle = width > 0 ? `w-[${width}px]` : 'w-full';
 
     return (
         <SideNavBarContext.Provider value={state}>
-            <StyledContainer className={'non-draggable'} {...styleProps}>
-                {children}
-            </StyledContainer>
+            <nav className={`flex flex-col p-4 ${widthStyle} non-draggable h-screen overflow-y-scroll`}>{children}</nav>
         </SideNavBarContext.Provider>
     );
 };
@@ -69,11 +60,9 @@ const NavItem = ({ id, label, onClick, children }: SideNavBarItemProps) => {
         return child;
     });
 
-    const styleProps: SideNavBarItemStyleProps = {
-        $fontColor: isSelected || isActiveParent ? theme.colors.blue700 : theme.colors.grey90,
-        $bgColor: isSelected ? theme.colors.blue100 : theme.colors.transparent,
-        $hoverBgColor: isSelected ? theme.colors.blue100 : theme.colors.grey10,
-    };
+    const fontColorStyle = isSelected || isActiveParent ? 'text-blue-700' : 'text-gray-800';
+    const bgColorStyle = isSelected ? 'bg-blue-100' : '';
+    const hoverStyle = isSelected ? 'hover:bg-blue-100' : 'hover:bg-gray-100';
 
     useEffect(() => {
         registerNavItem(id, hasChildren);
@@ -81,7 +70,8 @@ const NavItem = ({ id, label, onClick, children }: SideNavBarItemProps) => {
 
     return (
         <>
-            <StyledItemWrapper
+            <div
+                className={`flex cursor-pointer items-center justify-between rounded px-3 py-2.5 text-base font-medium leading-snug transition-all duration-100 ${fontColorStyle} ${bgColorStyle} ${hoverStyle}`}
                 onClick={() => {
                     if (expandable) {
                         toggleDropdown(id);
@@ -90,15 +80,16 @@ const NavItem = ({ id, label, onClick, children }: SideNavBarItemProps) => {
                         onClick?.();
                     }
                 }}
-                {...styleProps}
             >
                 {label}
-                {expandable && <StyledDropdownIcon $expanded={isExpanded} />}
-            </StyledItemWrapper>
+                {expandable && (
+                    <DropdownIcon
+                        className={`transition-transform duration-100 ${fontColorStyle} ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
+                    />
+                )}
+            </div>
 
-            {expandable && children && (
-                <StyledDropdownContainer $expanded={isExpanded}>{childrenWithProps}</StyledDropdownContainer>
-            )}
+            {expandable && children && <div className={isExpanded ? 'block' : 'hidden'}>{childrenWithProps}</div>}
         </>
     );
 };
@@ -106,11 +97,10 @@ const NavItem = ({ id, label, onClick, children }: SideNavBarItemProps) => {
 const DropdownItem = ({ id, label, parentId, onClick }: SideNavBarDropdownItemProps) => {
     const { selectedItem, handleItemClick, registerNavItem } = useSideNavBarContext();
     const isSelected = selectedItem === id;
-    const styleProps: SideNavBarItemStyleProps = {
-        $fontColor: isSelected ? theme.colors.blue700 : theme.colors.grey90,
-        $bgColor: isSelected ? theme.colors.blue100 : theme.colors.transparent,
-        $hoverBgColor: isSelected ? theme.colors.blue100 : theme.colors.grey10,
-    };
+
+    const fontColorStyle = isSelected ? 'text-blue-700' : 'text-gray-800';
+    const bgColorStyle = isSelected ? 'bg-blue-100' : '';
+    const hoverStyle = isSelected ? 'hover:bg-blue-100' : 'hover:bg-gray-100';
 
     useEffect(() => {
         if (parentId) {
@@ -119,74 +109,18 @@ const DropdownItem = ({ id, label, parentId, onClick }: SideNavBarDropdownItemPr
     }, [id, parentId]);
 
     return (
-        <StyledDropdownItem
+        <div
+            className={`cursor-pointer rounded px-6 py-2.5 text-sm font-normal leading-relaxed ${fontColorStyle} ${bgColorStyle} ${hoverStyle}`}
             onClick={() => {
                 handleItemClick(id);
                 onClick?.();
             }}
-            {...styleProps}
         >
             {label}
-        </StyledDropdownItem>
+        </div>
     );
 };
 
 SideNavBar.Item = NavItem;
 SideNavBar.DropdownItem = DropdownItem;
 export { SideNavBar };
-
-const StyledContainer = styled.nav<SideNavBarStyleProps>`
-    display: flex;
-    flex-direction: column;
-    padding: 16px 24px;
-    width: ${(props) => props.$width};
-    height: 100vh;
-    overflow-y: scroll;
-`;
-
-const StyledItemWrapper = styled.div<SideNavBarItemStyleProps>`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 10px 10px 12px;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 19px;
-    color: ${(props) => props.$fontColor};
-    background-color: ${(props) => props.$bgColor};
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.1s ease;
-
-    &:hover {
-        background-color: ${(props) => props.$hoverBgColor};
-    }
-
-    svg {
-        color: ${(props) => props.$fontColor};
-    }
-`;
-
-const StyledDropdownIcon = styled(DropdownIcon)<SideNavBarDropdownStyleProps>`
-    transition: transform 0.1s ease;
-    transform: ${(props) => (props.$expanded ? 'rotate(180deg)' : 'rotate(0deg)')};
-`;
-
-const StyledDropdownContainer = styled.div<SideNavBarDropdownStyleProps>`
-    display: ${(props) => (props.$expanded ? 'block' : 'none')};
-`;
-
-const StyledDropdownItem = styled.div<SideNavBarItemStyleProps>`
-    padding: 10px 10px 10px 24px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 18px;
-    color: ${(props) => props.$fontColor};
-    background-color: ${(props) => props.$bgColor};
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-        background-color: ${(props) => props.$hoverBgColor};
-    }
-`;

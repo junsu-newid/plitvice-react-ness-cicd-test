@@ -1,5 +1,3 @@
-export { theme } from '@/styles/theme';
-
 //icon
 export { default as SearchIcon } from './assets/icSearch.svg?react';
 

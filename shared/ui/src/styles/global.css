@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+@tailwind utilities;
+
+@source '../**/*.{ts,tsx}';
 
 @font-face {
     font-family: 'pretendard';

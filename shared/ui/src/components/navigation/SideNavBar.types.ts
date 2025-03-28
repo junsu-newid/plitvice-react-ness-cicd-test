@@ -8,7 +8,7 @@ export interface SideNavBarProps {
 }
 
 export interface SideNavBarStyleProps {
-    $width?: string;
+    width?: string;
 }
 
 export interface SideNavBarItemProps {
@@ -16,16 +16,6 @@ export interface SideNavBarItemProps {
     label: string;
     onClick?: () => void;
     children?: React.ReactNode;
-}
-
-export interface SideNavBarItemStyleProps {
-    $fontColor: string;
-    $bgColor: string;
-    $hoverBgColor: string;
-}
-
-export interface SideNavBarDropdownStyleProps {
-    $expanded?: boolean;
 }
 
 export interface SideNavBarDropdownItemProps {

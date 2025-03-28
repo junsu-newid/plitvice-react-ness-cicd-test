@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { SearchField, SideNavBar } from '@plitvice/ui';
+import { Button, SearchField, SideNavBar } from '@plitvice/ui';
+import '@plitvice/ui/styles/global.css';
 
 function App() {
     const { t } = useTranslation();
@@ -10,20 +11,18 @@ function App() {
             <NewidTitle>{t('common.appName')}</NewidTitle>
 
             <SearchField width={240} />
-            <h1 className="text-primary text-3xl font-bold">Hello Tailwind</h1>
+            <Button>{t('common.welcome')}</Button>
 
-            <Side>
-                <SideNavBar defaultSelected={'drop 1'}>
-                    <SideNavBar.Item id={'menu 1'} label={'menu 1'} />
-                    <SideNavBar.Item id={'menu 2'} label={'menu 2'}>
-                        <SideNavBar.DropdownItem id={'drop 1'} label={'drop 1'} />
-                        <SideNavBar.DropdownItem id={'drop 2'} label={'drop 2'} />
-                        <SideNavBar.DropdownItem id={'drop 3'} label={'drop 3'} />
-                    </SideNavBar.Item>
-                    <SideNavBar.Item id={'menu 3'} label={'menu 3'} />
-                    <SideNavBar.Item id={'menu 4'} label={'menu 4'} />
-                </SideNavBar>
-            </Side>
+            <SideNavBar defaultSelected={'drop 1'}>
+                <SideNavBar.Item id={'menu 1'} label={'menu 1'} />
+                <SideNavBar.Item id={'menu 2'} label={'menu 2'}>
+                    <SideNavBar.DropdownItem id={'drop 1'} label={'drop 1'} />
+                    <SideNavBar.DropdownItem id={'drop 2'} label={'drop 2'} />
+                    <SideNavBar.DropdownItem id={'drop 3'} label={'drop 3'} />
+                </SideNavBar.Item>
+                <SideNavBar.Item id={'menu 3'} label={'menu 3'} />
+                <SideNavBar.Item id={'menu 4'} label={'menu 4'} />
+            </SideNavBar>
         </Container>
     );
 }
@@ -54,10 +53,4 @@ const NewidTitle = styled.h1`
     width: 100%;
     line-height: 1.2;
     white-space: nowrap;
-`;
-
-const Side = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
 `;

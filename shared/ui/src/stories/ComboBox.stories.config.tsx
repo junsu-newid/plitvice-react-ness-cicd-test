@@ -1,5 +1,4 @@
 import { ComboBox } from '@/components/textfield/ComboBox.tsx';
-import { theme } from '@/styles/theme.ts';
 import { ArgTypes } from '@storybook/react';
 import { ComboBoxProps } from '@/components/textfield/ComboBox.types.ts';
 
@@ -58,7 +57,7 @@ export const commonComboBoxArgTypes: ArgTypes<Pick<ComboBoxStoryProps, (typeof c
         description: '박스 제목 색깔',
         table: {
             type: { summary: 'string' },
-            defaultValue: { summary: theme.colors.grey70 },
+            defaultValue: { summary: '' },
         },
     },
     labelPosition: {
