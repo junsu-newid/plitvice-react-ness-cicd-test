@@ -47,7 +47,6 @@
     "peerDependencies": {
         "react": "catalog:",
         "react-dom": "catalog:",
-        "styled-components": "catalog:",
         "vite-plugin-svgr": "catalog:",
         "@tailwindcss/vite": "catalog:",
         "tailwindcss": "catalog:"

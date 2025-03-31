@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useState } from 'react';
 import useSearchField from '@/components/textfield/SearchField.hooks.ts';
 import {
     SearchFieldProps,
@@ -8,21 +8,14 @@ import {
 import IconSearch from '@/assets/icSearch.svg?react';
 import IconTextClear from '@/assets/icTextClear.svg?react';
 
-const SearchFieldStyles = {
-    middle: {
-        height: 'h-[38px]',
-    },
-    large: {
-        height: 'h-[52px]',
-    },
-};
-
 export type SearchFieldContextType = ReturnType<typeof useSearchField> & {
     size: SearchFieldSize;
     width: number;
     placeholder?: string;
 };
+
 const SearchFieldContext = createContext<SearchFieldContextType | undefined>(undefined);
+
 const useSearchFieldContext = () => {
     const context = useContext(SearchFieldContext);
     if (context === undefined) {
@@ -54,16 +47,18 @@ export const SearchField = ({
 
 const Container = ({ children }: SearchFieldContainerProps) => {
     const { size, width, isFocused, value } = useSearchFieldContext();
-    const widthClass = width > 0 ? `w-[${width}px]` : 'w-full';
-    const heightClass = SearchFieldStyles[size].height;
+
+    const heightClass = size === 'middle' ? 'h-[40px]' : 'h-[54px]';
+    const gridTemplate = isFocused && value ? 'grid-cols-[24px_1fr_24px]' : 'grid-cols-[24px_1fr]';
 
     return (
         <div
-            className={`relative flex items-center gap-2 px-[11px] ${widthClass} ${heightClass} rounded border border-gray-300 focus-within:border-blue-500 hover:border-blue-500`}
-            style={{
-                display: 'grid',
-                gridTemplateColumns: isFocused && value ? '24px 1fr 24px' : '24px 1fr',
-            }}
+            style={{ width: width > 0 ? `${width}px` : '100%' }}
+            className={`relative grid ${gridTemplate} border-grey-40 items-center justify-items-start gap-2 border px-[11px] py-[7px] ${heightClass} rounded ${
+                isFocused
+                    ? 'border-transparent ring-2 ring-blue-500'
+                    : 'hover:border-transparent hover:ring-2 hover:ring-blue-500'
+            }`}
         >
             {children}
         </div>
@@ -77,7 +72,7 @@ const Input = () => {
 
     return (
         <input
-            className="w-full border-none p-0 text-lg leading-6 placeholder-gray-300"
+            className="text-m18 placeholder-grey-40 w-full border-none p-0 outline-none focus:outline-none focus:ring-0"
             placeholder={placeholder}
             ref={inputRef}
             value={value}
@@ -97,15 +92,21 @@ const ClearButton = () => {
         e.preventDefault();
     }, []);
 
-    if (!isFocused || !value) {
-        return null;
-    }
-
     return (
-        <button className="h-6 w-6" onMouseDown={handleClearMouseDown} onClick={handleClear}>
+        <button
+            className={`h-6 w-6 cursor-pointer ${!(isFocused && value) && 'hidden'}`}
+            onMouseDown={handleClearMouseDown}
+            onClick={handleClear}
+        >
             <IconTextClear />
         </button>
     );
 };
 
-const StyledIconSearch = () => <IconSearch className="h-6 w-6 text-gray-400" />;
+const StyledIconSearch = () => {
+    return (
+        <div className="text-grey-50 h-6 w-6">
+            <IconSearch className="h-full w-full object-contain" />
+        </div>
+    );
+};

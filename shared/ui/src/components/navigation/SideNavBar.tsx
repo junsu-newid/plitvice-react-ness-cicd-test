@@ -29,11 +29,16 @@ const useSideNavBarContext = () => {
 
 const SideNavBar = ({ width = 240, defaultSelected = '', onChange = () => {}, children }: SideNavBarProps) => {
     const state = useSideBar(defaultSelected, onChange);
-    const widthStyle = width > 0 ? `w-[${width}px]` : 'w-full';
+    const widthStyle = { width: width > 0 ? `${width}px` : '100%' };
 
     return (
         <SideNavBarContext.Provider value={state}>
-            <nav className={`flex flex-col p-4 ${widthStyle} non-draggable h-screen overflow-y-scroll`}>{children}</nav>
+            <nav
+                className={`non-draggable flex h-screen flex-col overflow-y-scroll px-[16px] py-[24px]`}
+                style={widthStyle}
+            >
+                {children}
+            </nav>
         </SideNavBarContext.Provider>
     );
 };
@@ -60,9 +65,9 @@ const NavItem = ({ id, label, onClick, children }: SideNavBarItemProps) => {
         return child;
     });
 
-    const fontColorStyle = isSelected || isActiveParent ? 'text-blue-700' : 'text-gray-800';
-    const bgColorStyle = isSelected ? 'bg-blue-100' : '';
-    const hoverStyle = isSelected ? 'hover:bg-blue-100' : 'hover:bg-gray-100';
+    const fontColorClass = isSelected || isActiveParent ? 'text-blue-700' : 'text-gray-800';
+    const bgColorClass = isSelected ? 'bg-blue-100' : '';
+    const hoverClass = isSelected ? 'hover:bg-blue-100' : 'hover:bg-gray-100';
 
     useEffect(() => {
         registerNavItem(id, hasChildren);
@@ -71,7 +76,7 @@ const NavItem = ({ id, label, onClick, children }: SideNavBarItemProps) => {
     return (
         <>
             <div
-                className={`flex cursor-pointer items-center justify-between rounded px-3 py-2.5 text-base font-medium leading-snug transition-all duration-100 ${fontColorStyle} ${bgColorStyle} ${hoverStyle}`}
+                className={`text-m16 flex cursor-pointer items-center justify-between rounded p-[10px] pl-[12px] transition-all duration-100 ${fontColorClass} ${bgColorClass} ${hoverClass}`}
                 onClick={() => {
                     if (expandable) {
                         toggleDropdown(id);
@@ -84,7 +89,7 @@ const NavItem = ({ id, label, onClick, children }: SideNavBarItemProps) => {
                 {label}
                 {expandable && (
                     <DropdownIcon
-                        className={`transition-transform duration-100 ${fontColorStyle} ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
+                        className={`transition-transform duration-100 ${fontColorClass} ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
                     />
                 )}
             </div>
@@ -98,9 +103,9 @@ const DropdownItem = ({ id, label, parentId, onClick }: SideNavBarDropdownItemPr
     const { selectedItem, handleItemClick, registerNavItem } = useSideNavBarContext();
     const isSelected = selectedItem === id;
 
-    const fontColorStyle = isSelected ? 'text-blue-700' : 'text-gray-800';
-    const bgColorStyle = isSelected ? 'bg-blue-100' : '';
-    const hoverStyle = isSelected ? 'hover:bg-blue-100' : 'hover:bg-gray-100';
+    const fontColorClass = isSelected ? 'text-blue-700' : 'text-gray-800';
+    const bgColorClass = isSelected ? 'bg-blue-100' : '';
+    const hoverClass = isSelected ? 'hover:bg-blue-100' : 'hover:bg-gray-100';
 
     useEffect(() => {
         if (parentId) {
@@ -110,7 +115,7 @@ const DropdownItem = ({ id, label, parentId, onClick }: SideNavBarDropdownItemPr
 
     return (
         <div
-            className={`cursor-pointer rounded px-6 py-2.5 text-sm font-normal leading-relaxed ${fontColorStyle} ${bgColorStyle} ${hoverStyle}`}
+            className={`text-r14 cursor-pointer rounded p-[10px] pl-[24px] ${fontColorClass} ${bgColorClass} ${hoverClass}`}
             onClick={() => {
                 handleItemClick(id);
                 onClick?.();

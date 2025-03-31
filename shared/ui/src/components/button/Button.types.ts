@@ -3,7 +3,8 @@ import React, { ReactNode } from 'react';
 
 export interface ButtonProps extends CustomComponentProps<'button'> {
     size?: Extract<Size, 'small' | 'middle' | 'large'>;
-    variant?: 'fill' | 'stroke';
+    variant?: 'default' | 'normal' | 'alert';
+    fill?: boolean;
     children?: ReactNode;
     ref?: React.Ref<HTMLButtonElement>;
 }

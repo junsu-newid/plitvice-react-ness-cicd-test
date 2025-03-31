@@ -1,48 +1,74 @@
 import { ButtonProps } from '@/components/button/Button.types.ts';
 
-export const Button = ({ size = 'middle', variant = 'fill', children, ref, ...props }: ButtonProps) => {
-    // Base classes that will be applied to all buttons
-    const baseClasses = 'font-medium rounded cursor-pointer transition-colors duration-100';
+const ButtonSizeStyles = {
+    small: {
+        padding: 'py-[6px] px-[14px]',
+        text: 'text-m14',
+    },
+    middle: {
+        padding: 'py-[10px] px-[18px]',
+        text: 'text-m16',
+    },
+    large: {
+        padding: 'py-[15px] px-[24px]',
+        text: 'text-m18',
+    },
+};
 
-    // Size-specific classes
-    let sizeClasses = '';
-    switch (size) {
-        case 'small':
-            sizeClasses = 'text-xs h-[26px] px-[10px]';
-            break;
-        case 'middle':
-            sizeClasses = 'text-xs h-[32px] px-[14px]';
-            break;
-        case 'large':
-            sizeClasses = 'text-base h-[54px] px-[20px]';
-            break;
-    }
+const ButtonVariantStyles = {
+    default: {
+        bgColor: 'bg-grey-70',
+        borderColor: 'border-grey-70',
+        textColor: 'text-grey-70',
+        fillHoverBgColor: 'hover:bg-grey-60',
+        fillPressedBgColor: 'active:bg-grey-80',
+        strokeHoverBgColor: 'hover:bg-grey-20',
+        strokePressedBgColor: 'active:bg-grey-30',
+    },
+    normal: {
+        bgColor: 'bg-blue-600',
+        borderColor: 'border-blue-600',
+        textColor: 'text-blue-600',
+        fillHoverBgColor: 'hover:bg-blue-500',
+        fillPressedBgColor: 'active:bg-blue-700',
+        strokeHoverBgColor: 'hover:bg-blue-200',
+        strokePressedBgColor: 'active:bg-blue-300',
+    },
+    alert: {
+        bgColor: 'bg-red-600',
+        borderColor: 'border-red-600',
+        textColor: 'text-red-600',
+        fillHoverBgColor: 'hover:bg-red-500',
+        fillPressedBgColor: 'active:bg-red-700',
+        strokeHoverBgColor: 'hover:bg-red-200',
+        strokePressedBgColor: 'active:bg-red-300',
+    },
+};
 
-    // Style classes based on variant and disabled state
-    let styleClasses = '';
+export const Button = ({ size = 'middle', variant = 'default', fill = true, children, ref, ...props }: ButtonProps) => {
+    const baseClasses = `${ButtonSizeStyles[size].padding} h-fit ${ButtonSizeStyles[size].text} font-medium rounded-[4px] border border-solid transition-colors duration-100`;
+    let bgColor = fill ? ButtonVariantStyles[variant].bgColor : 'bg-white';
+    let borderColor = ButtonVariantStyles[variant].borderColor;
+    let textColor = fill ? 'text-white' : ButtonVariantStyles[variant].textColor;
 
+    let behaveClasses = '';
     if (props.disabled) {
-        // Disabled state styling
-        if (variant === 'fill') {
-            styleClasses = 'bg-gray-200 text-gray-400 border-none';
-        } else {
-            styleClasses = 'bg-gray-200 text-gray-400 border border-solid border-gray-400';
-        }
-    } else if (variant === 'fill') {
-        // Fill variant (non-disabled)
-        styleClasses = 'bg-blue-600 text-white border-none hover:bg-blue-500 active:bg-blue-700';
+        bgColor = 'bg-grey-20';
+        borderColor = fill ? 'border-grey-20' : 'border-grey-40';
+        textColor = 'text-grey-40';
     } else {
-        // Outline variant (non-disabled)
-        styleClasses =
-            'bg-white text-gray-500 border border-solid border-gray-500 hover:bg-blue-100 hover:text-blue-600 hover:border-blue-600 active:bg-blue-200 active:text-blue-700 active:border-blue-700';
+        if (fill) {
+            behaveClasses = `${ButtonVariantStyles[variant].fillHoverBgColor} ${ButtonVariantStyles[variant].fillPressedBgColor}`;
+        } else {
+            behaveClasses = `${ButtonVariantStyles[variant].strokeHoverBgColor} ${ButtonVariantStyles[variant].strokePressedBgColor}`;
+        }
     }
 
-    // Combine all classes
-    const buttonClasses = `${baseClasses} ${sizeClasses} ${styleClasses}`;
+    const buttonClasses = `${baseClasses} ${behaveClasses} ${bgColor} ${borderColor} ${textColor}`;
 
     return (
         <button role="button" ref={ref} className={buttonClasses} {...props}>
-            {children || ''}
+            {children}
         </button>
     );
 };

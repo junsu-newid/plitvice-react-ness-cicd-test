@@ -1,7 +1,13 @@
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { Button, SearchField, SideNavBar } from '@plitvice/ui';
+import { ComboBox, SideNavBar } from '@plitvice/ui';
 import '@plitvice/ui/styles/global.css';
+
+const optionList = [
+    { value: 'item01', label: 'Item01' },
+    { value: 'item02', label: 'Item02' },
+    { value: 'item03', label: 'Item03' },
+];
 
 function App() {
     const { t } = useTranslation();
@@ -10,10 +16,18 @@ function App() {
         <Container>
             <NewidTitle>{t('common.appName')}</NewidTitle>
 
-            <SearchField width={240} />
-            <Button>{t('common.welcome')}</Button>
+            <ComboBox
+                size={'large'}
+                width={400}
+                label={'label'}
+                readonly={true}
+                labelPosition={'outer'}
+                disabled={false}
+            >
+                <ComboBox.List optionList={optionList} />
+            </ComboBox>
 
-            <SideNavBar defaultSelected={'drop 1'}>
+            <SideNavBar width={400} defaultSelected={'drop 1'}>
                 <SideNavBar.Item id={'menu 1'} label={'menu 1'} />
                 <SideNavBar.Item id={'menu 2'} label={'menu 2'}>
                     <SideNavBar.DropdownItem id={'drop 1'} label={'drop 1'} />

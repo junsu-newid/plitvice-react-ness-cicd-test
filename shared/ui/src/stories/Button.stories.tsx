@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@/components/button/Button.tsx';
 
 const sizes = ['large', 'middle', 'small'] as const;
-const variants = ['fill', 'stroke'] as const;
+const variants = ['default', 'normal', 'alert'] as const;
 
 const meta: Meta<typeof Button> = {
     title: 'Shared/Button',
@@ -18,7 +18,7 @@ const meta: Meta<typeof Button> = {
             description: '버튼 크기',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: sizes[0] },
+                defaultValue: { summary: sizes[1] },
             },
         },
         variant: {
@@ -27,7 +27,14 @@ const meta: Meta<typeof Button> = {
             description: '버튼 스타일',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'fill' },
+                defaultValue: { summary: 'variant' },
+            },
+        },
+        fill: {
+            control: 'boolean',
+            description: '버튼 배경 채우기',
+            table: {
+                type: { summary: 'boolean' },
             },
         },
         disabled: {

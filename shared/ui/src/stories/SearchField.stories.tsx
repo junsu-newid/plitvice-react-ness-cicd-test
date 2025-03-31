@@ -36,6 +36,21 @@ const meta: Meta<typeof SearchField> = {
                 defaultValue: { summary: 'Search' },
             },
         },
+        value: {
+            control: 'text',
+            description: '초기 세팅 값',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '' },
+            },
+        },
+        onChange: {
+            action: 'onChange',
+            description: '서치 필드 값 변경 핸들러',
+            table: {
+                type: { summary: '(value: string) => void' },
+            },
+        },
     },
 };
 

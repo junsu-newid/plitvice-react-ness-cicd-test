@@ -7,36 +7,37 @@ import {
     TextFieldSize,
     ComboBoxDropdownContainerProps,
     ComboBoxInputWrapperProps,
+    ComboBoxInputProps,
 } from '@/components/textfield/ComboBox.types.ts';
 import DropdownIcon from '@/assets/icDropdownArrow.svg?react';
 
 const ComboBoxSizeStyles = {
     small: {
-        height: 30,
-        inputFontSize: 14,
-        inputLineHeight: 18,
-        labelFontSize: 12,
-        labelLineHeight: 14,
-        arrowArea: 32,
-        arrowSize: 18,
+        height: 'h-[30px]',
+        inputText: 'text-r14',
+        outerLabelText: 'text-m14',
+        arrowArea: 'w-[30px]',
+        arrowSize: 'size-[18px]',
+        inputPaddingX: 5,
+        dropdownItemPaddingY: 'py-[7px]',
     },
     middle: {
-        height: 38,
-        inputFontSize: 18,
-        inputLineHeight: 24,
-        labelFontSize: 16,
-        labelLineHeight: 19,
-        arrowArea: 38,
-        arrowSize: 24,
+        height: 'h-[38px]',
+        inputText: 'text-r18',
+        outerLabelText: 'text-m16',
+        arrowArea: 'w-[38px]',
+        arrowSize: 'size-[24px]',
+        inputPaddingX: 6,
+        dropdownItemPaddingY: 'py-[8px]',
     },
     large: {
-        height: 52,
-        inputFontSize: 18,
-        inputLineHeight: 24,
-        labelFontSize: 16,
-        labelLineHeight: 19,
-        arrowArea: 42,
-        arrowSize: 24,
+        height: 'h-[52px]',
+        inputText: 'text-r18',
+        outerLabelText: 'text-m16',
+        arrowArea: 'w-[42px]',
+        arrowSize: 'size-[24px]',
+        inputPaddingX: 13,
+        dropdownItemPaddingY: 'py-[15px]',
     },
 };
 
@@ -78,7 +79,7 @@ const ComboBox = ({
     children,
 }: ComboBoxProps) => {
     const state = useComboBox(value, onChange, onInputChange, showAllOptionsOnFocus, allowCustomValue);
-    const containerWidth = width > 0 ? `w-[${width}px]` : 'w-full';
+    const containerWidth = { width: width > 0 ? `${width}px` : '100%' };
 
     return (
         <ComboBoxContext.Provider
@@ -95,17 +96,18 @@ const ComboBox = ({
         >
             <div
                 ref={state.containerRef}
-                className={`relative flex flex-col items-start gap-1 p-0 ${containerWidth} h-fit`}
+                className={`relative flex h-fit flex-col items-start gap-[4px] p-0`}
+                style={containerWidth}
             >
                 {labelPosition === 'outer' && label !== '' ? (
                     <OuterLabel label={label} labelColor={labelColor} />
                 ) : null}
                 <InputWrapper>
-                    <div className="flex h-full flex-1 flex-col justify-center px-3">
-                        {labelPosition === 'inner' && label !== '' ? (
+                    <div className="flex h-full flex-1 flex-col justify-center">
+                        {labelPosition === 'inner' && label !== '' && size === 'large' ? (
                             <InnerLabel label={label} labelColor={labelColor} />
                         ) : null}
-                        <Input />
+                        <Input isInnerLabel={labelPosition === 'inner' && label !== '' && size === 'large'} />
                     </div>
                     {children ? <DropdownButton /> : null}
                 </InputWrapper>
@@ -117,15 +119,14 @@ const ComboBox = ({
 
 const InputWrapper = ({ children }: ComboBoxInputWrapperProps) => {
     const { size, disabled } = useComboBoxContext();
-    const height = `h-[${ComboBoxSizeStyles[size].height}px]`;
-
-    const bgColor = disabled ? 'bg-gray-200' : 'bg-white';
-    const hoverBorderColor = disabled ? 'border-gray-400' : 'hover:border-blue-500 focus-within:border-blue-500';
-    // const hoverBgDropdown = disabled || readonly ? '' : 'hover:bg-blue-100';
+    const bgColor = disabled ? 'bg-grey-20' : 'bg-white';
+    const hoverBgColor = disabled ? '' : 'hover:bg-blue-100';
+    const hoverBorderColor = disabled ? 'border-grey-40' : 'hover:border-blue-500 focus-within:border-blue-500';
+    const groupStyle = disabled ? '' : 'group';
 
     return (
         <div
-            className={`flex w-full flex-row items-center p-0 ${height} ${bgColor} rounded border border-gray-400 transition-all duration-100 ${hoverBorderColor} group`}
+            className={`flex w-full ${ComboBoxSizeStyles[size].height} flex-row items-center p-0 ${bgColor} border-grey-40 rounded-[4px] border-[1px] transition-all duration-100 ${hoverBgColor} ${hoverBorderColor} ${groupStyle} relative overflow-hidden`}
         >
             {children}
         </div>
@@ -134,20 +135,19 @@ const InputWrapper = ({ children }: ComboBoxInputWrapperProps) => {
 
 const OuterLabel = ({ label, labelColor }: ComboBoxLabelProps) => {
     const { size } = useComboBoxContext();
-    const fontSize = `text-[${ComboBoxSizeStyles[size].labelFontSize}px]`;
-    const lineHeight = `leading-[${ComboBoxSizeStyles[size].labelLineHeight}px]`;
-    const textColor = labelColor ? `text-[${labelColor}]` : 'text-gray-600';
+    const textSize = ComboBoxSizeStyles[size].outerLabelText;
+    const textColor = labelColor ? `text-[${labelColor}]` : 'text-grey-70';
 
-    return <label className={`pl-1 font-medium ${fontSize} ${lineHeight} ${textColor} non-draggable`}>{label}</label>;
+    return <label className={`pl-[4px] ${textSize} ${textColor} non-draggable`}>{label}</label>;
 };
 
 const InnerLabel = ({ label, labelColor }: ComboBoxLabelProps) => {
-    const textColor = labelColor ? `text-[${labelColor}]` : 'text-gray-500';
+    const textColor = labelColor ? `text-[${labelColor}]` : 'text-grey-50';
 
-    return <label className={`p-0 text-xs font-medium leading-[14px] ${textColor} non-draggable`}>{label}</label>;
+    return <label className={`text-m14 p-0 ${textColor} non-draggable absolute left-[11px] top-[5px]`}>{label}</label>;
 };
 
-const Input = () => {
+const Input = ({ isInnerLabel }: ComboBoxInputProps) => {
     const {
         size,
         placeholder,
@@ -159,14 +159,18 @@ const Input = () => {
         handleInputFocus,
         handleKeyDown,
     } = useComboBoxContext();
-
-    const fontSize = `text-[${ComboBoxSizeStyles[size].inputFontSize}px]`;
-    const lineHeight = `leading-[${ComboBoxSizeStyles[size].inputLineHeight}px]`;
-    const cursor = readonly ? 'cursor-pointer' : 'cursor-text';
+    const textSize = ComboBoxSizeStyles[size].inputText;
+    const cursorStyle = readonly ? 'cursor-pointer' : disabled ? 'none' : 'cursor-text';
+    const styles = {
+        paddingTop: isInnerLabel ? '22px' : `${ComboBoxSizeStyles[size].inputPaddingX}px`,
+        paddingBottom: isInnerLabel ? '4px' : `${ComboBoxSizeStyles[size].inputPaddingX}px`,
+        backgroundColor: `var(${readonly || disabled ? '--color-transparent' : '--color-white'})`,
+    };
 
     return (
         <input
-            className={`h-6 w-full font-normal ${fontSize} ${lineHeight} text-gray-800 ${cursor} placeholder-gray-400`}
+            className={`w-full px-[11px] ${textSize} text-grey-90 ${cursorStyle} placeholder-grey-40 rounded-l-[4px]`}
+            style={styles}
             placeholder={placeholder}
             readOnly={readonly}
             disabled={disabled}
@@ -180,21 +184,21 @@ const Input = () => {
 };
 
 const DropdownButton = ({ ref }: CustomComponentProps<'button'>) => {
-    const { size, isFocused, readonly, toggleDropdown } = useComboBoxContext();
-
-    const width = `w-[${ComboBoxSizeStyles[size].arrowArea}px]`;
-    const height = `h-[${ComboBoxSizeStyles[size].height - 2}px]`;
-    const borderWidth = readonly ? 'border-l-0' : 'border-l border-gray-500';
-    const iconSize = `w-[${ComboBoxSizeStyles[size].arrowSize}px] h-[${ComboBoxSizeStyles[size].arrowSize}px]`;
+    const { size, isFocused, disabled, readonly, toggleDropdown } = useComboBoxContext();
+    const borderWidth = readonly ? 'border-l-0' : 'border-l';
+    const borderColor = isFocused ? 'border-blue-500' : 'border-grey-40';
     const rotation = isFocused ? 'rotate-180' : 'rotate-0';
 
     return (
         <button
             onClick={toggleDropdown}
             ref={ref}
-            className={`flex items-center justify-center ${width} ${height} ${borderWidth} cursor-pointer rounded-r transition-all duration-100 group-hover:border-blue-500`}
+            className={`flex ${ComboBoxSizeStyles[size].arrowArea} h-full items-center justify-center ${borderWidth} rounded-r-[4px] ${borderColor} group-hover:border-blue-500`}
+            disabled={disabled}
         >
-            <DropdownIcon className={`${iconSize} ${rotation} transition-transform duration-100`} />
+            <DropdownIcon
+                className={`${ComboBoxSizeStyles[size].arrowSize} ${rotation} text-grey-50 transition-transform duration-100`}
+            />
         </button>
     );
 };
@@ -204,8 +208,7 @@ const DropdownList = ({ optionList }: ComboBoxDropdownContainerProps) => {
         useComboBoxContext();
 
     const display = isFocused ? 'block' : 'hidden';
-    const fontSize = `text-[${ComboBoxSizeStyles[size].inputFontSize}px]`;
-    const lineHeight = `leading-[${ComboBoxSizeStyles[size].height}px]`;
+    const textStyle = ComboBoxSizeStyles[size].inputText;
 
     useEffect(() => {
         setOptionList(optionList);
@@ -213,7 +216,7 @@ const DropdownList = ({ optionList }: ComboBoxDropdownContainerProps) => {
 
     return (
         <ul
-            className={`absolute left-0 right-0 top-[calc(100%+4px)] z-10 max-h-[200px] overflow-y-auto rounded border border-gray-200 bg-white px-0 py-1.5 shadow-md ${display} non-draggable`}
+            className={`border-grey-20 absolute left-0 right-0 top-[calc(100%+4px)] z-10 max-h-[200px] overflow-y-auto rounded-[4px] border bg-white px-0 py-[6px] shadow-md ${display} non-draggable`}
             role="listbox"
             aria-multiselectable="false"
         >
@@ -223,13 +226,17 @@ const DropdownList = ({ optionList }: ComboBoxDropdownContainerProps) => {
                         key={option.value}
                         onClick={() => handleOptionClick(option)}
                         role="option"
-                        className={`w-full px-3 ${fontSize} ${lineHeight} cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap transition-colors duration-100 hover:bg-gray-100`}
+                        className={`w-full px-[12px] ${ComboBoxSizeStyles[size].dropdownItemPaddingY} ${textStyle} cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap transition-colors duration-100 hover:bg-gray-100`}
                     >
                         {option.label}
                     </li>
                 ))
             ) : (
-                <li className={`px-3 ${fontSize} ${lineHeight} italic text-gray-400`}>{noResultMessage}</li>
+                <li
+                    className={`px-[12px] ${ComboBoxSizeStyles[size].dropdownItemPaddingY} ${textStyle} italic text-gray-400`}
+                >
+                    {noResultMessage}
+                </li>
             )}
         </ul>
     );
