@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Preview } from '@storybook/react';
 import '../src/styles/global.css';
 
@@ -12,11 +11,5 @@ const preview: Preview = {
             },
         },
     },
-    // styled-components의 theme와 globalStyle 적용
-    decorators: [
-        (Story, context) => {
-            return <Story {...context} />;
-        },
-    ],
 };
 export default preview;

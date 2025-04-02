@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { Children, isValidElement, useContext, useEffect } from 'react';
 import { CustomComponentProps } from '@/types/common.ts';
 import useComboBox from '@/components/textfield/ComboBox.hooks.ts';
 import {
@@ -49,6 +49,7 @@ export type ComboBoxContextType = ReturnType<typeof useComboBox> & {
     readonly: boolean;
     disabled: boolean;
     invalid?: boolean;
+    hasDropdownList: boolean;
 };
 
 const ComboBoxContext = React.createContext<ComboBoxContextType | undefined>(undefined);
@@ -79,6 +80,7 @@ const ComboBox = ({
     children,
 }: ComboBoxProps) => {
     const state = useComboBox(value, onChange, onInputChange, showAllOptionsOnFocus, allowCustomValue);
+    const hasList = hasDropdownList(children);
     const containerWidth = { width: width > 0 ? `${width}px` : '100%' };
 
     return (
@@ -92,6 +94,7 @@ const ComboBox = ({
                 readonly,
                 disabled,
                 invalid,
+                hasDropdownList: hasList,
             }}
         >
             <div
@@ -109,7 +112,7 @@ const ComboBox = ({
                         ) : null}
                         <Input isInnerLabel={labelPosition === 'inner' && label !== '' && size === 'large'} />
                     </div>
-                    {children ? <DropdownButton /> : null}
+                    {hasList ? <DropdownButton /> : null}
                 </InputWrapper>
                 {children}
             </div>
@@ -158,13 +161,15 @@ const Input = ({ isInnerLabel }: ComboBoxInputProps) => {
         handleInputChange,
         handleInputFocus,
         handleKeyDown,
+        hasDropdownList,
     } = useComboBoxContext();
     const textSize = ComboBoxSizeStyles[size].inputText;
-    const cursorStyle = readonly ? 'cursor-pointer' : disabled ? 'none' : 'cursor-text';
+    const isSelectBox = readonly && hasDropdownList;
+    const cursorStyle = isSelectBox ? 'cursor-pointer' : disabled ? 'none' : 'cursor-text';
     const styles = {
         paddingTop: isInnerLabel ? '22px' : `${ComboBoxSizeStyles[size].inputPaddingX}px`,
         paddingBottom: isInnerLabel ? '4px' : `${ComboBoxSizeStyles[size].inputPaddingX}px`,
-        backgroundColor: `var(${readonly || disabled ? '--color-transparent' : '--color-white'})`,
+        backgroundColor: `var(${isSelectBox || disabled ? '--color-transparent' : '--color-white'})`,
     };
 
     return (
@@ -201,6 +206,11 @@ const DropdownButton = ({ ref }: CustomComponentProps<'button'>) => {
             />
         </button>
     );
+};
+
+const hasDropdownList = (children: React.ReactNode): boolean => {
+    const childrenArray = Children.toArray(children);
+    return childrenArray.some((child) => isValidElement(child) && child.type === DropdownList);
 };
 
 const DropdownList = ({ optionList }: ComboBoxDropdownContainerProps) => {

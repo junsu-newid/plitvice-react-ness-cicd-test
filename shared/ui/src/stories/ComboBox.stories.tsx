@@ -40,7 +40,7 @@ const meta: Meta<ComboBoxStoryProps> = {
         },
         showAllOptionsOnFocus: {
             control: 'boolean',
-            description: '인풋에 어떤 값이 들어오든 관계없이 모든 리스트 출력',
+            description: '인풋 입력값과 관계없이 모든 리스트 출력',
             table: {
                 type: { summary: 'boolean' },
             },
@@ -56,7 +56,7 @@ export const Default: Story = {
         const { optionList = defaultComboBoxOptions, ...props } = args;
 
         return (
-            <ComboBox {...props}>
+            <ComboBox value={optionList[0].value} {...props}>
                 <ComboBox.List optionList={optionList} />
             </ComboBox>
         );
@@ -64,5 +64,8 @@ export const Default: Story = {
     args: {
         size: 'middle',
         optionList: defaultComboBoxOptions,
+        allowCustomValue: false,
+        showAllOptionsOnFocus: true,
+        labelPosition: 'outer',
     },
 };

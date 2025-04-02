@@ -57,7 +57,7 @@ export const commonComboBoxArgTypes: ArgTypes<Pick<ComboBoxStoryProps, (typeof c
         description: '박스 제목 색깔',
         table: {
             type: { summary: 'string' },
-            defaultValue: { summary: '' },
+            defaultValue: { summary: '#515152' },
         },
     },
     labelPosition: {
@@ -105,7 +105,7 @@ export const commonTextFieldArgTypes: ArgTypes<Pick<ComboBoxStoryProps, (typeof 
     },
     allowCustomValue: {
         control: 'boolean',
-        description: '인풋 포커스 아웃 시 오류값 허용 제어',
+        description: '인풋 포커스 아웃 시 옵션 외 값 입력 허용',
         table: {
             type: { summary: 'boolean' },
         },

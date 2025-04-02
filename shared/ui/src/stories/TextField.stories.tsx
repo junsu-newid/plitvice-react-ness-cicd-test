@@ -38,5 +38,7 @@ type Story = StoryObj<ComboBoxStoryProps>;
 export const Default: Story = {
     args: {
         size: 'middle',
+        allowCustomValue: true,
+        labelPosition: 'outer',
     },
 };

@@ -52,5 +52,6 @@ export const Default: Story = {
         value: defaultComboBoxOptions[0].value,
         readonly: true,
         optionList: defaultComboBoxOptions,
+        labelPosition: 'outer',
     },
 };

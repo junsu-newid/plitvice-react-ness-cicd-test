@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, ChangeEvent, KeyboardEvent, useCallback } from 'react';
+import { useState, useRef, useEffect, KeyboardEvent, useCallback, ChangeEvent } from 'react';
 import { SelectOption } from '@/components/textfield/ComboBox.types.ts';
 
 const useSelectBox = (
@@ -16,6 +16,18 @@ const useSelectBox = (
 
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+
+    const resetToLastSelectedOption = useCallback(() => {
+        const selectedOption = optionList.find((option) => option.value === selectedValue);
+
+        if (selectedOption) {
+            setInputValue(selectedOption.label);
+            onInputChange?.(selectedOption.value);
+        } else {
+            setInputValue('');
+            onInputChange?.('');
+        }
+    }, [optionList, selectedValue, onInputChange]);
 
     useEffect(() => {
         if (optionList.length > 0 && initialValue !== undefined && initialValue !== selectedValue) {
@@ -35,18 +47,7 @@ const useSelectBox = (
                 setIsFocused(false);
 
                 if (!allowCustomValue && inputValue) {
-                    const matchingOption = optionList.find(
-                        (option) => option.label.toLowerCase() === inputValue.toLowerCase(),
-                    );
-
-                    if (!matchingOption) {
-                        const selectedOption = optionList.find((option) => option.value === selectedValue);
-                        if (selectedOption) {
-                            setInputValue(selectedOption.label);
-                        } else {
-                            setInputValue('');
-                        }
-                    }
+                    resetToLastSelectedOption();
                 }
             }
         };
@@ -55,7 +56,7 @@ const useSelectBox = (
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [allowCustomValue, inputValue, optionList, selectedValue]);
+    }, [allowCustomValue, inputValue, resetToLastSelectedOption]);
 
     const handleInputChange = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
@@ -86,14 +87,26 @@ const useSelectBox = (
     }, [showAllOptionsOnFocus, optionList]);
 
     const toggleDropdown = useCallback(() => {
+        const length = inputRef.current?.value.length;
+        if (length) {
+            inputRef.current?.setSelectionRange(length, length);
+        }
+
         if (isFocused) {
             inputRef.current?.blur();
             setIsFocused(false);
+
+            if (!allowCustomValue) {
+                resetToLastSelectedOption();
+            }
         } else {
-            inputRef.current?.focus();
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
+
             setFilteredOptionList(optionList);
         }
-    }, [optionList, isFocused]);
+    }, [optionList, isFocused, resetToLastSelectedOption, inputRef]);
 
     const handleOptionClick = useCallback(
         (option: SelectOption) => {
@@ -114,28 +127,43 @@ const useSelectBox = (
         (e: KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                if (allowCustomValue && inputValue) {
+
+                const matchingOption = optionList.find(
+                    (option) => option.label.toLowerCase() === inputValue.toLowerCase(),
+                );
+
+                if (!inputValue) {
                     setIsFocused(false);
-                    if (onChange) {
-                        const matchingOption = optionList.find(
-                            (option) => option.label.toLowerCase() === inputValue.toLowerCase(),
-                        );
-                        if (matchingOption) {
-                            onChange(matchingOption.value);
-                            setSelectedValue(matchingOption.value);
-                        } else {
-                            onChange(inputValue);
-                            setSelectedValue(inputValue);
-                        }
-                    }
+                    e.currentTarget.blur();
+                } else if (matchingOption) {
+                    setIsFocused(false);
+                    e.currentTarget.blur();
+
+                    onChange?.(matchingOption.value);
+                    setSelectedValue(matchingOption.value);
+                } else if (allowCustomValue) {
+                    setIsFocused(false);
+                    e.currentTarget.blur();
+
+                    onChange?.(inputValue);
+                    setSelectedValue(inputValue);
                 }
             } else if (e.key === 'Escape') {
                 setIsFocused(false);
+                e.currentTarget.blur();
+
+                if (!allowCustomValue && inputValue) {
+                    resetToLastSelectedOption();
+                }
             } else if (e.key === 'Tab') {
                 setIsFocused(false);
+
+                if (!allowCustomValue && inputValue) {
+                    resetToLastSelectedOption();
+                }
             }
         },
-        [allowCustomValue, inputValue, optionList, onChange],
+        [allowCustomValue, inputValue, resetToLastSelectedOption, optionList, onChange],
     );
 
     return {
