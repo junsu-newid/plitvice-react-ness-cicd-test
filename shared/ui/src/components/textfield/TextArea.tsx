@@ -18,7 +18,7 @@ export const TextArea = ({
 
     const isInactive = readOnly || disabled;
 
-    const containerClass = `py-[15px] pl-[15px] pr-[4px] box-content border border-grey-40 rounded-[4px] ${isInactive ? 'bg-grey-20' : ' bg-white focus-within:border-blue-600'}`;
+    const containerClass = `py-[15px] pl-[15px] pr-[4px] border border-grey-40 rounded-[4px] ${isInactive ? 'bg-grey-20' : ' bg-white focus-within:border-blue-600'}`;
     const textareaClass = `bg-inherit w-full h-full pr-[8px] overflow-auto scrollbar text-r16 text-grey-90 placeholder-grey-40 whitespace-pre-wrap break-words border-none resize-none outline-none`;
 
     return (
