@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect, KeyboardEvent, useCallback, ChangeEvent } from 'react';
+import { useState, useRef, useEffect, KeyboardEvent, useCallback } from 'react';
 import { SelectOption } from '@/components/textfield/ComboBox.types.ts';
+import { useInput } from '@/hooks/useInput.ts';
 
 const useSelectBox = (
     initialValue?: string,
@@ -9,7 +10,6 @@ const useSelectBox = (
     allowCustomValue: boolean = true,
 ) => {
     const [isFocused, setIsFocused] = useState<boolean>(false);
-    const [inputValue, setInputValue] = useState<string>('');
     const [optionList, setOptionList] = useState<SelectOption[]>([]);
     const [filteredOptionList, setFilteredOptionList] = useState<SelectOption[]>([]);
     const [selectedValue, setSelectedValue] = useState<string | undefined>(initialValue);
@@ -17,6 +17,27 @@ const useSelectBox = (
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
+    const {
+        value: inputValue,
+        setValue: setInputValue,
+        handleChange: handleInputChange,
+    } = useInput<HTMLInputElement>({
+        initialValue,
+        onChange: (newValue: string) => {
+            if (onInputChange) {
+                onInputChange(newValue);
+            }
+
+            if (newValue.trim() === '') {
+                setFilteredOptionList(optionList);
+            } else {
+                const filtered = optionList.filter((option) =>
+                    option.label.toLowerCase().includes(newValue.toLowerCase()),
+                );
+                setFilteredOptionList(filtered);
+            }
+        },
+    });
     const resetToLastSelectedOption = useCallback(() => {
         const selectedOption = optionList.find((option) => option.value === selectedValue);
 
@@ -27,7 +48,7 @@ const useSelectBox = (
             setInputValue('');
             onInputChange?.('');
         }
-    }, [optionList, selectedValue, onInputChange]);
+    }, [optionList, selectedValue, onInputChange, setInputValue]);
 
     useEffect(() => {
         if (optionList.length > 0 && initialValue !== undefined && initialValue !== selectedValue) {
@@ -39,7 +60,7 @@ const useSelectBox = (
         } else {
             setInputValue(initialValue || '');
         }
-    }, [initialValue, optionList]);
+    }, [initialValue, optionList, setInputValue]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -57,27 +78,6 @@ const useSelectBox = (
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [allowCustomValue, inputValue, resetToLastSelectedOption]);
-
-    const handleInputChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            const newValue = e.target.value;
-            setInputValue(newValue);
-
-            if (onInputChange) {
-                onInputChange(newValue);
-            }
-
-            if (newValue.trim() === '') {
-                setFilteredOptionList(optionList);
-            } else {
-                const filtered = optionList.filter((option) =>
-                    option.label.toLowerCase().includes(newValue.toLowerCase()),
-                );
-                setFilteredOptionList(filtered);
-            }
-        },
-        [onInputChange, optionList],
-    );
 
     const handleInputFocus = useCallback(() => {
         setIsFocused(true);
@@ -120,7 +120,7 @@ const useSelectBox = (
 
             inputRef.current?.blur();
         },
-        [onChange],
+        [onChange, setInputValue],
     );
 
     const handleKeyDown = useCallback(

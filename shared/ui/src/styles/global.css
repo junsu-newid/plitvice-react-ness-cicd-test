@@ -57,6 +57,23 @@
     }
 }
 
+@layer utilities {
+    .scrollbar {
+        scrollbar-gutter: stable;
+    }
+    .scrollbar::-webkit-scrollbar {
+        width: 7px;
+    }
+    .scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb {
+        background-color: #cbcbcd;
+        border-radius: 6px;
+    }
+}
+
 @theme {
     /* 폰트 설정 */
     --font-family-pretendard: 'pretendard';

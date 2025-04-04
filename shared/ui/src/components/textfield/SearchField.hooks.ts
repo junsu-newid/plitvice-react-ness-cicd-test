@@ -1,4 +1,5 @@
-import React, { useState, useRef, ChangeEvent, KeyboardEvent, useCallback } from 'react';
+import React, { useState, useRef, KeyboardEvent, useCallback } from 'react';
+import { useInput } from '@/hooks/useInput.ts';
 
 const useSearchField = (
     initialValue?: string,
@@ -6,25 +7,23 @@ const useSearchField = (
     onDone?: (value: string) => void,
 ) => {
     const [isFocused, setIsFocused] = useState<boolean>(false);
-    const [value, setValue] = useState<string>(initialValue || '');
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const handleChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            const newValue = e.target.value;
-            setValue(newValue);
-            onChange?.(newValue);
+    const { value, setValue, handleChange } = useInput<HTMLInputElement>({
+        initialValue,
+        onChange,
+    });
+
+    const handleClear = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            setValue('');
+            inputRef.current?.focus();
         },
-        [onChange],
+        [setValue],
     );
-
-    const handleClear = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        setValue('');
-        inputRef.current?.focus();
-    }, []);
 
     const handleFocus = useCallback(() => {
         setIsFocused(true);
