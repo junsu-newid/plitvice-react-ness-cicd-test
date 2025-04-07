@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Size } from '@/types/common.ts';
 
-export type SearchFieldSize = Extract<Size, 'middle' | 'large'>;
+export type SearchFieldSize = Extract<Size, 'medium' | 'large'>;
 
 export interface SearchFieldProps {
     size?: SearchFieldSize;

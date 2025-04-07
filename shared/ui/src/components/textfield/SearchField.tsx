@@ -25,7 +25,7 @@ const useSearchFieldContext = () => {
 };
 
 export const SearchField = ({
-    size = 'middle',
+    size = 'medium',
     width = 240,
     placeholder = 'Search',
     value = '',
@@ -48,7 +48,7 @@ export const SearchField = ({
 const Container = ({ children }: SearchFieldContainerProps) => {
     const { size, width, isFocused, value } = useSearchFieldContext();
 
-    const heightClass = size === 'middle' ? 'h-[40px]' : 'h-[54px]';
+    const heightClass = size === 'medium' ? 'h-[40px]' : 'h-[54px]';
     const gridTemplate = isFocused && value ? 'grid-cols-[24px_1fr_24px]' : 'grid-cols-[24px_1fr]';
 
     return (

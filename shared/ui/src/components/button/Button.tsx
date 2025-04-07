@@ -1,11 +1,13 @@
 import { ButtonProps } from '@/components/button/Button.types.ts';
 
+// FIXME: - 왼쪽에 아이콘 넣을 수 있도록 추가
+
 const ButtonSizeStyles = {
     small: {
         padding: 'py-[6px] px-[14px]',
         text: 'text-m14',
     },
-    middle: {
+    medium: {
         padding: 'py-[10px] px-[18px]',
         text: 'text-m16',
     },
@@ -45,7 +47,7 @@ const ButtonVariantStyles = {
     },
 };
 
-export const Button = ({ size = 'middle', variant = 'default', fill = true, children, ref, ...props }: ButtonProps) => {
+export const Button = ({ size = 'medium', variant = 'default', fill = true, children, ref, ...props }: ButtonProps) => {
     const baseClasses = `${ButtonSizeStyles[size].padding} h-fit ${ButtonSizeStyles[size].text} font-medium rounded-[4px] border border-solid transition-colors duration-100`;
     let bgColor = fill ? ButtonVariantStyles[variant].bgColor : 'bg-white';
     let borderColor = ButtonVariantStyles[variant].borderColor;

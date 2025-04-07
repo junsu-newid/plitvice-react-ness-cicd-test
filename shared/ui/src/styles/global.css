@@ -40,6 +40,11 @@
         font-weight: 500;
         line-height: 18px;
     }
+    .text-m12 {
+        font-size: 12px;
+        font-weight: 500;
+        line-height: normal;
+    }
     .text-r18 {
         font-size: 18px;
         font-weight: 400;

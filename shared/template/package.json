@@ -19,7 +19,6 @@
         "react-dom": "catalog:",
         "react-i18next": "catalog:",
         "react-router": "catalog:",
-        "styled-components": "catalog:",
         "@tailwindcss/vite": "catalog:",
         "tailwindcss": "catalog:"
     },

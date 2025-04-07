@@ -1,81 +1,116 @@
-import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { ComboBox, SideNavBar } from '@plitvice/ui';
+import { ClearIcon } from '@plitvice/ui';
+import DeleteIcon from '../src/asset/icDelete.png';
 import '@plitvice/ui/styles/global.css';
-import { TextArea } from '@plitvice/ui/components/textfield/TextArea.tsx';
-
-const optionList = [
-    { value: 'item01', label: 'Item01' },
-    { value: 'item02', label: 'Item02' },
-    { value: 'item03', label: 'Item03' },
-];
+import Input from '@plitvice/ui/components/input';
+import TextFieldInput from '@plitvice/ui/components/input/CompoundInput.tsx';
+import { SelectOption } from '@plitvice/ui/components/dropdownList';
+import SelectBox from '@plitvice/ui/components/selectbox';
+import ComboBox from '@plitvice/ui/components/combobox';
 
 function App() {
     const { t } = useTranslation();
 
     return (
-        <Container>
-            <NewidTitle>{t('common.appName')}</NewidTitle>
+        <div className="relative mx-auto flex h-[100dvh] max-w-[1200px] flex-col items-center justify-center gap-3">
+            <h1 className="box-border w-full whitespace-nowrap break-words bg-gradient-to-r from-[rgb(0,111,185)] via-[rgb(111,44,135)] to-[rgb(221,37,20)] bg-clip-text text-center text-[10rem] leading-[1.2] text-transparent">
+                {t('common.appName')}
+            </h1>
 
-            <ComboBox
-                size={'large'}
-                width={400}
-                label={'label'}
-                readonly={true}
-                labelPosition={'outer'}
-                disabled={false}
-            >
-                <ComboBox.List optionList={optionList} />
-            </ComboBox>
-
-            <TextArea
-                width={400}
-                height={200}
-                disabled={true}
-                value={
-                    '1.1 Eligibility. You must be at least thirteen (13) years of age or older (the “Minimum Age”) to use our Services. If you are under the Minimum Age, you may use our Services if and only if you have the permission to use our Services from your parent or legal guardian, your use of our Services is subject to your parent or legal guardian’s supervision and control, and your parent or legal guardian reads these Terms of Use with you. Certain areas of our Services require you to be a certain age to access. When you use or attempt to use such areas of our Services, you certify that you are at least the required age and satisfy all other eligibility requirements of such Services and agree to all of the terms and conditions described in these Terms of Use. If you are not yet the required age for such areas, you do not satisfy any of other eligibility requirements, or you do not agree with all of the terms and conditions in these Terms of Use for any reason, please discontinue using the areas and/or Services (as applicable) immediately. If you are a parent or legal guardian of a child under the Minimum Age, you are subject to these Terms of Use when you allow your child to use our Services. You are also responsible for your child’s activity on our Services. You acknowledge that you may be exposed to certain content that you may find objectionable while using our Services, and you are responsible for determining whether the content on our Services is suitable for you or, if applicable, any child using our Services under your supervision and control. Some content on our Services may not be suitable for individuals under the Minimum Age. 1.2 Compatibility. By using our Services, you agree that we do not take responsibility or otherwise warrant the performance of your device for our Services, including the continued compatibility with our Service.'
-                }
-                placeholder={'Placeholder'}
-            />
-
-            <SideNavBar width={400} defaultSelected={'drop 1'}>
-                <SideNavBar.Item id={'menu 1'} label={'menu 1'} />
-                <SideNavBar.Item id={'menu 2'} label={'menu 2'}>
-                    <SideNavBar.DropdownItem id={'drop 1'} label={'drop 1'} />
-                    <SideNavBar.DropdownItem id={'drop 2'} label={'drop 2'} />
-                    <SideNavBar.DropdownItem id={'drop 3'} label={'drop 3'} />
-                </SideNavBar.Item>
-                <SideNavBar.Item id={'menu 3'} label={'menu 3'} />
-                <SideNavBar.Item id={'menu 4'} label={'menu 4'} />
-            </SideNavBar>
-        </Container>
+            <ExampleComponent />
+            <ExampleCompoundComponent />
+            <ExampleSelectBox />
+            <ExampleComboBox />
+        </div>
     );
 }
 
 export default App;
 
-const Container = styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    height: 100dvh;
-    gap: 12px;
-`;
+const ExampleComponent = () => {
+    const handleChange = (value: string) => {
+        console.log('값이 변경됨:', value);
+    };
 
-const NewidTitle = styled.h1`
-    font-size: 10rem;
-    background: linear-gradient(to right, rgb(0, 111, 185), rgb(111, 44, 135), rgb(221, 37, 20));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-align: center;
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-    width: 100%;
-    line-height: 1.2;
-    white-space: nowrap;
-`;
+    return (
+        <Input
+            placeholder="Placeholder"
+            onChange={handleChange}
+            onEnter={(value) => console.log('엔터 입력:', value)}
+            resetOnEscape={true}
+            className="hover:border-blue-300"
+        />
+    );
+};
+
+const ExampleCompoundComponent = () => {
+    const handleChange = (value: string) => {
+        console.log('값이 변경됨:', value);
+    };
+
+    const handleClear = () => {
+        // 입력값 초기화 로직
+    };
+
+    return (
+        <TextFieldInput.Root className="w-full max-w-md">
+            <TextFieldInput.LeftIcon>
+                <img src={DeleteIcon} alt={'delete'} className="h-5 w-5 text-gray-400" />
+            </TextFieldInput.LeftIcon>
+            <TextFieldInput.Input placeholder="Search" onChange={handleChange} className="pl-10 pr-10" />
+            <TextFieldInput.RightIcon onClick={handleClear}>
+                <ClearIcon className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+            </TextFieldInput.RightIcon>
+        </TextFieldInput.Root>
+    );
+};
+
+const ExampleSelectBox = () => {
+    const optionList: SelectOption[] = [
+        { value: 'item01', label: 'Item01' },
+        { value: 'item02', label: 'Item02' },
+        { value: 'item03', label: 'Item03' },
+    ];
+
+    const handleChange = (value: SelectOption) => {
+        console.log('셀렉트 값이 변경됨:', value);
+    };
+
+    return (
+        <SelectBox
+            size={'small'}
+            width={300}
+            label={'Label'}
+            labelColor={'#ff0000'}
+            value={optionList[0]}
+            optionList={optionList}
+            onChange={handleChange}
+            disabled={false}
+        />
+    );
+};
+
+const ExampleComboBox = () => {
+    const optionList: SelectOption[] = [
+        { value: 'item01', label: 'Item01' },
+        { value: 'item02', label: 'Item02' },
+        { value: 'item03', label: 'Item03' },
+    ];
+
+    const handleChange = (value: SelectOption) => {
+        console.log('셀렉트 값이 변경됨:', value);
+    };
+
+    return (
+        <ComboBox
+            size={'medium'}
+            width={300}
+            label={'Label'}
+            labelColor={'#ff0000'}
+            labelPosition={'inner'}
+            optionList={optionList}
+            onChange={handleChange}
+            disabled={false}
+        />
+    );
+};

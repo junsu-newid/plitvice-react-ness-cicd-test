@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '@/components/button/Button.tsx';
 
-const sizes = ['large', 'middle', 'small'] as const;
+const sizes = ['large', 'medium', 'small'] as const;
 const variants = ['default', 'normal', 'alert'] as const;
 
 const meta: Meta<typeof Button> = {

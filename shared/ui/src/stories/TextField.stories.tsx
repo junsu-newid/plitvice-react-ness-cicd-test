@@ -6,7 +6,7 @@ import {
     commonTextFieldControls,
 } from '@/stories/ComboBox.stories.config.tsx';
 
-const sizes = ['middle', 'large'] as const;
+const sizes = ['medium', 'large'] as const;
 
 const meta: Meta<ComboBoxStoryProps> = {
     title: 'Shared/TextField',
@@ -37,7 +37,7 @@ type Story = StoryObj<ComboBoxStoryProps>;
 
 export const Default: Story = {
     args: {
-        size: 'middle',
+        size: 'medium',
         allowCustomValue: true,
         labelPosition: 'outer',
     },

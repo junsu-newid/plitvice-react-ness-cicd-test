@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SearchField } from '@/components/textfield/SearchField.tsx';
 
-const sizes = ['middle', 'large'] as const;
+const sizes = ['medium', 'large'] as const;
 
 const meta: Meta<typeof SearchField> = {
     title: 'Shared/SearchField',
@@ -59,6 +59,6 @@ type Story = StoryObj<typeof SearchField>;
 
 export const Default: Story = {
     args: {
-        size: 'middle',
+        size: 'medium',
     },
 };
