@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 interface InputProps {
     initialValue?: string;
@@ -9,7 +9,7 @@ export const useInput = <T extends HTMLElement & { value: string }>({ initialVal
     const [value, setValue] = useState(initialValue);
 
     const handleChange = useCallback(
-        (event: React.ChangeEvent<T>) => {
+        (event: ChangeEvent<T>) => {
             const newValue = event.target.value;
             setValue(newValue);
 

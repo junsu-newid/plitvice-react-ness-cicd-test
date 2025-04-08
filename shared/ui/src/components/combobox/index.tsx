@@ -5,6 +5,7 @@ import DropdownList, { SelectOption } from '@/components/dropdownList';
 import DropdownIcon from '@/assets/icDropdownArrow.svg?react';
 
 type ComboBoxSize = Extract<Size, 'medium' | 'large'>;
+
 export interface ComboBoxProps extends Omit<SelectBoxProps, 'size'> {
     size: ComboBoxSize;
     placeholder?: string;
@@ -64,6 +65,8 @@ const ComboBox = ({
     const buttonBorderColor = isFocused ? 'border-blue-500' : 'border-grey-40';
     const iconRotation = isFocused ? 'rotate-180' : 'rotate-0';
 
+    const { labelText, inputText, heightClass, iconSize } = BoxComponentStyles[size];
+
     return (
         <div
             ref={containerRef}
@@ -71,15 +74,12 @@ const ComboBox = ({
             style={containerWidth}
         >
             {labelPosition === 'outer' && label !== '' ? (
-                <label
-                    className={`pl-[4px] ${BoxComponentStyles[size].labelText} non-draggable`}
-                    style={labelTextColor}
-                >
+                <label className={`pl-[4px] ${labelText} non-draggable`} style={labelTextColor}>
                     {label}
                 </label>
             ) : null}
             <div
-                className={`flex w-full ${BoxComponentStyles[size].height} ${fieldColor} ${fieldBorderColor} items-center overflow-hidden rounded-[4px] border-[1px] p-0`}
+                className={`flex w-full ${heightClass} ${fieldColor} ${fieldBorderColor} items-center overflow-hidden rounded-[4px] border-[1px] p-0`}
             >
                 <div className={`flex h-full flex-1 flex-col justify-center px-[11px] ${inputBgColor}`}>
                     {labelPosition === 'inner' && label !== '' && size === 'large' ? (
@@ -96,7 +96,7 @@ const ComboBox = ({
                         onKeyDown={handleKeyDown}
                         readOnly={readOnly}
                         disabled={disabled}
-                        className={`placeholder:text-grey-40 ${BoxComponentStyles[size].inputText}`}
+                        className={`placeholder:text-grey-40 ${inputText}`}
                     />
                 </div>
                 <button
@@ -104,9 +104,7 @@ const ComboBox = ({
                     className={`flex h-full items-center justify-center rounded-r-[4px] border-l bg-transparent px-[9px] ${buttonBorderColor} group-hover:border-blue-500`}
                     disabled={disabled}
                 >
-                    <DropdownIcon
-                        className={`${BoxComponentStyles[size].iconSize} ${iconRotation} text-grey-50 transition-all duration-100`}
-                    />
+                    <DropdownIcon className={`${iconSize} ${iconRotation} text-grey-50 transition-all duration-100`} />
                 </button>
             </div>
             <DropdownList
@@ -119,4 +117,5 @@ const ComboBox = ({
         </div>
     );
 };
+
 export default ComboBox;

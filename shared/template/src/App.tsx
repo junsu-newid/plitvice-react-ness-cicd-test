@@ -1,12 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { ClearIcon } from '@plitvice/ui';
-import DeleteIcon from '../src/asset/icDelete.png';
 import '@plitvice/ui/styles/global.css';
-import Input from '@plitvice/ui/components/input';
-import TextFieldInput from '@plitvice/ui/components/input/CompoundInput.tsx';
+import SearchField from '@plitvice/ui/components/searchfield';
 import { SelectOption } from '@plitvice/ui/components/dropdownList';
 import SelectBox from '@plitvice/ui/components/selectbox';
 import ComboBox from '@plitvice/ui/components/combobox';
+import TextField from '@plitvice/ui/components/textfield/TextField.tsx';
 
 function App() {
     const { t } = useTranslation();
@@ -16,9 +14,8 @@ function App() {
             <h1 className="box-border w-full whitespace-nowrap break-words bg-gradient-to-r from-[rgb(0,111,185)] via-[rgb(111,44,135)] to-[rgb(221,37,20)] bg-clip-text text-center text-[10rem] leading-[1.2] text-transparent">
                 {t('common.appName')}
             </h1>
-
-            <ExampleComponent />
-            <ExampleCompoundComponent />
+            <ExampleSearchField />
+            <ExampleTextField />
             <ExampleSelectBox />
             <ExampleComboBox />
         </div>
@@ -27,42 +24,12 @@ function App() {
 
 export default App;
 
-const ExampleComponent = () => {
-    const handleChange = (value: string) => {
-        console.log('값이 변경됨:', value);
-    };
-
-    return (
-        <Input
-            placeholder="Placeholder"
-            onChange={handleChange}
-            onEnter={(value) => console.log('엔터 입력:', value)}
-            resetOnEscape={true}
-            className="hover:border-blue-300"
-        />
-    );
+const ExampleSearchField = () => {
+    return <SearchField width={300} />;
 };
 
-const ExampleCompoundComponent = () => {
-    const handleChange = (value: string) => {
-        console.log('값이 변경됨:', value);
-    };
-
-    const handleClear = () => {
-        // 입력값 초기화 로직
-    };
-
-    return (
-        <TextFieldInput.Root className="w-full max-w-md">
-            <TextFieldInput.LeftIcon>
-                <img src={DeleteIcon} alt={'delete'} className="h-5 w-5 text-gray-400" />
-            </TextFieldInput.LeftIcon>
-            <TextFieldInput.Input placeholder="Search" onChange={handleChange} className="pl-10 pr-10" />
-            <TextFieldInput.RightIcon onClick={handleClear}>
-                <ClearIcon className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-            </TextFieldInput.RightIcon>
-        </TextFieldInput.Root>
-    );
+const ExampleTextField = () => {
+    return <TextField width={300} size={'large'} label={'Label'} labelPosition={'inner'} />;
 };
 
 const ExampleSelectBox = () => {

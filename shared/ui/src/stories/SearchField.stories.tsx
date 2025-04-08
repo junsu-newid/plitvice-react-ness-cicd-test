@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SearchField } from '@/components/textfield/SearchField.tsx';
+import SearchField from '@/components/searchfield/index.tsx';
 
 const sizes = ['medium', 'large'] as const;
 
@@ -46,7 +46,14 @@ const meta: Meta<typeof SearchField> = {
         },
         onChange: {
             action: 'onChange',
-            description: '서치 필드 값 변경 핸들러',
+            description: '필드 값 변경 핸들러',
+            table: {
+                type: { summary: '(value: string) => void' },
+            },
+        },
+        onDone: {
+            action: 'onDone',
+            description: '필드 Enter 키 조작 핸들러',
             table: {
                 type: { summary: '(value: string) => void' },
             },

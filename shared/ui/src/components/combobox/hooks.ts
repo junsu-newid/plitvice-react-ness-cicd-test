@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, KeyboardEvent, useCallback } from 'react';
+import React, { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { SelectOption } from '@/components/dropdownList';
 
 const useComboBox = (

@@ -8,7 +8,4 @@ export { SideNavBar } from '@/components/navigation/SideNavBar.tsx';
 // common
 export { Button } from '@/components/button/Button.tsx';
 
-// search field
-export { SearchField } from '@/components/textfield/SearchField.tsx';
-
 // table ...

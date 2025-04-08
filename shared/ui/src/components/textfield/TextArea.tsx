@@ -1,5 +1,16 @@
-import { TextAreaProps } from '@/components/textfield/TextArea.types.ts';
 import { useInput } from '@/hooks/useInput.ts';
+import React from 'react';
+
+interface TextAreaProps {
+    width?: number;
+    height?: number;
+    value?: string;
+    readOnly?: boolean;
+    disabled?: boolean;
+    placeholder?: string;
+    onChange?: (value: string) => void;
+    ref?: React.Ref<HTMLTextAreaElement>;
+}
 
 export const TextArea = ({
     width = undefined,

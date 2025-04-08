@@ -38,6 +38,7 @@ const SelectBox = ({
         value || optionList[0] || ({ value: '', label: '' } as SelectOption),
         onChange,
     );
+    const { labelText, inputText, heightClass, iconSize } = BoxComponentStyles[size];
     const containerWidth = { width: width > 0 ? `${width}px` : '100%' };
     const labelTextColor = { color: labelColor || 'var(--color-grey-70)' };
     const fieldColor = disabled ? 'bg-grey-20' : 'bg-white hover:bg-blue-100 hover:border-blue-500';
@@ -53,23 +54,16 @@ const SelectBox = ({
             ref={containerRef}
         >
             {label !== '' ? (
-                <label
-                    className={`pl-[4px] ${BoxComponentStyles[size].labelText} non-draggable`}
-                    style={labelTextColor}
-                >
+                <label className={`pl-[4px] ${labelText} non-draggable`} style={labelTextColor}>
                     {label}
                 </label>
             ) : null}
             <div
-                className={`flex w-full ${BoxComponentStyles[size].height} flex-row items-center gap-[4px] pl-[11px] ${SizeStyles[size].pr} ${fieldColor} ${fieldBorderColor} rounded-[4px] border-[1px] ${hoverBgColor} ${cursor} overflow-hidden`}
+                className={`flex w-full ${heightClass} flex-row items-center gap-[4px] pl-[11px] ${SizeStyles[size].pr} ${fieldColor} ${fieldBorderColor} rounded-[4px] border-[1px] ${hoverBgColor} ${cursor} overflow-hidden`}
                 onClick={disabled ? undefined : toggleDropdown}
             >
-                <p className={`flex h-full flex-1 flex-col justify-center ${BoxComponentStyles[size].inputText}`}>
-                    {selectedItem.label}
-                </p>
-                <DropdownIcon
-                    className={`${BoxComponentStyles[size].iconSize} ${rotation} text-grey-50 transition-transform duration-100`}
-                />
+                <p className={`flex h-full flex-1 flex-col justify-center ${inputText}`}>{selectedItem.label}</p>
+                <DropdownIcon className={`${iconSize} ${rotation} text-grey-50 transition-transform duration-100`} />
             </div>
             <DropdownList size={size} isFocused={isFocused} optionList={optionList} onSelected={handleSelected} />
         </div>
