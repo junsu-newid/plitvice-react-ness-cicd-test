@@ -25,6 +25,21 @@
         user-select: none;
     }
 
+    .text-b28 {
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 36px;
+    }
+    .text-b22 {
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 28px;
+    }
+    .text-b16 {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 20px;
+    }
     .text-m18 {
         font-size: 18px;
         font-weight: 500;
@@ -68,6 +83,7 @@
     }
     .scrollbar::-webkit-scrollbar {
         width: 7px;
+        height: 7px;
     }
     .scrollbar::-webkit-scrollbar-track {
         background: transparent;
