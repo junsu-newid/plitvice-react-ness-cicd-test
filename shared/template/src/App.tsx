@@ -49,7 +49,6 @@ const ExampleSelectBox = () => {
             width={300}
             label={'Label'}
             labelColor={'#ff0000'}
-            value={optionList[0]}
             optionList={optionList}
             onChange={handleChange}
             disabled={false}

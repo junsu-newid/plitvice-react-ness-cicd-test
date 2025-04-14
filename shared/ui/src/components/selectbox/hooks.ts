@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { SelectOption } from '@/components/dropdownList';
 
-const useSelectBox = (initialValue: SelectOption, onChange?: (selected: SelectOption) => void) => {
+const useSelectBox = (initialValue: SelectOption | undefined, onChange?: (selected: SelectOption) => void) => {
     const [isFocused, setIsFocused] = useState<boolean>(false);
-    const [selectedItem, setSelectedItem] = useState<SelectOption>(initialValue);
+    const [selectedItem, setSelectedItem] = useState(initialValue);
 
     const containerRef = useRef<HTMLDivElement>(null);
 

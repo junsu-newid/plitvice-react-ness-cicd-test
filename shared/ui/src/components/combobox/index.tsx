@@ -8,7 +8,6 @@ type ComboBoxSize = Extract<Size, 'medium' | 'large'>;
 
 export interface ComboBoxProps extends Omit<SelectBoxProps, 'size'> {
     size: ComboBoxSize;
-    placeholder?: string;
     noResultMessage?: string;
     labelPosition?: LabelPosition;
     optionList: SelectOption[];

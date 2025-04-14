@@ -16,6 +16,7 @@ const SizeStyles = {
 export interface SelectBoxProps {
     size?: SelectBoxSize;
     width?: number;
+    placeholder?: string;
     label?: string;
     labelColor?: string;
     value?: SelectOption;
@@ -27,6 +28,7 @@ export interface SelectBoxProps {
 const SelectBox = ({
     size = 'small',
     width = 0,
+    placeholder = 'Placeholder',
     label = '',
     labelColor = '',
     value = undefined,
@@ -34,10 +36,7 @@ const SelectBox = ({
     onChange = undefined,
     disabled = false,
 }: SelectBoxProps) => {
-    const { isFocused, selectedItem, containerRef, toggleDropdown, handleSelected } = useSelectBox(
-        value || optionList[0] || ({ value: '', label: '' } as SelectOption),
-        onChange,
-    );
+    const { isFocused, selectedItem, containerRef, toggleDropdown, handleSelected } = useSelectBox(value, onChange);
     const { labelText, inputText, heightClass, iconSize } = BoxComponentStyles[size];
     const containerWidth = { width: width > 0 ? `${width}px` : '100%' };
     const labelTextColor = { color: labelColor || 'var(--color-grey-70)' };
@@ -62,7 +61,13 @@ const SelectBox = ({
                 className={`flex w-full ${heightClass} flex-row items-center gap-[4px] pl-[11px] ${SizeStyles[size].pr} ${fieldColor} ${fieldBorderColor} rounded-[4px] border-[1px] ${hoverBgColor} ${cursor} overflow-hidden`}
                 onClick={disabled ? undefined : toggleDropdown}
             >
-                <p className={`flex h-full flex-1 flex-col justify-center ${inputText}`}>{selectedItem.label}</p>
+                <input
+                    value={selectedItem?.label || ''}
+                    placeholder={placeholder}
+                    readOnly={true}
+                    disabled={disabled}
+                    className={`flex h-full flex-1 cursor-pointer flex-col justify-center ${inputText}`}
+                />
                 <DropdownIcon className={`${iconSize} ${rotation} text-grey-50 transition-transform duration-100`} />
             </div>
             <DropdownList size={size} isFocused={isFocused} optionList={optionList} onSelected={handleSelected} />
