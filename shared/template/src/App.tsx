@@ -5,6 +5,7 @@ import { SelectOption } from '@plitvice/ui/components/dropdownList';
 import SelectBox from '@plitvice/ui/components/selectbox';
 import ComboBox from '@plitvice/ui/components/combobox';
 import TextField from '@plitvice/ui/components/textfield/TextField.tsx';
+import { CopyText } from '@plitvice/ui/components/copytext';
 
 function App() {
     const { t } = useTranslation();
@@ -14,6 +15,7 @@ function App() {
             <h1 className="box-border w-full whitespace-nowrap break-words bg-gradient-to-r from-[rgb(0,111,185)] via-[rgb(111,44,135)] to-[rgb(221,37,20)] bg-clip-text text-center text-[10rem] leading-[1.2] text-transparent">
                 {t('common.appName')}
             </h1>
+            <ExampleCopyText />
             <ExampleSearchField />
             <ExampleTextField />
             <ExampleSelectBox />
@@ -23,6 +25,10 @@ function App() {
 }
 
 export default App;
+
+const ExampleCopyText = () => {
+    return <CopyText value={'Click to copy'} className={'text-red-500'} />;
+};
 
 const ExampleSearchField = () => {
     return <SearchField width={300} />;
