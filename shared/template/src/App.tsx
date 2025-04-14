@@ -52,7 +52,7 @@ const ExampleSelectBox = () => {
     return (
         <SelectBox
             size={'small'}
-            width={300}
+            width={180}
             label={'Label'}
             labelColor={'#ff0000'}
             optionList={optionList}

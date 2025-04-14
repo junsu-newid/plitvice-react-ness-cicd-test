@@ -58,7 +58,7 @@ const SelectBox = ({
                 </label>
             ) : null}
             <div
-                className={`flex w-full ${heightClass} flex-row items-center gap-[4px] pl-[11px] ${SizeStyles[size].pr} ${fieldColor} ${fieldBorderColor} rounded-[4px] border-[1px] ${hoverBgColor} ${cursor} overflow-hidden`}
+                className={`flex w-full ${heightClass} flex items-center gap-[4px] pl-[11px] ${SizeStyles[size].pr} ${fieldColor} ${fieldBorderColor} rounded-[4px] border-[1px] ${hoverBgColor} ${cursor}`}
                 onClick={disabled ? undefined : toggleDropdown}
             >
                 <input
@@ -66,9 +66,13 @@ const SelectBox = ({
                     placeholder={placeholder}
                     readOnly={true}
                     disabled={disabled}
-                    className={`flex h-full flex-1 cursor-pointer flex-col justify-center ${inputText}`}
+                    className={`h-full w-full cursor-pointer ${inputText}`}
                 />
-                <DropdownIcon className={`${iconSize} ${rotation} text-grey-50 transition-transform duration-100`} />
+                <div className={`${iconSize}`}>
+                    <DropdownIcon
+                        className={`${iconSize} ${rotation} text-grey-50 transition-transform duration-100`}
+                    />
+                </div>
             </div>
             <DropdownList size={size} isFocused={isFocused} optionList={optionList} onSelected={handleSelected} />
         </div>
