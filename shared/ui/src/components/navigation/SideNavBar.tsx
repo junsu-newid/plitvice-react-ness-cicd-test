@@ -28,7 +28,13 @@ const useSideNavBarContext = () => {
     return context;
 };
 
-const SideNavBar = ({ width = 240, navMap = [], defaultSelected = '', onChange = () => {} }: SideNavBarProps) => {
+const SideNavBar = ({
+    width = 240,
+    navMap = [],
+    defaultSelected = '',
+    onChange = () => {},
+    onNavigate = () => {},
+}: SideNavBarProps) => {
     const state = useSideBar(defaultSelected, onChange);
     const widthStyle = { width: width > 0 ? `${width}px` : '100%' };
 
@@ -58,13 +64,13 @@ const SideNavBar = ({ width = 240, navMap = [], defaultSelected = '', onChange =
                 style={widthStyle}
             >
                 {navMap.map((item) => (
-                    <Item id={item.id} label={item.label} path={item.path} onClick={item.onClick} key={item.id}>
+                    <Item id={item.id} label={item.label} path={item.path} onClick={onNavigate} key={item.id}>
                         {item.child?.map((child) => (
                             <SubItem
                                 id={child.id}
                                 label={child.label}
                                 path={item.path}
-                                onClick={child.onClick}
+                                onClick={onNavigate}
                                 key={child.id}
                             />
                         ))}

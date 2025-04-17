@@ -5,6 +5,7 @@ export interface SideNavBarProps {
     navMap: SideNavMap[];
     defaultSelected?: string;
     onChange?: (value: string) => void;
+    onNavigate?: (path: string) => void;
 }
 
 export interface SideNavBarItemProps {
@@ -27,7 +28,6 @@ interface SideNavMap {
     id: string;
     label: string;
     path?: string;
-    onClick?: () => void;
     child?: SideNavMap[];
 }
 export type { SideNavMap };

@@ -24,7 +24,7 @@ function App() {
             <ExampleTextField />
             <ExampleSelectBox />
             <ExampleComboBox />
-            <SideNavBar width={240} navMap={navMap} />
+            <SideNavBar width={240} navMap={navMap} onNavigate={console.log} />
         </div>
     );
 }
