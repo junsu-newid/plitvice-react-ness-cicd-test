@@ -1,9 +1,10 @@
 import React, { Children, createContext, useContext, useEffect } from 'react';
 import { useSideBar } from '@/components/navigation/SideNavBar.hooks.ts';
 import {
-    SideNavBarDropdownItemProps,
+    SideNavBarSubItemProps,
     SideNavBarItemProps,
     SideNavBarProps,
+    SideNavMap,
 } from '@/components/navigation/SideNavBar.types.ts';
 import DropdownIcon from '@/assets/icDropdownArrow.svg?react';
 
@@ -12,7 +13,7 @@ interface SideNavBarContextType {
     selectedItem: string;
     toggleDropdown: (id: string) => void;
     handleItemClick: (id: string) => void;
-    registerNavItem: (id: string, hasChildren: boolean, parentId?: string) => void;
+    registerNavItem: (id: string, hasChildren: boolean, parentId?: string, path?: string) => void;
     isExpandable: (id: string) => boolean;
     isParentOfSelected: (id: string) => boolean;
     getSelectedItemParent: () => string | undefined;
@@ -27,9 +28,28 @@ const useSideNavBarContext = () => {
     return context;
 };
 
-const SideNavBar = ({ width = 240, defaultSelected = '', onChange = () => {}, children }: SideNavBarProps) => {
+const SideNavBar = ({ width = 240, navMap = [], defaultSelected = '', onChange = () => {} }: SideNavBarProps) => {
     const state = useSideBar(defaultSelected, onChange);
     const widthStyle = { width: width > 0 ? `${width}px` : '100%' };
+
+    useEffect(() => {
+        const registerItems = (items: SideNavMap[], parentId?: string) => {
+            items.forEach((item) => {
+                const hasChildren = Boolean(item.child && item.child.length > 0);
+                state.registerNavItem(item.id, hasChildren, parentId, item.path);
+
+                if (hasChildren && item.child) {
+                    item.child.forEach((child) => {
+                        state.registerNavItem(child.id, false, item.id, child.path);
+                    });
+                }
+            });
+        };
+
+        if (navMap.length > 0) {
+            registerItems(navMap);
+        }
+    }, [navMap]);
 
     return (
         <SideNavBarContext.Provider value={state}>
@@ -37,13 +57,26 @@ const SideNavBar = ({ width = 240, defaultSelected = '', onChange = () => {}, ch
                 className={`non-draggable flex h-screen flex-col overflow-y-scroll px-[16px] py-[24px]`}
                 style={widthStyle}
             >
-                {children}
+                {navMap.map((item) => (
+                    <Item id={item.id} label={item.label} path={item.path} onClick={item.onClick} key={item.id}>
+                        {item.child?.map((child) => (
+                            <SubItem
+                                id={child.id}
+                                label={child.label}
+                                path={item.path}
+                                onClick={child.onClick}
+                                key={child.id}
+                            />
+                        ))}
+                    </Item>
+                ))}
             </nav>
         </SideNavBarContext.Provider>
     );
 };
+export { SideNavBar };
 
-const NavItem = ({ id, label, onClick, children }: SideNavBarItemProps) => {
+const Item = ({ id, label, path, onClick, children }: SideNavBarItemProps) => {
     const {
         expandedItems,
         selectedItem,
@@ -70,7 +103,7 @@ const NavItem = ({ id, label, onClick, children }: SideNavBarItemProps) => {
     const hoverClass = isSelected ? 'hover:bg-blue-100' : 'hover:bg-gray-100';
 
     useEffect(() => {
-        registerNavItem(id, hasChildren);
+        registerNavItem(id, hasChildren, path);
     }, [id, hasChildren]);
 
     return (
@@ -99,7 +132,7 @@ const NavItem = ({ id, label, onClick, children }: SideNavBarItemProps) => {
     );
 };
 
-const DropdownItem = ({ id, label, parentId, onClick }: SideNavBarDropdownItemProps) => {
+const SubItem = ({ id, label, parentId, path, onClick }: SideNavBarSubItemProps) => {
     const { selectedItem, handleItemClick, registerNavItem } = useSideNavBarContext();
     const isSelected = selectedItem === id;
 
@@ -109,7 +142,7 @@ const DropdownItem = ({ id, label, parentId, onClick }: SideNavBarDropdownItemPr
 
     useEffect(() => {
         if (parentId) {
-            registerNavItem(id, false, parentId);
+            registerNavItem(id, false, parentId, path);
         }
     }, [id, parentId]);
 
@@ -125,7 +158,3 @@ const DropdownItem = ({ id, label, parentId, onClick }: SideNavBarDropdownItemPr
         </div>
     );
 };
-
-SideNavBar.Item = NavItem;
-SideNavBar.DropdownItem = DropdownItem;
-export { SideNavBar };

@@ -78,4 +78,4 @@ const SelectBox = ({
         </div>
     );
 };
-export default SelectBox;
+export { SelectBox };

@@ -72,5 +72,4 @@ const SearchField = ({
         </InputBox.Root>
     );
 };
-
-export default SearchField;
+export { SearchField };

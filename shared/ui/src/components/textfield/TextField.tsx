@@ -72,5 +72,4 @@ const TextField = ({
         </div>
     );
 };
-
-export default TextField;
+export { TextField };

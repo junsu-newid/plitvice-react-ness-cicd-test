@@ -12,7 +12,7 @@ interface TextAreaProps {
     ref?: React.Ref<HTMLTextAreaElement>;
 }
 
-export const TextArea = ({
+const TextArea = ({
     width = undefined,
     height = undefined,
     value: initialValue,
@@ -52,3 +52,4 @@ export const TextArea = ({
         </div>
     );
 };
+export { TextArea };

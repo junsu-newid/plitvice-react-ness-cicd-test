@@ -117,4 +117,4 @@ const ComboBox = ({
     );
 };
 
-export default ComboBox;
+export { ComboBox };

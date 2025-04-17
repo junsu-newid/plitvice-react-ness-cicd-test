@@ -1,11 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import '@plitvice/ui/styles/global.css';
-import SearchField from '@plitvice/ui/components/searchfield';
-import { SelectOption } from '@plitvice/ui/components/dropdownList';
-import SelectBox from '@plitvice/ui/components/selectbox';
-import ComboBox from '@plitvice/ui/components/combobox';
-import TextField from '@plitvice/ui/components/textfield/TextField.tsx';
-import { CopyText } from '@plitvice/ui/components/copytext';
+import {
+    ComboBox,
+    CopyText,
+    SearchField,
+    SelectBox,
+    SelectOption,
+    SideNavBar,
+    SideNavMap,
+    TextField,
+} from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
@@ -20,6 +24,7 @@ function App() {
             <ExampleTextField />
             <ExampleSelectBox />
             <ExampleComboBox />
+            <SideNavBar width={240} navMap={navMap} />
         </div>
     );
 }
@@ -86,3 +91,40 @@ const ExampleComboBox = () => {
         />
     );
 };
+
+const navMap: SideNavMap[] = [
+    {
+        id: 'pages',
+        label: 'nav.pages',
+        child: [
+            { id: 'pages/home', label: 'nav.home', path: '/test/1' },
+            { id: 'pages/linear', label: 'nav.channels' },
+            { id: 'pages/avod', label: 'nav.onDemand' },
+        ],
+    },
+    {
+        id: 'library',
+        label: 'nav.library',
+        child: [
+            { id: 'library/linear', label: 'nav.channels' },
+            { id: 'library/series', label: 'nav.series' },
+            { id: 'library/program', label: 'nav.programs' },
+        ],
+    },
+    {
+        id: 'categories',
+        label: 'nav.categories',
+    },
+    {
+        id: 'tags',
+        label: 'nav.tags',
+    },
+    {
+        id: 'searchKeywords',
+        label: 'nav.searchKeywords',
+    },
+    {
+        id: 'legals',
+        label: 'nav.legals',
+    },
+];

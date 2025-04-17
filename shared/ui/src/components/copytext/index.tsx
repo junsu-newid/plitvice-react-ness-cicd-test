@@ -3,7 +3,7 @@ interface CopyTextProps {
     className?: string;
 }
 
-export function CopyText({ value, className = '' }: CopyTextProps) {
+function CopyText({ value, className = '' }: CopyTextProps) {
     const handleCopy = async () => {
         try {
             await navigator.clipboard.writeText(value);
@@ -18,3 +18,4 @@ export function CopyText({ value, className = '' }: CopyTextProps) {
         </p>
     );
 }
+export { CopyText };
