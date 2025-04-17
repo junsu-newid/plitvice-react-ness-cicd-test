@@ -97,7 +97,7 @@ const navMap: SideNavMap[] = [
         id: 'pages',
         label: 'nav.pages',
         child: [
-            { id: 'pages/home', label: 'nav.home', path: '/test/1' },
+            { id: '/pages/home', label: 'nav.home', path: '/test/1' },
             { id: 'pages/linear', label: 'nav.channels' },
             { id: 'pages/avod', label: 'nav.onDemand' },
         ],

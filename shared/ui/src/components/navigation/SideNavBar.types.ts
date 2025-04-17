@@ -11,7 +11,7 @@ export interface SideNavBarItemProps {
     id: string;
     label: string;
     path?: string;
-    onClick?: () => void;
+    onClick?: (path: string) => void;
     children?: React.ReactNode;
 }
 
@@ -20,7 +20,7 @@ export interface SideNavBarSubItemProps {
     label: string;
     parentId?: string;
     path?: string;
-    onClick?: () => void;
+    onClick?: (path: string) => void;
 }
 
 interface SideNavMap {

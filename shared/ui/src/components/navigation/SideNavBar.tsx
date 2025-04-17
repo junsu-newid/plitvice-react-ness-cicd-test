@@ -115,7 +115,7 @@ const Item = ({ id, label, path, onClick, children }: SideNavBarItemProps) => {
                         toggleDropdown(id);
                     } else {
                         handleItemClick(id);
-                        onClick?.();
+                        onClick?.(id);
                     }
                 }}
             >
@@ -151,7 +151,7 @@ const SubItem = ({ id, label, parentId, path, onClick }: SideNavBarSubItemProps)
             className={`text-r14 cursor-pointer rounded p-[10px] pl-[24px] ${fontColorClass} ${bgColorClass} ${hoverClass}`}
             onClick={() => {
                 handleItemClick(id);
-                onClick?.();
+                onClick?.(id);
             }}
         >
             {label}
