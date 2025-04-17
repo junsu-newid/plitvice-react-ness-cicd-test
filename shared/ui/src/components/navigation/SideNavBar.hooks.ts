@@ -4,14 +4,14 @@ export const useSideBar = (defaultSelected: string, onChange: (value: string) =>
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
     const [selectedItem, setSelectedItem] = useState<string>(defaultSelected);
     const [parentChildMap, setParentChildMap] = useState<Record<string, string>>({});
-    const [pathToIdMap, setPathToIdMap] = useState<Record<string, string>>({});
+    const [pathToPathMap, setPathToPathMap] = useState<Record<string, string>>({});
 
     const selectItemByUrl = () => {
         const currentPath = window.location.pathname;
         let bestMatch = '';
-        let bestMatchId = '';
+        let bestMatchPath = '';
 
-        Object.entries(pathToIdMap).forEach(([path, id]) => {
+        Object.entries(pathToPathMap).forEach(([path, mappedPath]) => {
             if (
                 currentPath === path ||
                 currentPath.startsWith(path + '/') ||
@@ -19,20 +19,20 @@ export const useSideBar = (defaultSelected: string, onChange: (value: string) =>
             ) {
                 if (path.length > bestMatch.length) {
                     bestMatch = path;
-                    bestMatchId = id;
+                    bestMatchPath = mappedPath;
                 }
             }
         });
 
-        if (bestMatchId) {
-            setSelectedItem(bestMatchId);
-            expandParentCategories(bestMatchId);
+        if (bestMatchPath) {
+            setSelectedItem(bestMatchPath);
+            expandParentCategories(bestMatchPath);
         }
     };
 
-    const expandParentCategories = (itemId: string) => {
+    const expandParentCategories = (itemPath: string) => {
         const expandedCategories: Record<string, boolean> = {};
-        let currentParent = parentChildMap[itemId];
+        let currentParent = parentChildMap[itemPath];
 
         while (currentParent) {
             expandedCategories[currentParent] = true;
@@ -45,59 +45,59 @@ export const useSideBar = (defaultSelected: string, onChange: (value: string) =>
         }));
     };
 
-    const toggleDropdown = (id: string) => {
+    const toggleDropdown = (path: string) => {
         setExpandedItems((prev) => ({
             ...prev,
-            [id]: !prev[id],
+            [path]: !prev[path],
         }));
     };
 
-    const handleItemClick = (id: string) => {
-        setSelectedItem(id);
+    const handleItemClick = (path: string) => {
+        setSelectedItem(path);
     };
 
-    const registerNavItem = (id: string, hasChildren: boolean, parentId?: string, path?: string) => {
+    const registerNavItem = (path: string, hasChildren: boolean, parentPath?: string) => {
         if (path) {
-            setPathToIdMap((prev) => ({
+            setPathToPathMap((prev) => ({
                 ...prev,
-                [path]: id,
+                [path]: path,
             }));
         }
 
         if (hasChildren) {
             setExpandedItems((prev) => {
-                if (id in prev) return prev;
-                return { ...prev, [id]: false };
+                if (path in prev) return prev;
+                return { ...prev, [path]: false };
             });
         }
 
-        if (parentId) {
+        if (parentPath && path !== parentPath) {
             setParentChildMap((prev) => ({
                 ...prev,
-                [id]: parentId,
+                [path]: parentPath,
             }));
         }
     };
 
-    const isExpandable = (id: string) => {
-        return id in expandedItems;
+    const isExpandable = (path: string) => {
+        return path in expandedItems;
     };
 
     const getSelectedItemParent = () => {
         return parentChildMap[selectedItem];
     };
 
-    const isParentOfSelected = (id: string) => {
-        return parentChildMap[selectedItem] === id;
+    const isParentOfSelected = (path: string) => {
+        return parentChildMap[selectedItem] === path;
     };
 
     useEffect(() => {
-        if (Object.keys(pathToIdMap).length > 0) {
+        if (Object.keys(pathToPathMap).length > 0) {
             selectItemByUrl();
         } else if (defaultSelected) {
             expandParentCategories(defaultSelected);
         }
-    }, [defaultSelected, parentChildMap, pathToIdMap]);
+    }, [defaultSelected, parentChildMap, pathToPathMap]);
 
     useEffect(() => {
         const handleUrlChange = () => {
@@ -109,7 +109,7 @@ export const useSideBar = (defaultSelected: string, onChange: (value: string) =>
         return () => {
             window.removeEventListener('popstate', handleUrlChange);
         };
-    }, [pathToIdMap]);
+    }, [pathToPathMap]);
 
     useEffect(() => onChange(selectedItem), [onChange, selectedItem]);
 

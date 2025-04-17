@@ -94,37 +94,37 @@ const ExampleComboBox = () => {
 
 const navMap: SideNavMap[] = [
     {
-        id: 'pages',
+        path: '/pages',
         label: 'nav.pages',
         child: [
-            { id: '/pages/home', label: 'nav.home', path: '/test/1' },
-            { id: 'pages/linear', label: 'nav.channels' },
-            { id: 'pages/avod', label: 'nav.onDemand' },
+            { path: '/pages/home', label: 'nav.home' },
+            { path: '/pages/linear', label: 'nav.channels' },
+            { path: '/pages/avod', label: 'nav.onDemand' },
         ],
     },
     {
-        id: 'library',
+        path: '/library',
         label: 'nav.library',
         child: [
-            { id: 'library/linear', label: 'nav.channels' },
-            { id: 'library/series', label: 'nav.series' },
-            { id: 'library/program', label: 'nav.programs' },
+            { path: '/library/linear', label: 'nav.channels' },
+            { path: '/library/series', label: 'nav.series' },
+            { path: '/library/program', label: 'nav.programs' },
         ],
     },
     {
-        id: 'categories',
+        path: '/categories',
         label: 'nav.categories',
     },
     {
-        id: 'tags',
+        path: '/tags',
         label: 'nav.tags',
     },
     {
-        id: 'searchKeywords',
+        path: '/searchKeywords',
         label: 'nav.searchKeywords',
     },
     {
-        id: 'legals',
+        path: '/legals',
         label: 'nav.legals',
     },
 ];

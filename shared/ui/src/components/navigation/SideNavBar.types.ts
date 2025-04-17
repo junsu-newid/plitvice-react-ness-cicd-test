@@ -9,25 +9,22 @@ export interface SideNavBarProps {
 }
 
 export interface SideNavBarItemProps {
-    id: string;
+    path: string;
     label: string;
-    path?: string;
     onClick?: (path: string) => void;
     children?: React.ReactNode;
 }
 
 export interface SideNavBarSubItemProps {
-    id: string;
+    path: string;
     label: string;
-    parentId?: string;
-    path?: string;
+    parentPath?: string;
     onClick?: (path: string) => void;
 }
 
 interface SideNavMap {
-    id: string;
+    path: string;
     label: string;
-    path?: string;
     child?: SideNavMap[];
 }
 export type { SideNavMap };

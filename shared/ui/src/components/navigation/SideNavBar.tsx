@@ -13,7 +13,7 @@ interface SideNavBarContextType {
     selectedItem: string;
     toggleDropdown: (id: string) => void;
     handleItemClick: (id: string) => void;
-    registerNavItem: (id: string, hasChildren: boolean, parentId?: string, path?: string) => void;
+    registerNavItem: (id: string, hasChildren: boolean, parentId?: string) => void;
     isExpandable: (id: string) => boolean;
     isParentOfSelected: (id: string) => boolean;
     getSelectedItemParent: () => string | undefined;
@@ -39,14 +39,14 @@ const SideNavBar = ({
     const widthStyle = { width: width > 0 ? `${width}px` : '100%' };
 
     useEffect(() => {
-        const registerItems = (items: SideNavMap[], parentId?: string) => {
+        const registerItems = (items: SideNavMap[], parentPath?: string) => {
             items.forEach((item) => {
                 const hasChildren = Boolean(item.child && item.child.length > 0);
-                state.registerNavItem(item.id, hasChildren, parentId, item.path);
+                state.registerNavItem(item.path, hasChildren, parentPath);
 
                 if (hasChildren && item.child) {
                     item.child.forEach((child) => {
-                        state.registerNavItem(child.id, false, item.id, child.path);
+                        state.registerNavItem(child.path, false, item.path);
                     });
                 }
             });
@@ -63,15 +63,15 @@ const SideNavBar = ({
                 className={`non-draggable flex h-screen flex-col overflow-y-scroll px-[16px] py-[24px]`}
                 style={widthStyle}
             >
-                {navMap.map((item) => (
-                    <Item id={item.id} label={item.label} path={item.path} onClick={onNavigate} key={item.id}>
-                        {item.child?.map((child) => (
+                {navMap.map((item, parentIndex) => (
+                    <Item path={item.path} label={item.label} onClick={onNavigate} key={`side-nav-${parentIndex}`}>
+                        {item.child?.map((child, childIndex) => (
                             <SubItem
-                                id={child.id}
+                                path={child.path}
                                 label={child.label}
-                                path={item.path}
+                                parentPath={item.path}
                                 onClick={onNavigate}
-                                key={child.id}
+                                key={`side-nav-${parentIndex}-${childIndex}`}
                             />
                         ))}
                     </Item>
@@ -82,7 +82,7 @@ const SideNavBar = ({
 };
 export { SideNavBar };
 
-const Item = ({ id, label, path, onClick, children }: SideNavBarItemProps) => {
+const Item = ({ path, label, onClick, children }: SideNavBarItemProps) => {
     const {
         expandedItems,
         selectedItem,
@@ -93,13 +93,13 @@ const Item = ({ id, label, path, onClick, children }: SideNavBarItemProps) => {
         isParentOfSelected,
     } = useSideNavBarContext();
     const hasChildren = Children.count(children) > 0;
-    const expandable = isExpandable(id);
-    const isExpanded = expandable && expandedItems[id];
-    const isSelected = selectedItem === id && !expandable;
-    const isActiveParent = isParentOfSelected(id);
+    const expandable = isExpandable(path);
+    const isExpanded = expandable && expandedItems[path];
+    const isSelected = selectedItem === path && !expandable;
+    const isActiveParent = isParentOfSelected(path);
     const childrenWithProps = Children.map(children, (child) => {
         if (React.isValidElement(child)) {
-            return React.cloneElement(child, { parentId: id } as never);
+            return React.cloneElement(child, { parentPath: path } as never);
         }
         return child;
     });
@@ -109,8 +109,8 @@ const Item = ({ id, label, path, onClick, children }: SideNavBarItemProps) => {
     const hoverClass = isSelected ? 'hover:bg-blue-100' : 'hover:bg-gray-100';
 
     useEffect(() => {
-        registerNavItem(id, hasChildren, path);
-    }, [id, hasChildren]);
+        registerNavItem(path, hasChildren);
+    }, [path, hasChildren]);
 
     return (
         <>
@@ -118,10 +118,10 @@ const Item = ({ id, label, path, onClick, children }: SideNavBarItemProps) => {
                 className={`text-m16 flex cursor-pointer items-center justify-between rounded p-[10px] pl-[12px] transition-all duration-100 ${fontColorClass} ${bgColorClass} ${hoverClass}`}
                 onClick={() => {
                     if (expandable) {
-                        toggleDropdown(id);
+                        toggleDropdown(path);
                     } else {
-                        handleItemClick(id);
-                        onClick?.(id);
+                        handleItemClick(path);
+                        onClick?.(path);
                     }
                 }}
             >
@@ -138,26 +138,26 @@ const Item = ({ id, label, path, onClick, children }: SideNavBarItemProps) => {
     );
 };
 
-const SubItem = ({ id, label, parentId, path, onClick }: SideNavBarSubItemProps) => {
+const SubItem = ({ path, label, parentPath, onClick }: SideNavBarSubItemProps) => {
     const { selectedItem, handleItemClick, registerNavItem } = useSideNavBarContext();
-    const isSelected = selectedItem === id;
+    const isSelected = selectedItem === path;
 
     const fontColorClass = isSelected ? 'text-blue-700' : 'text-gray-800';
     const bgColorClass = isSelected ? 'bg-blue-100' : '';
     const hoverClass = isSelected ? 'hover:bg-blue-100' : 'hover:bg-gray-100';
 
     useEffect(() => {
-        if (parentId) {
-            registerNavItem(id, false, parentId, path);
+        if (parentPath) {
+            registerNavItem(path, false, parentPath);
         }
-    }, [id, parentId]);
+    }, [path, parentPath]);
 
     return (
         <div
             className={`text-r14 cursor-pointer rounded p-[10px] pl-[24px] ${fontColorClass} ${bgColorClass} ${hoverClass}`}
             onClick={() => {
-                handleItemClick(id);
-                onClick?.(id);
+                handleItemClick(path);
+                onClick?.(path);
             }}
         >
             {label}
