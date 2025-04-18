@@ -1,15 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import '@plitvice/ui/styles/global.css';
-import {
-    ComboBox,
-    CopyText,
-    SearchField,
-    SelectBox,
-    SelectOption,
-    SideNavBar,
-    SideNavMap,
-    TextField,
-} from '@plitvice/ui';
+import { CopyText, ModifiedField, SideNavBar, SideNavMap } from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
@@ -20,10 +11,7 @@ function App() {
                 {t('common.appName')}
             </h1>
             <ExampleCopyText />
-            <ExampleSearchField />
-            <ExampleTextField />
-            <ExampleSelectBox />
-            <ExampleComboBox />
+            <ExampleModifiedField />
             <SideNavBar width={240} navMap={navMap} onNavigate={console.log} />
         </div>
     );
@@ -31,65 +19,12 @@ function App() {
 
 export default App;
 
+const ExampleModifiedField = () => {
+    return <ModifiedField width={400} value={'origin text'} />;
+};
+
 const ExampleCopyText = () => {
     return <CopyText value={'Click to copy'} className={'text-red-500'} />;
-};
-
-const ExampleSearchField = () => {
-    return <SearchField width={300} />;
-};
-
-const ExampleTextField = () => {
-    return <TextField width={300} size={'large'} label={'Label'} labelPosition={'inner'} />;
-};
-
-const ExampleSelectBox = () => {
-    const optionList: SelectOption[] = [
-        { value: 'item01', label: 'Item01' },
-        { value: 'item02', label: 'Item02' },
-        { value: 'item03', label: 'Item03' },
-    ];
-
-    const handleChange = (value: SelectOption) => {
-        console.log('셀렉트 값이 변경됨:', value);
-    };
-
-    return (
-        <SelectBox
-            size={'small'}
-            width={180}
-            label={'Label'}
-            labelColor={'#ff0000'}
-            optionList={optionList}
-            onChange={handleChange}
-            disabled={false}
-        />
-    );
-};
-
-const ExampleComboBox = () => {
-    const optionList: SelectOption[] = [
-        { value: 'item01', label: 'Item01' },
-        { value: 'item02', label: 'Item02' },
-        { value: 'item03', label: 'Item03' },
-    ];
-
-    const handleChange = (value: SelectOption) => {
-        console.log('셀렉트 값이 변경됨:', value);
-    };
-
-    return (
-        <ComboBox
-            size={'medium'}
-            width={300}
-            label={'Label'}
-            labelColor={'#ff0000'}
-            labelPosition={'inner'}
-            optionList={optionList}
-            onChange={handleChange}
-            disabled={false}
-        />
-    );
 };
 
 const navMap: SideNavMap[] = [

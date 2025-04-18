@@ -32,18 +32,7 @@ type Story = StoryObj<typeof SideNavBar>;
 
 export const Default: Story = {
     render: (args) => {
-        return (
-            <SideNavBar {...args}>
-                <SideNavBar.Item id={'menu-1'} label={'menu 1'} />
-                <SideNavBar.Item id={'menu-2'} label={'menu 2'}>
-                    <SideNavBar.DropdownItem id={'drop-1'} label={'drop 1'} />
-                    <SideNavBar.DropdownItem id={'drop-2'} label={'drop 2'} />
-                    <SideNavBar.DropdownItem id={'drop-3'} label={'drop 3'} />
-                </SideNavBar.Item>
-                <SideNavBar.Item id={'menu-3'} label={'menu 3'} />
-                <SideNavBar.Item id={'menu-4'} label={'menu 4'} />
-            </SideNavBar>
-        );
+        return <SideNavBar {...args} />;
     },
     args: {
         defaultSelected: 'menu-1',

@@ -40,7 +40,7 @@ const SearchField = ({
         ? 'border-transparent ring-2 ring-blue-500'
         : 'hover:border-transparent hover:ring-2 hover:ring-blue-500';
 
-    const { height, inputText: textClass, iconSize: addonSizeClass } = BoxComponentStyles[size];
+    const { height, textSizeClass, iconSizeClass } = BoxComponentStyles[size];
 
     const handleClearMouseDown = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -53,18 +53,18 @@ const SearchField = ({
             height={height}
         >
             <InputBox.Prefix>
-                <div className={`${addonSizeClass} text-grey-50`}>
+                <div className={`${iconSizeClass} text-grey-50`}>
                     <IconSearch className="h-full w-full object-contain" />
                 </div>
             </InputBox.Prefix>
             <InputBox.Field
-                className={`${textClass} focus:outline-none focus:ring-0`}
+                className={`${textSizeClass} focus:outline-none focus:ring-0`}
                 placeholder={placeholder}
                 value={value}
                 onChange={handleChange}
                 ref={inputRef}
             />
-            <InputBox.Suffix className={`${addonSizeClass} ${!(isFocused && value) && 'hidden'}`}>
+            <InputBox.Suffix className={`${iconSizeClass} ${!(isFocused && value) && 'hidden'}`}>
                 <button onMouseDown={handleClearMouseDown} onClick={handleClear}>
                     <IconTextClear />
                 </button>

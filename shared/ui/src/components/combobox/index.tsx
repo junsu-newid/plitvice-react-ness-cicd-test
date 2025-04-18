@@ -64,7 +64,7 @@ const ComboBox = ({
     const buttonBorderColor = isFocused ? 'border-blue-500' : 'border-grey-40';
     const iconRotation = isFocused ? 'rotate-180' : 'rotate-0';
 
-    const { labelText, inputText, heightClass, iconSize } = BoxComponentStyles[size];
+    const { labelSizeClass, textSizeClass, heightClass, iconSizeClass } = BoxComponentStyles[size];
 
     return (
         <div
@@ -73,7 +73,7 @@ const ComboBox = ({
             style={containerWidth}
         >
             {labelPosition === 'outer' && label !== '' ? (
-                <label className={`pl-[4px] ${labelText} non-draggable`} style={labelTextColor}>
+                <label className={`pl-[4px] ${labelSizeClass} non-draggable`} style={labelTextColor}>
                     {label}
                 </label>
             ) : null}
@@ -95,7 +95,7 @@ const ComboBox = ({
                         onKeyDown={handleKeyDown}
                         readOnly={readOnly}
                         disabled={disabled}
-                        className={`placeholder:text-grey-40 ${inputText}`}
+                        className={`placeholder:text-grey-40 ${textSizeClass}`}
                     />
                 </div>
                 <button
@@ -103,7 +103,9 @@ const ComboBox = ({
                     className={`flex h-full items-center justify-center rounded-r-[4px] border-l bg-transparent px-[9px] ${buttonBorderColor} group-hover:border-blue-500`}
                     disabled={disabled}
                 >
-                    <DropdownIcon className={`${iconSize} ${iconRotation} text-grey-50 transition-all duration-100`} />
+                    <DropdownIcon
+                        className={`${iconSizeClass} ${iconRotation} text-grey-50 transition-all duration-100`}
+                    />
                 </button>
             </div>
             <DropdownList

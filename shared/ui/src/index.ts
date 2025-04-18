@@ -9,6 +9,7 @@ export { SearchField } from '@/components/searchfield';
 export { SelectBox } from '@/components/selectbox';
 export { TextArea } from '@/components/textfield/TextArea';
 export { TextField } from '@/components/textfield/TextField';
+export { ModifiedField } from '@/components/modifiedfield';
 
 export type { SelectOption } from '@/components/dropdownList';
 export type { SideNavMap } from '@/components/navigation/SideNavBar.types.ts';

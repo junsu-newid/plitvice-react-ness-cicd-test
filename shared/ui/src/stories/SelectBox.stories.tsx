@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SelectOption } from '@/components/dropdownList';
-import SelectBox, { SelectBoxProps } from '@/components/selectbox';
+import { SelectBox, SelectBoxProps } from '@/components/selectbox';
 
 const sizes = ['small', 'medium'] as const;
 

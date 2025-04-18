@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import SearchField from '@/components/searchfield/index.tsx';
+import { SearchField } from '@/components/searchfield/index.tsx';
 
 const sizes = ['medium', 'large'] as const;
 

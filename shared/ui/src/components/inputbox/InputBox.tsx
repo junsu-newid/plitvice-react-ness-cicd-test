@@ -8,10 +8,11 @@ interface InputBoxProps {
 }
 
 const Root = ({ className, width = 0, height = 0, children }: InputBoxProps) => {
+    const heightValue = height > 0 ? `${height}px` : '100%';
     return (
         <div
             className={`relative flex items-center rounded border ${className}`}
-            style={{ width: width > 0 ? `${width}px` : '100%', height: height > 0 ? `${height}px` : '100%' }}
+            style={{ width: width > 0 ? `${width}px` : '100%', height: heightValue, minHeight: heightValue }}
         >
             {children}
         </div>

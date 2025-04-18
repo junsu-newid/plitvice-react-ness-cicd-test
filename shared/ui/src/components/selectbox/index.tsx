@@ -37,7 +37,7 @@ const SelectBox = ({
     disabled = false,
 }: SelectBoxProps) => {
     const { isFocused, selectedItem, containerRef, toggleDropdown, handleSelected } = useSelectBox(value, onChange);
-    const { labelText, inputText, heightClass, iconSize } = BoxComponentStyles[size];
+    const { labelSizeClass, textSizeClass, heightClass, iconSizeClass } = BoxComponentStyles[size];
     const containerWidth = { width: width > 0 ? `${width}px` : '100%' };
     const labelTextColor = { color: labelColor || 'var(--color-grey-70)' };
     const fieldColor = disabled ? 'bg-grey-20' : 'bg-white hover:bg-blue-100 hover:border-blue-500';
@@ -53,7 +53,7 @@ const SelectBox = ({
             ref={containerRef}
         >
             {label !== '' ? (
-                <label className={`pl-[4px] ${labelText} non-draggable`} style={labelTextColor}>
+                <label className={`pl-[4px] ${labelSizeClass} non-draggable`} style={labelTextColor}>
                     {label}
                 </label>
             ) : null}
@@ -66,11 +66,11 @@ const SelectBox = ({
                     placeholder={placeholder}
                     readOnly={true}
                     disabled={disabled}
-                    className={`h-full w-full cursor-pointer ${inputText}`}
+                    className={`h-full w-full cursor-pointer ${textSizeClass}`}
                 />
-                <div className={`${iconSize}`}>
+                <div className={`${iconSizeClass}`}>
                     <DropdownIcon
-                        className={`${iconSize} ${rotation} text-grey-50 transition-transform duration-100`}
+                        className={`${iconSizeClass} ${rotation} text-grey-50 transition-transform duration-100`}
                     />
                 </div>
             </div>
