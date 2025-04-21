@@ -44,6 +44,7 @@ const useModifiedField = ({ initialValue = '', onChange, onBlur, onEnter, onEsca
     const resetToOrigin = useCallback(() => {
         setValue(originalValue);
         setIsModified(false);
+        onChange?.(originalValue, false);
     }, [originalValue, setValue]);
 
     const updateOriginValue = useCallback(

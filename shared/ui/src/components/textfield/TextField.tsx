@@ -37,14 +37,14 @@ const TextField = ({
         color: labelColor || (labelPosition === 'outer' ? 'var(--color-grey-70)' : 'var(--color-grey-50)'),
     };
 
-    const { labelText: labelTextClass, inputText: inputTextClass, heightClass } = BoxComponentStyles[size];
+    const { labelSizeClass, textSizeClass, heightClass } = BoxComponentStyles[size];
     const bgClass = disabled ? 'bg-grey-20' : 'bg-white';
     const borderClass = isFocused ? 'border-blue-500' : 'border-grey-40';
 
     return (
         <div className={`relative flex h-fit flex-col items-start gap-[4px]`} style={widthStyle}>
             {labelPosition === 'outer' && label !== '' ? (
-                <label className={`pl-[4px] ${labelTextClass} non-draggable`} style={labelTextStyle}>
+                <label className={`pl-[4px] ${labelSizeClass} non-draggable`} style={labelTextStyle}>
                     {label}
                 </label>
             ) : null}
@@ -59,7 +59,7 @@ const TextField = ({
                         </label>
                     ) : null}
                     <input
-                        className={`placeholder:text-grey-40 w-full ${inputTextClass}`}
+                        className={`placeholder:text-grey-40 w-full ${textSizeClass}`}
                         placeholder={placeholder}
                         value={value}
                         readOnly={readOnly}
