@@ -4,6 +4,7 @@ export { default as BinIcon } from './assets/icBin.svg?react';
 
 export { SideNavBar } from '@/components/navigation/SideNavBar.tsx';
 export { Button } from '@/components/button/Button.tsx';
+export { Toggle } from '@/components/button/Toggle.tsx';
 export { ComboBox } from '@/components/combobox';
 export { CopyText } from '@/components/copytext';
 export { SearchField } from '@/components/searchfield';

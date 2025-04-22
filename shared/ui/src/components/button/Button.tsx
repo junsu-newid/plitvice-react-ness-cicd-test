@@ -1,6 +1,15 @@
-import { ButtonProps } from '@/components/button/Button.types.ts';
+import React, { ReactNode } from 'react';
+import { CustomComponentProps, Size } from '@/types/common.ts';
 
 // FIXME: - 왼쪽에 아이콘 넣을 수 있도록 추가
+
+interface ButtonProps extends CustomComponentProps<'button'> {
+    size?: Extract<Size, 'small' | 'medium' | 'large'>;
+    variant?: 'default' | 'normal' | 'alert';
+    fill?: boolean;
+    children?: ReactNode;
+    ref?: React.Ref<HTMLButtonElement>;
+}
 
 const ButtonSizeStyles = {
     small: {
