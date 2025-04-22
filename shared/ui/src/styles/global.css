@@ -40,6 +40,11 @@
         font-weight: 700;
         line-height: 20px;
     }
+    .text-b12 {
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 14px;
+    }
     .text-m18 {
         font-size: 18px;
         font-weight: 500;
@@ -58,7 +63,7 @@
     .text-m12 {
         font-size: 12px;
         font-weight: 500;
-        line-height: normal;
+        line-height: 14px;
     }
     .text-r18 {
         font-size: 18px;
@@ -74,6 +79,16 @@
         font-size: 14px;
         font-weight: 400;
         line-height: 18px;
+    }
+    .text-r12 {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 14px;
+    }
+    .text-sb12 {
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 14px;
     }
 }
 
@@ -112,6 +127,7 @@
     /* 그레이 스케일 */
     --color-grey-5: #fafafa;
     --color-grey-10: #f2f2f2;
+    --color-grey-15: #ebebeb;
     --color-grey-20: #e5e5e6;
     --color-grey-25: #d5d6d7;
     --color-grey-30: #cbcbcd;
@@ -127,7 +143,9 @@
 
     /* 파란색 */
     --color-blue-100: #e6f1fe;
-    --color-blue-200: #c3ddfd;
+    --color-blue-150: #cee5fd;
+    --color-blue-200: #c3ddff;
+    --color-blue-250: #b2d4ff;
     --color-blue-300: #94c2fc;
     --color-blue-400: #62a6fa;
     --color-blue-500: #2f89f8;
@@ -138,16 +156,16 @@
     --color-blue-1000: #02336f;
 
     /* 빨간색 */
-    --color-red-100: #fee9e9;
+    --color-red-100: #fff1f0;
     --color-red-200: #ffccc7;
     --color-red-300: #ffa39e;
-    --color-red-400: #f76f72;
-    --color-red-500: #f5222d;
-    --color-red-600: #e01a1f;
-    --color-red-700: #c2171b;
-    --color-red-800: #a31316;
-    --color-red-900: #8a1012;
-    --color-red-1000: #700d0e;
+    --color-red-400: #ff7875;
+    --color-red-500: #ff4d4f;
+    --color-red-600: #f5222d;
+    --color-red-700: #cf1322;
+    --color-red-800: #a8071a;
+    --color-red-900: #820014;
+    --color-red-1000: #5c0011;
 }
 
 @layer base {

@@ -5,10 +5,8 @@ import IconSearch from '@/assets/icSearch.svg?react';
 import IconTextClear from '@/assets/icTextClear.svg?react';
 import InputBox from '../inputbox/InputBox';
 
-type SearchFieldSize = Extract<Size, 'medium' | 'large'>;
-
 export interface SearchFieldProps {
-    size?: SearchFieldSize;
+    size?: Size;
     width?: number;
     placeholder?: string;
     value?: string;
@@ -17,7 +15,7 @@ export interface SearchFieldProps {
 }
 
 const SearchField = ({
-    size = 'medium',
+    size = 'small',
     width = 0,
     placeholder = 'Search',
     value: initialValue = '',
@@ -28,6 +26,9 @@ const SearchField = ({
 
     let sizeClass = '';
     switch (size) {
+        case 'small':
+            sizeClass += ' py-[6px]';
+            break;
         case 'medium':
             sizeClass += ' py-[7px]';
             break;
@@ -35,11 +36,7 @@ const SearchField = ({
             sizeClass += ' py-[14px]';
             break;
     }
-
-    const focusClass = isFocused
-        ? 'border-transparent ring-2 ring-blue-500'
-        : 'hover:border-transparent hover:ring-2 hover:ring-blue-500';
-
+    const focusClass = isFocused ? 'border-blue-500' : 'border-grey-40';
     const { height, textSizeClass, iconSizeClass } = BoxComponentStyles[size];
 
     const handleClearMouseDown = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
@@ -48,7 +45,7 @@ const SearchField = ({
 
     return (
         <InputBox.Root
-            className={`${sizeClass} border-grey-40 items-center justify-start gap-2 bg-white px-[11px] ${focusClass}`}
+            className={`${sizeClass} items-center justify-start gap-[6px] bg-white pl-[9px] pr-[7px] hover:border-blue-500 ${focusClass}`}
             width={width}
             height={height}
         >

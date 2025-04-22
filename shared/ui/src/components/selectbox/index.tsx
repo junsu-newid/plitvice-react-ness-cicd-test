@@ -4,14 +4,6 @@ import DropdownList, { SelectOption } from '@/components/dropdownList';
 import DropdownIcon from '@/assets/icDropdownArrow.svg?react';
 
 type SelectBoxSize = Extract<Size, 'small' | 'medium'>;
-const SizeStyles = {
-    small: {
-        pr: 'pr-[6px]',
-    },
-    medium: {
-        pr: 'pr-[7px]',
-    },
-};
 
 export interface SelectBoxProps {
     size?: SelectBoxSize;
@@ -58,7 +50,7 @@ const SelectBox = ({
                 </label>
             ) : null}
             <div
-                className={`flex w-full ${heightClass} flex items-center gap-[4px] pl-[11px] ${SizeStyles[size].pr} ${fieldColor} ${fieldBorderColor} rounded-[4px] border-[1px] ${hoverBgColor} ${cursor}`}
+                className={`flex w-full ${heightClass} flex items-center gap-[4px] pl-[11px] pr-[7px] ${fieldColor} ${fieldBorderColor} rounded-[4px] border-[1px] ${hoverBgColor} ${cursor}`}
                 onClick={disabled ? undefined : toggleDropdown}
             >
                 <input

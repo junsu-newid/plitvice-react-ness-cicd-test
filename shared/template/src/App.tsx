@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import '@plitvice/ui/styles/global.css';
-import { CopyText, ModifiedField, SideNavBar, SideNavMap } from '@plitvice/ui';
+import { CopyText, ModifiedField, SearchField, SideNavBar, SideNavMap } from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
@@ -10,6 +10,7 @@ function App() {
             <h1 className="box-border w-full whitespace-nowrap break-words bg-gradient-to-r from-[rgb(0,111,185)] via-[rgb(111,44,135)] to-[rgb(221,37,20)] bg-clip-text text-center text-[10rem] leading-[1.2] text-transparent">
                 {t('common.appName')}
             </h1>
+            <SearchField width={400} size={'large'} />
             <ExampleCopyText />
             <ExampleModifiedField />
             <SideNavBar width={240} navMap={navMap} onNavigate={console.log} />
