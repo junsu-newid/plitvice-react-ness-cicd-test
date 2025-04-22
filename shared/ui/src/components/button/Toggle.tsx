@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 
 interface ButtonProps {
+    value: boolean;
     onChange?: (active: boolean) => void;
 }
 
-export const Toggle = ({ onChange = () => {} }: ButtonProps) => {
-    const [active, setActive] = useState(false);
+export const Toggle = ({ value = false, onChange = () => {} }: ButtonProps) => {
+    const [active, setActive] = useState(value);
     const bgStyle = active ? 'bg-blue-500' : 'bg-grey-30';
     const transformStyle = active ? '-translate-x-[-14px]' : '-translate-x-0';
 
