@@ -12,6 +12,12 @@
 @font-face {
     font-family: 'pretendard';
     font-style: normal;
+    font-weight: 500;
+    src: url('https://paro-cdn.its-newid.net/font/pretendard_medium_subset.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'pretendard';
+    font-style: normal;
     font-weight: 700;
     src: url('https://paro-cdn.its-newid.net/font/pretendard_bold_subset.woff2') format('woff2');
 }
