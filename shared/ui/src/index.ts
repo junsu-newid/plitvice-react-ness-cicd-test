@@ -9,6 +9,7 @@ export { Toggle } from '@/components/button/Toggle.tsx';
 export { TextCopier } from '@/components/button/TextCopier.tsx';
 export { SearchInput } from '@/components/textfield/SearchInput.tsx';
 export { TextInput } from '@/components/textfield/TextInput.tsx';
+export { CellInput } from '@/components/textfield/CellInput.tsx';
 export { ModInput } from '@/components/textfield/ModInput.tsx';
 export { TextArea } from '@/components/textfield/TextArea';
 export { SelectBox } from '@/components/selectbox/SelectBox.tsx';
