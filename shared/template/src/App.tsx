@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import '@plitvice/ui/styles/global.css';
 import { ModInput, ModSelectBox, SelectOption } from '@plitvice/ui';
+import { CellInput } from '@plitvice/ui/components/textfield/CellInput.tsx';
 
 function App() {
     const { t } = useTranslation();
@@ -10,6 +11,7 @@ function App() {
             <h1 className="box-border w-full whitespace-nowrap break-words bg-gradient-to-r from-[rgb(0,111,185)] via-[rgb(111,44,135)] to-[rgb(221,37,20)] bg-clip-text text-center text-[10rem] leading-[1.2] text-transparent">
                 {t('common.appName')}
             </h1>
+            <CellInput width={400} value={'test'} onDone={console.log} />
             <ExampleModifiedField />
             <ModSelectBox width={400} optionList={defaultComboBoxOptions} value={defaultComboBoxOptions[0]} />
         </div>
