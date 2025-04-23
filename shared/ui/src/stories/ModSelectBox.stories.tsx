@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SelectOption } from '@/components/selectbox/DropdownList.tsx';
-import { SelectBox, SelectBoxProps } from '@/components/selectbox/SelectBox.tsx';
+import { ModSelectBox, ModSelectBoxProps } from '@/components/selectbox/ModSelectBox.tsx';
 
 const sizes = ['small', 'medium'] as const;
 
-const meta: Meta<SelectBoxProps> = {
-    title: 'Shared/SelectBox/SelectBox',
-    component: SelectBox,
+const meta: Meta<ModSelectBoxProps> = {
+    title: 'Shared/SelectBox/ModSelectBox',
+    component: ModSelectBox,
     tags: ['autodocs'],
     parameters: {
         layout: 'centered',
@@ -29,21 +29,6 @@ const meta: Meta<SelectBoxProps> = {
                 defaultValue: { summary: '240' },
             },
         },
-        label: {
-            control: 'text',
-            description: '박스 제목',
-            table: {
-                type: { summary: 'string' },
-            },
-        },
-        labelColor: {
-            control: 'color',
-            description: '박스 제목 색깔',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: '#515152' },
-            },
-        },
         value: {
             control: 'object',
             description: '초기 세팅 값',
@@ -62,7 +47,7 @@ const meta: Meta<SelectBoxProps> = {
 };
 
 export default meta;
-type Story = StoryObj<SelectBoxProps>;
+type Story = StoryObj<ModSelectBoxProps>;
 
 const defaultComboBoxOptions: SelectOption[] = [
     { value: 'item01', label: 'Item01' },
@@ -74,10 +59,10 @@ export const Default: Story = {
     render: (args) => {
         const { optionList = defaultComboBoxOptions, ...props } = args;
 
-        return <SelectBox optionList={optionList} {...props} />;
+        return <ModSelectBox optionList={optionList} {...props} />;
     },
     args: {
-        size: 'small',
+        size: 'medium',
         value: defaultComboBoxOptions[0],
         optionList: defaultComboBoxOptions,
     },

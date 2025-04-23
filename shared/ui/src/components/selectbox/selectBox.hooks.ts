@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { SelectOption } from '@/components/dropdownList';
+import { SelectOption } from '@/components/selectbox/DropdownList.tsx';
 
-const useSelectBox = (initialValue: SelectOption | undefined, onChange?: (selected: SelectOption) => void) => {
+interface SelectBoxHookProps {
+    initialValue?: SelectOption;
+    onChange?: (selected: SelectOption) => void;
+}
+
+const useSelectBox = ({ initialValue, onChange }: SelectBoxHookProps) => {
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const [selectedItem, setSelectedItem] = useState(initialValue);
 

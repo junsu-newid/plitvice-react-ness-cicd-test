@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { CopyText } from '@/components/copytext';
+import { TextCopier } from '@/components/button/TextCopier.tsx';
 
-const meta: Meta<typeof CopyText> = {
-    title: 'Shared/CopyText',
-    component: CopyText,
+const meta: Meta<typeof TextCopier> = {
+    title: 'Shared/Button/TextCopier',
+    component: TextCopier,
     tags: ['autodocs'],
     parameters: {
         layout: 'centered',
@@ -11,7 +11,7 @@ const meta: Meta<typeof CopyText> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof CopyText>;
+type Story = StoryObj<typeof TextCopier>;
 
 export const Default: Story = {
     args: {

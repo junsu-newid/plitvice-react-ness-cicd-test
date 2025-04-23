@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SelectOption } from '@/components/dropdownList/index.tsx';
+import { SelectOption } from '@/components/selectbox/DropdownList.tsx';
 
 const useDropdownList = (
     isVisible: boolean,

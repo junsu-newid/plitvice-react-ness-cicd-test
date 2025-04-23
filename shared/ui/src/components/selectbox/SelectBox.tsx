@@ -1,6 +1,6 @@
 import { BoxComponentStyles, Size } from '@/types/common.ts';
-import useSelectBox from '@/components/selectbox/hooks.ts';
-import DropdownList, { SelectOption } from '@/components/dropdownList';
+import useSelectBox from '@/components/selectbox/selectBox.hooks.ts';
+import DropdownList, { SelectOption } from '@/components/selectbox/DropdownList.tsx';
 import DropdownIcon from '@/assets/icDropdownArrow.svg?react';
 
 type SelectBoxSize = Extract<Size, 'small' | 'medium'>;
@@ -23,12 +23,15 @@ const SelectBox = ({
     placeholder = 'Placeholder',
     label = '',
     labelColor = '',
-    value = undefined,
+    value: initialValue = undefined,
     optionList,
     onChange = undefined,
     disabled = false,
 }: SelectBoxProps) => {
-    const { isFocused, selectedItem, containerRef, toggleDropdown, handleSelected } = useSelectBox(value, onChange);
+    const { isFocused, selectedItem, containerRef, toggleDropdown, handleSelected } = useSelectBox({
+        initialValue,
+        onChange,
+    });
     const { labelSizeClass, textSizeClass, heightClass, iconSizeClass } = BoxComponentStyles[size];
     const containerWidth = { width: width > 0 ? `${width}px` : '100%' };
     const labelTextColor = { color: labelColor || 'var(--color-grey-70)' };

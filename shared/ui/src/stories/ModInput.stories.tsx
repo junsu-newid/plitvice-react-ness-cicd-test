@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ModifiedField } from '@/components/modifiedfield';
+import { ModInput } from '@/components/textfield/ModInput.tsx';
 
-const meta: Meta<typeof ModifiedField> = {
-    title: 'Shared/ModifiedField',
-    component: ModifiedField,
+const meta: Meta<typeof ModInput> = {
+    title: 'Shared/TextField/ModInput',
+    component: ModInput,
     tags: ['autodocs'],
     parameters: {
         layout: 'centered',
@@ -11,7 +11,7 @@ const meta: Meta<typeof ModifiedField> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof ModifiedField>;
+type Story = StoryObj<typeof ModInput>;
 
 export const Default: Story = {
     args: {

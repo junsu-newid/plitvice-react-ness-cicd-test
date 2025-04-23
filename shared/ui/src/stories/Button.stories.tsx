@@ -5,7 +5,7 @@ const sizes = ['large', 'medium', 'small'] as const;
 const variants = ['default', 'normal', 'alert'] as const;
 
 const meta: Meta<typeof Button> = {
-    title: 'Shared/Button',
+    title: 'Shared/Button/Button',
     component: Button,
     parameters: {
         layout: 'centered',

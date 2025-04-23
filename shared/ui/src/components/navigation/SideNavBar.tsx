@@ -1,11 +1,11 @@
 import React, { Children, createContext, useContext, useEffect } from 'react';
-import { useSideBar } from '@/components/navigation/SideNavBar.hooks.ts';
+import { useSideBar } from '@/components/navigation/sideNavBar.hooks.ts';
 import {
     SideNavBarSubItemProps,
     SideNavBarItemProps,
     SideNavBarProps,
     SideNavMap,
-} from '@/components/navigation/SideNavBar.types.ts';
+} from '@/components/navigation/sideNavBar.types.ts';
 import DropdownIcon from '@/assets/icDropdownArrow.svg?react';
 
 interface SideNavBarContextType {

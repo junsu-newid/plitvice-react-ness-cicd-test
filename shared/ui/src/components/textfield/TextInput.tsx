@@ -1,10 +1,10 @@
 import { BoxComponentStyles, LabelPosition, Size } from '@/types/common.ts';
-import useTextField from '@/components/textfield/TextField.hooks.ts';
+import useTextField from '@/components/textfield/textInput.hooks.ts';
 
-type TextFieldSize = Extract<Size, 'medium' | 'large'>;
+type TextInputSize = Extract<Size, 'medium' | 'large'>;
 
-export interface TextFieldProps {
-    size?: TextFieldSize;
+export interface TextInputProps {
+    size?: TextInputSize;
     width?: number;
     label?: string;
     labelColor?: string;
@@ -17,7 +17,7 @@ export interface TextFieldProps {
     onDone?: (value: string) => void;
 }
 
-const TextField = ({
+const TextInput = ({
     size = 'medium',
     width = 0,
     placeholder = 'Placeholder',
@@ -29,7 +29,7 @@ const TextField = ({
     readOnly = false,
     onChange = () => {},
     onDone = () => {},
-}: TextFieldProps) => {
+}: TextInputProps) => {
     const { inputRef, isFocused, value, handleChange } = useTextField(initialValue, onChange, onDone);
 
     const widthStyle = { width: width > 0 ? `${width}px` : '100%' };
@@ -72,4 +72,4 @@ const TextField = ({
         </div>
     );
 };
-export { TextField };
+export { TextInput };

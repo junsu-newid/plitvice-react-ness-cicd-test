@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SearchField } from '@/components/searchfield/index.tsx';
+import { TextInput, TextInputProps } from '@/components/textfield/TextInput.tsx';
 
 const sizes = ['medium', 'large'] as const;
 
-const meta: Meta<typeof SearchField> = {
-    title: 'Shared/SearchField',
-    component: SearchField,
+const meta: Meta<TextInputProps> = {
+    title: 'Shared/TextField/TextInput',
+    component: TextInput,
     tags: ['autodocs'],
     parameters: {
         layout: 'centered',
@@ -28,12 +28,35 @@ const meta: Meta<typeof SearchField> = {
                 defaultValue: { summary: '240' },
             },
         },
-        placeholder: {
+        label: {
             control: 'text',
-            description: '공백 표시자',
+            description: '박스 제목',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Search' },
+            },
+        },
+        labelColor: {
+            control: 'color',
+            description: '박스 제목 색깔',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#515152' },
+            },
+        },
+        labelPosition: {
+            control: { type: 'radio' },
+            options: ['outer', 'inner'],
+            description: '박스 제목 위치',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'outer' },
+            },
+        },
+        placeholder: {
+            control: 'text',
+            description: 'Placeholder',
+            table: {
+                type: { summary: 'string' },
             },
         },
         value: {
@@ -41,7 +64,20 @@ const meta: Meta<typeof SearchField> = {
             description: '초기 세팅 값',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '' },
+            },
+        },
+        disabled: {
+            control: 'boolean',
+            description: '활성화 제어',
+            table: {
+                type: { summary: 'boolean' },
+            },
+        },
+        readOnly: {
+            control: 'boolean',
+            description: '필드 수정 제어',
+            table: {
+                type: { summary: 'boolean' },
             },
         },
         onChange: {
@@ -62,7 +98,7 @@ const meta: Meta<typeof SearchField> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof SearchField>;
+type Story = StoryObj<TextInputProps>;
 
 export const Default: Story = {
     args: {

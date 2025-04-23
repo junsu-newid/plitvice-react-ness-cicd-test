@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { TextArea } from '@/components/textfield/TextArea.tsx';
 
 const meta: Meta<typeof TextArea> = {
-    title: 'Shared/TextArea',
+    title: 'Shared/TextField/TextArea',
     component: TextArea,
     tags: ['autodocs'],
     parameters: {

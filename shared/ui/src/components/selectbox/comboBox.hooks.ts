@@ -1,5 +1,5 @@
 import React, { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { SelectOption } from '@/components/dropdownList';
+import { SelectOption } from '@/components/selectbox/DropdownList.tsx';
 
 const useComboBox = (
     initialValue: SelectOption,

@@ -1,9 +1,9 @@
 import { BoxComponentStyles, Size } from '@/types/common.ts';
 import React, { useCallback } from 'react';
-import useSearchField from '@/components/searchfield/hooks.ts';
+import useSearchField from '@/components/textfield/searchInput.hooks.ts';
 import IconSearch from '@/assets/icSearch.svg?react';
 import IconTextClear from '@/assets/icTextClear.svg?react';
-import InputBox from '../inputbox/InputBox';
+import InputBox from './InputBox.tsx';
 
 export interface SearchFieldProps {
     size?: Size;
@@ -14,7 +14,7 @@ export interface SearchFieldProps {
     onDone?: (value: string) => void;
 }
 
-const SearchField = ({
+const SearchInput = ({
     size = 'small',
     width = 0,
     placeholder = 'Search',
@@ -69,4 +69,4 @@ const SearchField = ({
         </InputBox.Root>
     );
 };
-export { SearchField };
+export { SearchInput };

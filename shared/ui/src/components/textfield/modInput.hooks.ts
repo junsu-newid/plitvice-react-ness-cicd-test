@@ -9,8 +9,8 @@ interface UseModifiedInputParams {
     onEscape?: () => void;
 }
 
-const useModifiedField = ({ initialValue = '', onChange, onBlur, onEnter, onEscape }: UseModifiedInputParams) => {
-    const [originalValue, setOriginalValue] = useState(initialValue);
+const useModInput = ({ initialValue = '', onChange, onBlur, onEnter, onEscape }: UseModifiedInputParams) => {
+    const [originValue, setOriginValue] = useState(initialValue);
     const [isModified, setIsModified] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -22,14 +22,14 @@ const useModifiedField = ({ initialValue = '', onChange, onBlur, onEnter, onEsca
     } = useInput<HTMLInputElement>({
         initialValue,
         onChange: (newValue) => {
-            const newIsModified = newValue !== originalValue;
+            const newIsModified = newValue !== originValue;
             setIsModified(newIsModified);
             onChange?.(newValue, newIsModified);
         },
     });
 
     useEffect(() => {
-        setOriginalValue(initialValue);
+        setOriginValue(initialValue);
         setValue(initialValue);
         setIsModified(false);
     }, [initialValue, setValue]);
@@ -42,14 +42,14 @@ const useModifiedField = ({ initialValue = '', onChange, onBlur, onEnter, onEsca
     }, [value, isModified, onBlur]);
 
     const resetToOrigin = useCallback(() => {
-        setValue(originalValue);
+        setValue(originValue);
         setIsModified(false);
-        onChange?.(originalValue, false);
-    }, [originalValue, setValue]);
+        onChange?.(originValue, false);
+    }, [originValue, setValue]);
 
     const updateOriginValue = useCallback(
         (newOriginalValue: string) => {
-            setOriginalValue(newOriginalValue);
+            setOriginValue(newOriginalValue);
             setValue(newOriginalValue);
             setIsModified(false);
         },
@@ -93,11 +93,11 @@ const useModifiedField = ({ initialValue = '', onChange, onBlur, onEnter, onEsca
         value,
         isModified,
         isFocused,
-        originalValue,
+        originalValue: originValue,
         setValue,
         handleChange: baseHandleChange,
         resetToOrigin,
         updateOriginValue,
     };
 };
-export default useModifiedField;
+export default useModInput;

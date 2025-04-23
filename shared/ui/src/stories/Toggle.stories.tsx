@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Toggle } from '@/components/button/Toggle.tsx';
 
 const meta: Meta<typeof Toggle> = {
-    title: 'Shared/Toggle',
+    title: 'Shared/Button/Toggle',
     component: Toggle,
     parameters: {
         layout: 'centered',

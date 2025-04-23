@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SelectOption } from '@/components/dropdownList';
-import { ComboBox, ComboBoxProps } from '@/components/combobox';
+import { SelectOption } from '@/components/selectbox/DropdownList.tsx';
+import { ComboBox, ComboBoxProps } from '@/components/selectbox/ComboBox.tsx';
 
 const sizes = ['medium', 'large'] as const;
 
 const meta: Meta<ComboBoxProps> = {
-    title: 'Shared/ComboBox',
+    title: 'Shared/SelectBox/ComboBox',
     component: ComboBox,
     tags: ['autodocs'],
     parameters: {

@@ -1,13 +1,11 @@
 import React, { useCallback } from 'react';
 import { BoxComponentStyles, Size } from '@/types/common.ts';
-import InputBox from '../inputbox/InputBox';
-import useModifiedField from '@/components/modifiedfield/hooks.ts';
-import IconModified from '@/assets/icTextClear.svg?react';
-
-type ModifiedInputSize = Extract<Size, 'medium' | 'large'>;
+import InputBox from './InputBox.tsx';
+import useModInput from '@/components/textfield/modInput.hooks.ts';
+import IconReset from '@/assets/icReset.svg?react';
 
 export interface ModifiedInputProps {
-    size?: ModifiedInputSize;
+    size?: Size;
     width?: number;
     placeholder?: string;
     value?: string;
@@ -19,7 +17,7 @@ export interface ModifiedInputProps {
     className?: string;
 }
 
-const ModifiedField = ({
+const ModInput = ({
     size = 'medium',
     width = 0,
     placeholder = 'Modified Field',
@@ -31,7 +29,7 @@ const ModifiedField = ({
     onEscape = () => {},
     className = '',
 }: ModifiedInputProps) => {
-    const { inputRef, isFocused, value, isModified, handleChange, resetToOrigin } = useModifiedField({
+    const { inputRef, isFocused, value, isModified, handleChange, resetToOrigin } = useModInput({
         initialValue,
         onChange,
         onBlur,
@@ -39,11 +37,11 @@ const ModifiedField = ({
         onEscape,
     });
 
-    const { height, textSizeClass, iconSizeClass } = BoxComponentStyles[size];
+    const { height, textSizeClass } = BoxComponentStyles[size];
     let stateClass = isFocused
         ? 'border-blue-500 bg-white'
         : isModified
-          ? 'border-transparent bg-blue-100 hover:border-grey-40'
+          ? 'border-transparent bg-blue-150 hover:border-grey-40'
           : 'border-transparent hover:border-grey-40';
     let inputTextClass = isModified && !isFocused ? 'text-blue-600 font-[700]' : `text-grey-90 ${textSizeClass}`;
     if (readOnly) {
@@ -69,12 +67,12 @@ const ModifiedField = ({
                 readOnly={readOnly}
                 onChange={handleChange}
             />
-            <InputBox.Suffix className={`${iconSizeClass} ${isModified && !isFocused ? '' : 'hidden'}`}>
+            <InputBox.Suffix className={`size-[20px] ${isModified && !isFocused ? '' : 'hidden'}`}>
                 <button onMouseDown={handleClearMouseDown} onClick={resetToOrigin}>
-                    <IconModified />
+                    <IconReset />
                 </button>
             </InputBox.Suffix>
         </InputBox.Root>
     );
 };
-export { ModifiedField };
+export { ModInput };
