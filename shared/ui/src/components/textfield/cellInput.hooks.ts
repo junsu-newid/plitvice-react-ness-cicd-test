@@ -5,9 +5,10 @@ interface UseCellInputParams {
     initialValue?: string;
     onChange?: (value: string) => void;
     onDone?: (value: string) => void;
+    onEnter?: () => void;
 }
 
-const useCellInput = ({ initialValue = '', onChange, onDone }: UseCellInputParams) => {
+const useCellInput = ({ initialValue = '', onChange, onDone, onEnter }: UseCellInputParams) => {
     const [originValue, setOriginValue] = useState(initialValue);
     const [isFocused, setIsFocused] = useState(false);
     const { value, setValue, handleChange } = useInput<HTMLInputElement>({
@@ -39,6 +40,7 @@ const useCellInput = ({ initialValue = '', onChange, onDone }: UseCellInputParam
         (e: KeyboardEvent) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
+                onEnter?.();
                 inputRef.current?.blur();
             } else if (e.key === 'Escape') {
                 e.preventDefault();

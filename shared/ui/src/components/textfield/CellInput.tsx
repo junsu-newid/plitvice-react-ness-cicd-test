@@ -12,6 +12,7 @@ export interface CellInputProps {
     readOnly?: boolean;
     onChange?: (value: string) => void;
     onDone?: (value: string) => void;
+    onEnter?: () => void;
     className?: string;
 }
 
@@ -23,12 +24,14 @@ const CellInput = ({
     readOnly = false,
     onChange = () => {},
     onDone = () => {},
+    onEnter = () => {},
     className = '',
 }: CellInputProps) => {
     const { inputRef, isFocused, value, isModified, handleChange, handleReset } = useCellInput({
         initialValue,
         onChange,
         onDone,
+        onEnter,
     });
 
     const { height, textSizeClass } = BoxComponentStyles[size];
