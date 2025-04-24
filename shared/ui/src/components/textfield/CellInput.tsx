@@ -13,6 +13,7 @@ export interface CellInputProps {
     onChange?: (value: string) => void;
     onDone?: (value: string) => void;
     onEnter?: () => void;
+    id?: string;
     className?: string;
 }
 
@@ -25,6 +26,7 @@ const CellInput = ({
     onChange = () => {},
     onDone = () => {},
     onEnter = () => {},
+    id = '',
     className = '',
 }: CellInputProps) => {
     const { inputRef, isFocused, value, isModified, handleChange, handleReset } = useCellInput({
@@ -52,6 +54,7 @@ const CellInput = ({
         >
             <InputBox.Field
                 ref={inputRef}
+                id={id}
                 className={`text-grey-90 ${textSizeClass}`}
                 placeholder={placeholder}
                 value={value}
