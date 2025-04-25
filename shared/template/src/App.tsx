@@ -1,10 +1,16 @@
 import { useTranslation } from 'react-i18next';
 import '@plitvice/ui/styles/global.css';
-import { ModInput, ModSelectBox, SelectOption } from '@plitvice/ui';
+import { Button, Drawer, ModInput, ModSelectBox, SelectOption } from '@plitvice/ui';
 import { CellInput } from '@plitvice/ui/components/textfield/CellInput.tsx';
+import { useState } from 'react';
 
 function App() {
     const { t } = useTranslation();
+    const [open, setOpen] = useState<boolean>(false);
+
+    const toggleDrawer = (newOpen: boolean) => () => {
+        setOpen(newOpen);
+    };
 
     return (
         <div className="relative mx-auto flex h-[100dvh] max-w-[1200px] flex-col items-center justify-center gap-3">
@@ -14,6 +20,12 @@ function App() {
             <CellInput width={400} value={'test'} onDone={console.log} />
             <ExampleModifiedField />
             <ModSelectBox width={400} optionList={defaultComboBoxOptions} value={defaultComboBoxOptions[0]} />
+            <Button onClick={toggleDrawer(true)} variant={'normal'}>
+                Open Drawer
+            </Button>
+            <Drawer open={open} onClose={toggleDrawer(false)} width={400} className={'flex justify-center'}>
+                <div>Hello Drawer</div>
+            </Drawer>
         </div>
     );
 }
