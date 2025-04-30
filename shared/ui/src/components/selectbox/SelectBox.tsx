@@ -12,8 +12,8 @@ export interface SelectBoxProps {
     label?: string;
     labelColor?: string;
     optionList: SelectOption[];
-    value?: SelectOption;
-    onChange?: (selected: SelectOption) => void;
+    value?: string | number;
+    onChange?: (value: string | number) => void;
     disabled?: boolean;
 }
 
@@ -54,7 +54,7 @@ const SelectBox = ({
                 onClick={disabled ? undefined : toggleDropdown}
             >
                 <input
-                    value={value?.label || ''}
+                    value={optionList.find((option) => option.value === value)?.label || ''}
                     placeholder={placeholder}
                     readOnly={true}
                     disabled={disabled}

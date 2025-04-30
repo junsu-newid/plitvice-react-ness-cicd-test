@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { SelectOption } from '@/components/selectbox/DropdownList.tsx';
 
 interface SelectBoxHookProps {
-    onChange?: (selected: SelectOption) => void;
+    onChange?: (value: string | number) => void;
 }
 
 const useSelectBox = ({ onChange }: SelectBoxHookProps) => {
@@ -16,7 +16,7 @@ const useSelectBox = ({ onChange }: SelectBoxHookProps) => {
     const handleSelected = useCallback(
         (option: SelectOption) => {
             setIsFocused(false);
-            onChange?.(option);
+            onChange?.(option.value);
         },
         [onChange],
     );
