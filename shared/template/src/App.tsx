@@ -31,7 +31,7 @@ function App() {
 export default App;
 
 const defaultComboBoxOptions: SelectOption[] = [
-    { value: 'item01', label: 'Item01' },
-    { value: 'item02', label: 'Item02' },
-    { value: 'item03', label: 'Item03' },
+    { value: 1, label: 'Item01' },
+    { value: 2, label: 'Item02' },
+    { value: 3, label: 'Item03' },
 ];

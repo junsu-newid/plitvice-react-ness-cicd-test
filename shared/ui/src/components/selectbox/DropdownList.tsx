@@ -27,7 +27,7 @@ export interface DropdownListProps {
 }
 
 export interface SelectOption {
-    value: string;
+    value: string | number;
     label: string;
     disabled?: boolean;
 }
