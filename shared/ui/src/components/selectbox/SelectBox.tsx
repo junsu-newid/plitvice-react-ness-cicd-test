@@ -11,8 +11,8 @@ export interface SelectBoxProps {
     placeholder?: string;
     label?: string;
     labelColor?: string;
-    value?: SelectOption;
     optionList: SelectOption[];
+    value?: SelectOption;
     onChange?: (selected: SelectOption) => void;
     disabled?: boolean;
 }
@@ -23,15 +23,12 @@ const SelectBox = ({
     placeholder = 'Placeholder',
     label = '',
     labelColor = '',
-    value: initialValue = undefined,
+    value = undefined,
     optionList,
     onChange = undefined,
     disabled = false,
 }: SelectBoxProps) => {
-    const { isFocused, selectedItem, containerRef, toggleDropdown, handleSelected } = useSelectBox({
-        initialValue,
-        onChange,
-    });
+    const { isFocused, containerRef, toggleDropdown, handleSelected } = useSelectBox({ onChange });
     const { labelSizeClass, textSizeClass, heightClass, iconSizeClass } = BoxComponentStyles[size];
     const containerWidth = { width: width > 0 ? `${width}px` : '100%' };
     const labelTextColor = { color: labelColor || 'var(--color-grey-70)' };
@@ -57,7 +54,7 @@ const SelectBox = ({
                 onClick={disabled ? undefined : toggleDropdown}
             >
                 <input
-                    value={selectedItem?.label || ''}
+                    value={value?.label || ''}
                     placeholder={placeholder}
                     readOnly={true}
                     disabled={disabled}

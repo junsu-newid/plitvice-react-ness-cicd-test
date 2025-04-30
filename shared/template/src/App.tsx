@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import '@plitvice/ui/styles/global.css';
-import { Button, Drawer, ModInput, ModSelectBox, SelectOption } from '@plitvice/ui';
-import { CellInput } from '@plitvice/ui/components/textfield/CellInput.tsx';
+import { Button, Drawer, SelectBox, SelectOption } from '@plitvice/ui';
 import { useState } from 'react';
 
 function App() {
     const { t } = useTranslation();
     const [open, setOpen] = useState<boolean>(false);
+    const [selected, setSelected] = useState<SelectOption>();
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
@@ -17,9 +17,7 @@ function App() {
             <h1 className="box-border w-full whitespace-nowrap break-words bg-gradient-to-r from-[rgb(0,111,185)] via-[rgb(111,44,135)] to-[rgb(221,37,20)] bg-clip-text text-center text-[10rem] leading-[1.2] text-transparent">
                 {t('common.appName')}
             </h1>
-            <CellInput width={400} value={'test'} onDone={console.log} />
-            <ExampleModifiedField />
-            <ModSelectBox width={400} optionList={defaultComboBoxOptions} value={defaultComboBoxOptions[0]} />
+            <SelectBox optionList={defaultComboBoxOptions} width={400} value={selected} onChange={setSelected} />
             <Button onClick={toggleDrawer(true)} variant={'normal'}>
                 Open Drawer
             </Button>
@@ -31,10 +29,6 @@ function App() {
 }
 
 export default App;
-
-const ExampleModifiedField = () => {
-    return <ModInput width={400} value={'origin text'} />;
-};
 
 const defaultComboBoxOptions: SelectOption[] = [
     { value: 'item01', label: 'Item01' },
