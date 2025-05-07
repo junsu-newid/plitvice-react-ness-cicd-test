@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useInput } from '@/hooks/useInput.ts';
 
 interface UseCellInputParams {
@@ -23,6 +23,16 @@ const useCellInput = ({ initialValue = '', onChange, onDone, onEnter }: UseCellI
         escKeyPressedRef.current = false;
     }, []);
 
+    const [isComposing, setIsComposing] = useState(false);
+
+    const handleCompositionStart = useCallback(() => {
+        setIsComposing(true);
+    }, []);
+
+    const handleCompositionEnd = useCallback(() => {
+        setIsComposing(false);
+    }, []);
+
     const handleBlur = useCallback(() => {
         setIsFocused(false);
         if (!escKeyPressedRef.current && originValue !== value) {
@@ -39,7 +49,10 @@ const useCellInput = ({ initialValue = '', onChange, onDone, onEnter }: UseCellI
     const handleKeyDown = useCallback(
         (e: KeyboardEvent) => {
             if (e.key === 'Enter') {
+                if (isComposing) return;
+
                 e.preventDefault();
+
                 onEnter?.();
                 inputRef.current?.blur();
             } else if (e.key === 'Escape') {
@@ -49,7 +62,7 @@ const useCellInput = ({ initialValue = '', onChange, onDone, onEnter }: UseCellI
                 inputRef.current?.blur();
             }
         },
-        [originValue, setValue],
+        [originValue, setValue, isComposing],
     );
 
     const callbackRef = useCallback(
@@ -58,15 +71,19 @@ const useCellInput = ({ initialValue = '', onChange, onDone, onEnter }: UseCellI
                 inputRef.current.removeEventListener('focus', handleFocus);
                 inputRef.current.removeEventListener('blur', handleBlur);
                 inputRef.current.removeEventListener('keydown', handleKeyDown);
+                inputRef.current.removeEventListener('compositionstart', handleCompositionStart);
+                inputRef.current.removeEventListener('compositionend', handleCompositionEnd);
             }
             if (node) {
                 node.addEventListener('focus', handleFocus);
                 node.addEventListener('blur', handleBlur);
                 node.addEventListener('keydown', handleKeyDown);
+                node.addEventListener('compositionstart', handleCompositionStart);
+                node.addEventListener('compositionend', handleCompositionEnd);
             }
             inputRef.current = node;
         },
-        [handleFocus, handleBlur, handleKeyDown],
+        [handleFocus, handleBlur, handleKeyDown, handleCompositionStart, handleCompositionEnd],
     );
 
     return {

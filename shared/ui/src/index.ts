@@ -18,6 +18,7 @@ export { SelectBox } from '@/components/selectbox/SelectBox.tsx';
 export { ComboBox } from '@/components/selectbox/ComboBox.tsx';
 export { ModSelectBox } from '@/components/selectbox/ModSelectBox.tsx';
 export { Drawer } from '@/components/drawer/Drawer.tsx';
+export { CellButton } from '@/components/button/CellButton.tsx';
 
 export type { SelectOption } from '@/components/selectbox/DropdownList.tsx';
 export type { SideNavMap } from '@/components/navigation/sideNavBar.types.ts';

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import '@plitvice/ui/styles/global.css';
-import { Button, Drawer, SelectBox, SelectOption } from '@plitvice/ui';
+import { Button, CellButton, Drawer, SelectBox, SelectOption } from '@plitvice/ui';
 import { useState } from 'react';
 
 function App() {
@@ -24,6 +24,9 @@ function App() {
             <Drawer open={open} onClose={toggleDrawer(false)} width={400} className={'flex justify-center'}>
                 <div>Hello Drawer</div>
             </Drawer>
+            <div className={'h-[48px] p-[6px]'}>
+                <CellButton>Button</CellButton>
+            </div>
         </div>
     );
 }
