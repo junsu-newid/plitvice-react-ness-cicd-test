@@ -2,6 +2,8 @@ export { default as SearchIcon } from './assets/icSearch.svg?react';
 export { default as ClearIcon } from './assets/icTextClear.svg?react';
 export { default as BinIcon } from './assets/icBin.svg?react';
 export { default as ResetIcon } from './assets/icReset.svg?react';
+export { default as DropdownIcon } from './assets/icDropdownArrow.svg?react';
+export { default as CloseIcon } from './assets/icClose.svg?react';
 
 export { SideNavBar } from '@/components/navigation/SideNavBar.tsx';
 export { Button } from '@/components/button/Button.tsx';

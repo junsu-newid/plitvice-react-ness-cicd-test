@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Drawer } from '@/components/drawer/Drawer.tsx';
+import { Button } from '@/components/button/Button.tsx';
+import { useState } from 'react';
 
 const meta: Meta<typeof Drawer> = {
     title: 'Shared/Drawer',
@@ -43,4 +45,39 @@ export const Default: Story = {
             </div>
         </Drawer>
     ),
+};
+
+const Example = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleOpen = () => {
+        setIsOpen(true);
+    };
+
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+
+    return (
+        <div className="relative grid h-screen w-full place-items-center">
+            <Button variant={'normal'} onClick={handleOpen}>
+                OPEN
+            </Button>
+            <Drawer className={'absolute right-0 top-0'} open={isOpen} onClose={handleClose}>
+                <div className="p-4">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-lg font-bold">Hello from Drawer!</h2>
+                        <button onClick={handleClose} className="p-2 text-gray-500 hover:text-gray-700">
+                            X
+                        </button>
+                    </div>
+                    <p className="mt-2 text-sm text-gray-600">Click the X button to close this drawer.</p>
+                </div>
+            </Drawer>
+        </div>
+    );
+};
+
+export const WithToggle: Story = {
+    render: () => <Example />,
 };

@@ -18,7 +18,7 @@ function App() {
                 {t('common.appName')}
             </h1>
             <SelectBox optionList={defaultComboBoxOptions} width={400} value={selected} onChange={setSelected} />
-            <Button onClick={toggleDrawer(true)} variant={'normal'}>
+            <Button onClick={toggleDrawer(true)} variant={'normal'} fill={false}>
                 Open Drawer
             </Button>
             <Drawer open={open} onClose={toggleDrawer(false)} width={400} className={'flex justify-center'}>

@@ -1,8 +1,6 @@
 import React, { ReactNode } from 'react';
 import { CustomComponentProps, Size } from '@/types/common.ts';
 
-// FIXME: - 왼쪽에 아이콘 넣을 수 있도록 추가
-
 interface ButtonProps extends CustomComponentProps<'button'> {
     size?: Extract<Size, 'small' | 'medium' | 'large'>;
     variant?: 'default' | 'normal' | 'alert';
@@ -58,7 +56,7 @@ const ButtonVariantStyles = {
 
 export const Button = ({ size = 'medium', variant = 'default', fill = true, children, ref, ...props }: ButtonProps) => {
     const baseClasses = `${ButtonSizeStyles[size].padding} h-fit ${ButtonSizeStyles[size].text} font-medium rounded-[4px] border border-solid transition-colors duration-100`;
-    let bgColor = fill ? ButtonVariantStyles[variant].bgColor : 'bg-white';
+    let bgColor = fill ? ButtonVariantStyles[variant].bgColor : 'bg-transparent';
     let borderColor = ButtonVariantStyles[variant].borderColor;
     let textColor = fill ? 'text-white' : ButtonVariantStyles[variant].textColor;
 
