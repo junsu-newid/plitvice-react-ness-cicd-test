@@ -118,7 +118,7 @@ export const Default: Story = {
     render: (args) => {
         const { optionList = defaultComboBoxOptions, ...props } = args;
 
-        return <ComboBox value={optionList[0]} optionList={optionList} {...props} />;
+        return <ComboBox value={optionList[0].value} optionList={optionList} {...props} />;
     },
     args: {
         size: 'medium',
