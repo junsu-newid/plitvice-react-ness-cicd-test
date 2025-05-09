@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import '@plitvice/ui/styles/global.css';
-import { Button, CellButton, Drawer, SelectBox, SelectOption } from '@plitvice/ui';
+import { Button, CellButton, ComboBox, Drawer, SelectBox, SelectOption } from '@plitvice/ui';
 import { useState } from 'react';
 
 function App() {
@@ -27,6 +27,7 @@ function App() {
             <div className={'h-[48px] p-[6px]'}>
                 <CellButton>Button</CellButton>
             </div>
+            <ComboBox optionList={defaultComboBoxOptions} width={400} value={selected} onChange={setSelected} />
         </div>
     );
 }

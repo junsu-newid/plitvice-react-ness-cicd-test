@@ -2,20 +2,39 @@ import React, { KeyboardEvent, useCallback, useEffect, useRef, useState } from '
 import { SelectOption } from '@/components/selectbox/DropdownList.tsx';
 
 const useComboBox = (
-    initialValue: SelectOption,
+    value: string | number | undefined,
     list: SelectOption[],
-    onChange?: (selected: SelectOption) => void,
+    onChange?: (value: string | number) => void,
     onInputChange?: (value: string) => void,
     showAllOptionsOnFocus: boolean = true,
     allowCustomValue: boolean = true,
 ) => {
     const [isFocused, setIsFocused] = useState<boolean>(false);
-    const [inputValue, setInputValue] = useState(initialValue.label);
+    const [inputValue, setInputValue] = useState('');
     const [filteredList, setFilteredList] = useState<SelectOption[]>([]);
-    const [selectedItem, setSelectedItem] = useState<SelectOption>(initialValue);
+    const [selectedItem, setSelectedItem] = useState<SelectOption | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (list.length > 0 && value !== undefined) {
+            const selectedOption = list.find((option) => option.value === value);
+            if (selectedOption) {
+                setInputValue(selectedOption.label);
+                setSelectedItem(selectedOption);
+            } else if (allowCustomValue && typeof value === 'string') {
+                setInputValue(value);
+                setSelectedItem({ value, label: value });
+            } else {
+                setInputValue('');
+                setSelectedItem(null);
+            }
+        } else {
+            setInputValue('');
+            setSelectedItem(null);
+        }
+    }, [value, list, allowCustomValue]);
 
     const handleInputChange = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,16 +53,14 @@ const useComboBox = (
     );
 
     const resetToLastSelectedOption = useCallback(() => {
-        const selectedOption = list.find((option) => option === selectedItem);
-
-        if (selectedOption) {
-            setInputValue(selectedOption.label);
-            onInputChange?.(selectedOption.label);
+        if (selectedItem) {
+            setInputValue(selectedItem.label);
+            onInputChange?.(selectedItem.label);
         } else {
             setInputValue('');
             onInputChange?.('');
         }
-    }, [list, selectedItem, onInputChange]);
+    }, [selectedItem, onInputChange]);
 
     const handleInputFocus = useCallback(() => {
         setIsFocused(true);
@@ -79,7 +96,7 @@ const useComboBox = (
             setInputValue(option.label);
             setSelectedItem(option);
             setIsFocused(false);
-            onChange?.(option);
+            onChange?.(option.value);
             onInputChange?.(option.label);
             inputRef.current?.blur();
         },
@@ -100,18 +117,15 @@ const useComboBox = (
                     setIsFocused(false);
                     e.currentTarget.blur();
 
-                    onChange?.(matchingOption);
+                    onChange?.(matchingOption.value);
                     setSelectedItem(matchingOption);
                 } else if (allowCustomValue) {
                     setIsFocused(false);
                     e.currentTarget.blur();
 
-                    const customOption: SelectOption = {
-                        value: inputValue,
-                        label: inputValue,
-                    };
-                    onChange?.(customOption);
-                    setSelectedItem(customOption);
+                    const customValue = inputValue;
+                    onChange?.(customValue);
+                    setSelectedItem({ value: customValue, label: customValue });
                 }
             } else if (e.key === 'Escape') {
                 setIsFocused(false);
@@ -128,20 +142,8 @@ const useComboBox = (
                 }
             }
         },
-        [allowCustomValue, resetToLastSelectedOption, list, onChange],
+        [allowCustomValue, resetToLastSelectedOption, list, onChange, inputValue],
     );
-
-    useEffect(() => {
-        if (list.length > 0 && initialValue?.value !== undefined && initialValue.value !== selectedItem.value) {
-            const selectedOption = list.find((option) => option.value === initialValue.value);
-            if (selectedOption) {
-                setInputValue(selectedOption.label);
-                setSelectedItem(initialValue);
-            }
-        } else if (initialValue?.label) {
-            setInputValue(initialValue.label);
-        }
-    }, [initialValue, list, selectedItem]);
 
     useEffect(() => {
         if (list.length > 0) {
@@ -152,7 +154,7 @@ const useComboBox = (
                 setFilteredList(filtered);
             }
         }
-    }, [list, isFocused, showAllOptionsOnFocus]);
+    }, [list, isFocused, showAllOptionsOnFocus, inputValue]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -171,7 +173,7 @@ const useComboBox = (
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [allowCustomValue, isFocused, resetToLastSelectedOption]);
+    }, [allowCustomValue, isFocused, resetToLastSelectedOption, inputValue]);
 
     return {
         isFocused,

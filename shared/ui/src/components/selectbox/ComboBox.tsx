@@ -45,14 +45,7 @@ const ComboBox = ({
         toggleDropdown,
         handleSelected,
         handleKeyDown,
-    } = useComboBox(
-        value || ({ value: '', label: '' } as SelectOption),
-        optionList,
-        onChange,
-        onInputChange,
-        showAllOptionsOnFocus,
-        allowCustomValue,
-    );
+    } = useComboBox(value, optionList, onChange, onInputChange, showAllOptionsOnFocus, allowCustomValue);
 
     const containerWidth = { width: width > 0 ? `${width}px` : '100%' };
     const fieldColor = disabled ? 'bg-grey-20' : 'bg-white hover:bg-blue-100 hover:border-blue-500 group';
