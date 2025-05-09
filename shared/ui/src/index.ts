@@ -4,6 +4,7 @@ export { default as BinIcon } from './assets/icBin.svg?react';
 export { default as ResetIcon } from './assets/icReset.svg?react';
 export { default as DropdownIcon } from './assets/icDropdownArrow.svg?react';
 export { default as CloseIcon } from './assets/icClose.svg?react';
+export { default as SettingIcon } from './assets/icSetting.svg?react';
 
 export { SideNavBar } from '@/components/navigation/SideNavBar.tsx';
 export { Button } from '@/components/button/Button.tsx';
