@@ -15,6 +15,7 @@ export interface SelectBoxProps {
     value?: string | number;
     onChange?: (value: string | number) => void;
     disabled?: boolean;
+    className?: string;
 }
 
 const SelectBox = ({
@@ -27,6 +28,7 @@ const SelectBox = ({
     optionList,
     onChange = undefined,
     disabled = false,
+    className = '',
 }: SelectBoxProps) => {
     const { isFocused, containerRef, toggleDropdown, handleSelected } = useSelectBox({ onChange });
     const { labelSizeClass, textSizeClass, heightClass, iconSizeClass } = BoxComponentStyles[size];
@@ -40,7 +42,7 @@ const SelectBox = ({
 
     return (
         <div
-            className={`relative flex h-fit flex-col items-start gap-[4px] p-0`}
+            className={`relative flex h-fit flex-col items-start gap-[4px] p-0 ${className}`}
             style={containerWidth}
             ref={containerRef}
         >
