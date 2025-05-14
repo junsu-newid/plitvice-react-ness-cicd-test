@@ -15,6 +15,7 @@ export interface TextInputProps {
     placeholder?: string;
     onChange?: (value: string) => void;
     onDone?: (value: string) => void;
+    className?: string;
 }
 
 const TextInput = ({
@@ -29,6 +30,7 @@ const TextInput = ({
     readOnly = false,
     onChange = () => {},
     onDone = () => {},
+    className = '',
 }: TextInputProps) => {
     const { inputRef, isFocused, value, handleChange } = useTextField(initialValue, onChange, onDone);
 
@@ -42,7 +44,7 @@ const TextInput = ({
     const borderClass = isFocused ? 'border-blue-500' : 'border-grey-40';
 
     return (
-        <div className={`relative flex h-fit flex-col items-start gap-[4px]`} style={widthStyle}>
+        <div className={`relative flex h-fit flex-col items-start gap-[4px] ${className}`} style={widthStyle}>
             {labelPosition === 'outer' && label !== '' ? (
                 <label className={`pl-[4px] ${labelSizeClass} non-draggable`} style={labelTextStyle}>
                     {label}

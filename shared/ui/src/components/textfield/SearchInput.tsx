@@ -12,6 +12,7 @@ export interface SearchFieldProps {
     value?: string;
     onChange?: (value: string) => void;
     onDone?: (value: string) => void;
+    className?: string;
 }
 
 const SearchInput = ({
@@ -21,6 +22,7 @@ const SearchInput = ({
     value: initialValue = '',
     onChange = () => {},
     onDone = () => {},
+    className = '',
 }: SearchFieldProps) => {
     const { inputRef, isFocused, value, handleClear, handleChange } = useSearchField(initialValue, onChange, onDone);
 
@@ -45,7 +47,7 @@ const SearchInput = ({
 
     return (
         <InputBox.Root
-            className={`${sizeClass} items-center justify-start gap-[6px] bg-white pl-[9px] pr-[7px] hover:border-blue-500 ${focusClass}`}
+            className={`${sizeClass} items-center justify-start gap-[6px] bg-white pl-[9px] pr-[7px] hover:border-blue-500 ${focusClass} ${className}`}
             width={width}
             height={height}
         >
