@@ -39,25 +39,20 @@ const TextArea = ({
     });
 
     const isInactive = readOnly || disabled;
-    const containerClass = `py-[15px] pl-[15px] pr-[4px] border border-grey-40 rounded-[4px] ${isInactive ? 'bg-grey-20' : ' bg-white focus-within:border-blue-600'} ${className}`;
-    const textareaClass = `bg-inherit w-full h-full pr-[8px] overflow-auto scrollbar text-grey-90 placeholder-grey-40 whitespace-pre-wrap break-words border-none resize-none outline-none`;
-    const labelTextStyle = { color: labelColor || 'var(--color-grey-50)' };
+    const containerClass = `flex h-fit flex-col items-start gap-[4px] ${className}`;
+    const textareaClass = `px-[11px] py-[9px] border border-grey-40 ${isInactive ? 'bg-grey-20' : ' bg-white focus-within:border-blue-600'} rounded-[4px] bg-inherit w-full overflow-auto scrollbar text-grey-90 placeholder-grey-40 whitespace-pre-wrap break-words resize-none outline-none`;
+    const labelTextStyle = { color: labelColor || 'var(--color-grey-70)' };
     const { labelSizeClass, textSizeClass } = BoxComponentStyles[size];
 
     return (
-        <div
-            style={{
-                width: width ? `${width}px` : '100%',
-                height: height ? `${height}px` : '100%',
-            }}
-            className={containerClass}
-        >
+        <div style={{ width: width ? `${width}px` : '100%' }} className={containerClass}>
             {label !== '' ? (
                 <label className={`pl-[4px] ${labelSizeClass} non-draggable`} style={labelTextStyle}>
                     {label}
                 </label>
             ) : null}
             <textarea
+                style={{ height: height ? `${height}px` : '100%' }}
                 className={`${textareaClass} ${textSizeClass}`}
                 value={value}
                 readOnly={readOnly}
