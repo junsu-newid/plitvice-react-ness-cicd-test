@@ -37,7 +37,7 @@ const StateStyles = {
 export const CellButton = ({ size = 'medium', children, ref, ...props }: CellButtonProps) => {
     const { textSizeClass } = SizeStyles[size];
 
-    const baseClasses = `h-full px-[10px] flex items-center ${textSizeClass} rounded-[4px] border border-solid transition-colors duration-100`;
+    const baseClasses = `h-fit p-[8px] flex items-center ${textSizeClass} rounded-[4px] border border-solid transition-colors duration-100`;
 
     const stateStyle = props.disabled ? StateStyles.disabled : StateStyles.enabled;
     const stateClasses = `${stateStyle.background} ${stateStyle.border} ${stateStyle.text} ${stateStyle.behavior}`;
