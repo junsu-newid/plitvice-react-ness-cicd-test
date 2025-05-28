@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Drawer } from '@/components/expandfield/Drawer.tsx';
+import { Dialog } from '@/components/expandfield/Dialog.tsx';
 import { Button } from '@/components/button/Button.tsx';
 import { useState } from 'react';
 
-const meta: Meta<typeof Drawer> = {
-    title: 'Shared/ExpandField/Drawer',
-    component: Drawer,
+const meta: Meta<typeof Dialog> = {
+    title: 'Shared/ExpandField/Dialog',
+    component: Dialog,
     tags: ['autodocs'],
     parameters: {
         layout: 'fullscreen',
@@ -34,16 +34,16 @@ const meta: Meta<typeof Drawer> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Drawer>;
+type Story = StoryObj<typeof Dialog>;
 
 export const Default: Story = {
     render: () => (
-        <Drawer open={true} onClose={() => {}}>
+        <Dialog open={true} onClose={() => {}}>
             <div className="p-4">
-                <h2 className="text-lg font-bold">Hello from Drawer!</h2>
-                <p className="mt-2 text-sm text-gray-600">This drawer is always open in this story.</p>
+                <h2 className="text-lg font-bold">Hello from Dialog!</h2>
+                <p className="mt-2 text-sm text-gray-600">This Dialog is always open in this story.</p>
             </div>
-        </Drawer>
+        </Dialog>
     ),
 };
 
@@ -63,17 +63,17 @@ const Example = () => {
             <Button variant={'normal'} onClick={handleOpen}>
                 OPEN
             </Button>
-            <Drawer className={'absolute right-0 top-0'} open={isOpen} onClose={handleClose}>
+            <Dialog open={isOpen} onClose={handleClose}>
                 <div className="p-4">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-lg font-bold">Hello from Drawer!</h2>
+                        <h2 className="text-lg font-bold">Hello from Dialog!</h2>
                         <button onClick={handleClose} className="p-2 text-gray-500 hover:text-gray-700">
                             X
                         </button>
                     </div>
-                    <p className="mt-2 text-sm text-gray-600">Click the X button to close this drawer.</p>
+                    <p className="mt-2 text-sm text-gray-600">Click the X button to close this Dialog.</p>
                 </div>
-            </Drawer>
+            </Dialog>
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import '@plitvice/ui/styles/global.css';
-import { Button, Drawer, SelectBox, SelectOption } from '@plitvice/ui';
+import { Button, Dialog, SelectBox, SelectOption } from '@plitvice/ui';
 import { useState } from 'react';
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     const [open, setOpen] = useState<boolean>(false);
     const [selected, setSelected] = useState<SelectOption>();
 
-    const toggleDrawer = (newOpen: boolean) => () => {
+    const toggleDialog = (newOpen: boolean) => () => {
         setOpen(newOpen);
     };
 
@@ -18,12 +18,12 @@ function App() {
                 {t('common.appName')}
             </h1>
             <SelectBox optionList={defaultComboBoxOptions} width={400} value={selected} onChange={setSelected} />
-            <Button onClick={toggleDrawer(true)} variant={'normal'} fill={false}>
+            <Button onClick={toggleDialog(true)} variant={'normal'} fill={false}>
                 Open Drawer
             </Button>
-            <Drawer open={open} onClose={toggleDrawer(false)} width={400} className={'flex justify-center'}>
-                <div>Hello Drawer</div>
-            </Drawer>
+            <Dialog open={open} onClose={toggleDialog(false)} width={400} className={'flex justify-center'}>
+                <div>Hello Dialog</div>
+            </Dialog>
         </div>
     );
 }

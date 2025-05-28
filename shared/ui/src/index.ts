@@ -18,7 +18,8 @@ export { TextArea } from '@/components/textfield/TextArea';
 export { SelectBox } from '@/components/selectbox/SelectBox.tsx';
 export { ComboBox } from '@/components/selectbox/ComboBox.tsx';
 export { ModSelectBox } from '@/components/selectbox/ModSelectBox.tsx';
-export { Drawer } from '@/components/drawer/Drawer.tsx';
+export { Drawer } from '@/components/expandfield/Drawer.tsx';
+export { Dialog } from '@/components/expandfield/Dialog.tsx';
 export { CellButton } from '@/components/button/CellButton.tsx';
 
 export type { SelectOption } from '@/components/selectbox/DropdownList.tsx';
