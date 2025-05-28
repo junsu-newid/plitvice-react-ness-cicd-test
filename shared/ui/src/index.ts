@@ -5,6 +5,9 @@ export { default as ResetIcon } from './assets/icReset.svg?react';
 export { default as DropdownIcon } from './assets/icDropdownArrow.svg?react';
 export { default as CloseIcon } from './assets/icClose.svg?react';
 export { default as SettingIcon } from './assets/icSetting.svg?react';
+export { default as DefaultChipClearIcon } from './assets/icDefaultChipClear.svg?react';
+export { default as DefaultChipCloseIcon } from './assets/icDefaultChipClose.svg?react';
+export { default as DragHandleIcon } from './assets/icDragHandle.svg?react';
 
 export { SideNavBar } from '@/components/navigation/SideNavBar.tsx';
 export { Button } from '@/components/button/Button.tsx';
@@ -21,6 +24,9 @@ export { ModSelectBox } from '@/components/selectbox/ModSelectBox.tsx';
 export { Drawer } from '@/components/expandfield/Drawer.tsx';
 export { Dialog } from '@/components/expandfield/Dialog.tsx';
 export { CellButton } from '@/components/button/CellButton.tsx';
+export { ActionChip } from '@/components/chips/ActionChip.tsx';
+export { StatusChip } from '@/components/chips/StatusChip.tsx';
+export { DefaultChip } from '@/components/chips/DefaultChip.tsx';
 
 export type { SelectOption } from '@/components/selectbox/DropdownList.tsx';
 export type { SideNavMap } from '@/components/navigation/sideNavBar.types.ts';
