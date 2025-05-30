@@ -225,7 +225,8 @@
 
     /* 빨간색 */
     --color-red-100: #fff1f0;
-    --color-red-200: #ffccc7;
+    --color-red-150: #ffd9d6;
+    --color-red-200: #ffbdb8;
     --color-red-300: #ffa39e;
     --color-red-400: #ff7875;
     --color-red-500: #ff4d4f;

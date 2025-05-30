@@ -13,13 +13,14 @@
     },
     "dependencies": {
         "@plitvice/ui": "workspace:*",
+        "@tailwindcss/vite": "catalog:",
         "i18next": "catalog:",
         "jotai": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
         "react-i18next": "catalog:",
         "react-router": "catalog:",
-        "@tailwindcss/vite": "catalog:",
+        "date-fns": "^4.1.0",
         "tailwindcss": "catalog:"
     },
     "devDependencies": {
@@ -36,7 +37,7 @@
         "typescript": "catalog:",
         "typescript-eslint": "catalog:",
         "vite": "catalog:",
-        "vite-tsconfig-paths": "catalog:",
-        "vite-plugin-svgr": "catalog:"
+        "vite-plugin-svgr": "catalog:",
+        "vite-tsconfig-paths": "catalog:"
     }
 }

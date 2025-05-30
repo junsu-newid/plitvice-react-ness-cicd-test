@@ -45,15 +45,19 @@
         "vite-tsconfig-paths": "catalog:"
     },
     "peerDependencies": {
+        "@tailwindcss/vite": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
-        "vite-plugin-svgr": "catalog:",
-        "@tailwindcss/vite": "catalog:",
-        "tailwindcss": "catalog:"
+        "tailwindcss": "catalog:",
+        "vite-plugin-svgr": "catalog:"
     },
     "eslintConfig": {
         "extends": [
             "plugin:storybook/recommended"
         ]
+    },
+    "dependencies": {
+        "date-fns": "^4.1.0",
+        "react-day-picker": "^9.6.7"
     }
 }
