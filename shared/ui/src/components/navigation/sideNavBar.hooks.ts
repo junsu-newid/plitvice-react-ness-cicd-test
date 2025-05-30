@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 export const useSideBar = (defaultSelected: string, onChange: (value: string) => void) => {
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
-    const [selectedItem, setSelectedItem] = useState<string>(defaultSelected);
+    const [selectedItem, setSelectedItem] = useState(defaultSelected);
     const [parentChildMap, setParentChildMap] = useState<Record<string, string>>({});
     const [pathToPathMap, setPathToPathMap] = useState<Record<string, string>>({});
 

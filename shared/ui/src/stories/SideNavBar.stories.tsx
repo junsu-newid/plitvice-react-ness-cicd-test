@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SideNavBar } from '@/components/navigation/SideNavBar.tsx';
+import { SideNavSection } from '@/components/navigation/sideNavBar.types.ts';
 
 const meta: Meta<typeof SideNavBar> = {
     title: 'Shared/SideNavBar',
@@ -31,10 +32,81 @@ export default meta;
 type Story = StoryObj<typeof SideNavBar>;
 
 export const Default: Story = {
-    render: (args) => {
-        return <SideNavBar {...args} />;
+    render: () => {
+        return <SideNavBar sectionList={nav} />;
     },
     args: {
-        defaultSelected: 'menu-1',
+        defaultSelected: 'aaa',
     },
 };
+
+const nav: SideNavSection[] = [
+    {
+        title: 'Feed Builder',
+        child: [
+            {
+                path: '111',
+                label: 'Pages',
+                child: [
+                    {
+                        path: 'aaa',
+                        label: 'Home',
+                    },
+                    {
+                        path: 'bbb',
+                        label: 'Channels',
+                    },
+                    {
+                        path: 'ccc',
+                        label: 'On Demand',
+                    },
+                ],
+            },
+            {
+                path: 'test',
+                label: 'Row Options',
+            },
+        ],
+    },
+    {
+        title: 'Content Setup',
+        child: [
+            {
+                path: '222',
+                label: 'Library',
+                child: [
+                    {
+                        path: 'ddd',
+                        label: 'Channel',
+                    },
+                    {
+                        path: 'eee',
+                        label: 'Series',
+                    },
+                    {
+                        path: 'fff',
+                        label: 'Program',
+                    },
+                ],
+            },
+            {
+                path: '333',
+                label: 'Content Metadata',
+                child: [
+                    {
+                        path: 'ggg',
+                        label: 'Categories',
+                    },
+                    {
+                        path: 'hhh',
+                        label: 'Relevance',
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        title: 'Section 2',
+        child: [],
+    },
+];

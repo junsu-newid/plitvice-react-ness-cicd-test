@@ -1,13 +1,5 @@
 import React from 'react';
 
-export interface SideNavBarProps {
-    width?: number;
-    navMap: SideNavMap[];
-    defaultSelected?: string;
-    onChange?: (value: string) => void;
-    onNavigate?: (path: string) => void;
-}
-
 export interface SideNavBarItemProps {
     path: string;
     label: string;
@@ -20,6 +12,11 @@ export interface SideNavBarSubItemProps {
     label: string;
     parentPath?: string;
     onClick?: (path: string) => void;
+}
+
+export interface SideNavSection {
+    title: string;
+    child?: SideNavMap[];
 }
 
 interface SideNavMap {

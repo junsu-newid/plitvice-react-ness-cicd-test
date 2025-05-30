@@ -3,8 +3,7 @@ import { useSideBar } from '@/components/navigation/sideNavBar.hooks.ts';
 import {
     SideNavBarSubItemProps,
     SideNavBarItemProps,
-    SideNavBarProps,
-    SideNavMap,
+    SideNavSection,
 } from '@/components/navigation/sideNavBar.types.ts';
 import DropdownIcon from '@/assets/icDropdownArrow.svg?react';
 
@@ -28,34 +27,44 @@ const useSideNavBarContext = () => {
     return context;
 };
 
+interface Props {
+    width?: number;
+    sectionList: SideNavSection[];
+    defaultSelected?: string;
+    onChange?: (value: string) => void;
+    onNavigate?: (path: string) => void;
+}
+
 const SideNavBar = ({
     width = 240,
-    navMap = [],
+    sectionList = [],
     defaultSelected = '',
     onChange = () => {},
     onNavigate = () => {},
-}: SideNavBarProps) => {
+}: Props) => {
     const state = useSideBar(defaultSelected, onChange);
     const widthStyle = { width: width > 0 ? `${width}px` : '100%' };
 
     useEffect(() => {
-        const registerItems = (items: SideNavMap[], parentPath?: string) => {
-            items.forEach((item) => {
-                const hasChildren = Boolean(item.child && item.child.length > 0);
-                state.registerNavItem(item.path, hasChildren, parentPath);
+        const registerItems = (sectionList: SideNavSection[], parentPath?: string) => {
+            sectionList.forEach((section) => {
+                section.child?.forEach((item) => {
+                    const hasChildren = Boolean(item.child && item.child.length > 0);
+                    state.registerNavItem(item.path, hasChildren, parentPath);
 
-                if (hasChildren && item.child) {
-                    item.child.forEach((child) => {
-                        state.registerNavItem(child.path, false, item.path);
-                    });
-                }
+                    if (hasChildren && item.child) {
+                        item.child.forEach((child) => {
+                            state.registerNavItem(child.path, false, item.path);
+                        });
+                    }
+                });
             });
         };
 
-        if (navMap.length > 0) {
-            registerItems(navMap);
+        if (sectionList.length > 0) {
+            registerItems(sectionList);
         }
-    }, [navMap]);
+    }, [sectionList]);
 
     return (
         <SideNavBarContext.Provider value={state}>
@@ -63,19 +72,32 @@ const SideNavBar = ({
                 className={`non-draggable flex h-screen flex-col overflow-y-scroll px-[16px] py-[24px]`}
                 style={widthStyle}
             >
-                {navMap.map((item, parentIndex) => (
-                    <Item path={item.path} label={item.label} onClick={onNavigate} key={`side-nav-${parentIndex}`}>
-                        {item.child?.map((child, childIndex) => (
-                            <SubItem
-                                path={child.path}
-                                label={child.label}
-                                parentPath={item.path}
-                                onClick={onNavigate}
-                                key={`side-nav-${parentIndex}-${childIndex}`}
-                            />
-                        ))}
-                    </Item>
-                ))}
+                {sectionList.map((section, sectionIndex) => {
+                    const topBorder = sectionIndex !== 0 ? `pt-[16px] border-t` : '';
+                    return (
+                        <div className={`border-grey-20 pb-[6px] ${topBorder}`} key={`side-nav-${sectionIndex}`}>
+                            <p className={`text-m12 text-grey-60 px-[12px] leading-[22px]`}>{section.title}</p>
+                            {section.child?.map((navMap, parentIndex) => (
+                                <Item
+                                    path={navMap.path}
+                                    label={navMap.label}
+                                    onClick={onNavigate}
+                                    key={`side-nav-${sectionIndex}-${parentIndex}`}
+                                >
+                                    {navMap.child?.map((child, childIndex) => (
+                                        <SubItem
+                                            path={child.path}
+                                            label={child.label}
+                                            parentPath={navMap.path}
+                                            onClick={onNavigate}
+                                            key={`side-nav-${sectionIndex}-${parentIndex}-${childIndex}`}
+                                        />
+                                    ))}
+                                </Item>
+                            ))}
+                        </div>
+                    );
+                })}
             </nav>
         </SideNavBarContext.Provider>
     );
