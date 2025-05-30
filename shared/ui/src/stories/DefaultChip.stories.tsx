@@ -51,7 +51,7 @@ type Story = StoryObj<StoryArgProps>;
 export const Default: Story = {
     args: {
         ...DEFAULT_ARGS,
-        variant: 'movable',
+        variant: 'default',
         onDelete: () => {},
         dragHandle: <IconDragHandle />,
         children: 'Tag',

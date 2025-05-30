@@ -1,20 +1,5 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { StatusChip, StatusChipProps } from '@/components/chips/StatusChip';
-
-const colorOptions: StatusChipProps['color'][] = [
-    'red',
-    'orange',
-    'yellow',
-    'lime',
-    'green',
-    'cyan',
-    'blue',
-    'violet',
-    'fuchsia',
-    'pink',
-    'gray',
-];
+import { statusColors, StatusChip, StatusChipProps } from '@/components/chips/StatusChip';
 
 type StoryArgProps = StatusChipProps;
 
@@ -33,10 +18,10 @@ const meta: Meta<typeof StatusChip> = {
     argTypes: {
         color: {
             control: { type: 'radio' },
-            options: colorOptions,
+            options: statusColors,
             description: '표시할 색상 키',
             table: {
-                type: { summary: colorOptions.join(' | ') },
+                type: { summary: statusColors.join(' | ') },
                 defaultValue: { summary: 'red' },
             },
         },

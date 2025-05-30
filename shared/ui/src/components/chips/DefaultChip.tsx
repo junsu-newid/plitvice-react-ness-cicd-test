@@ -1,15 +1,17 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import IconClear from '@/assets/icDefaultChipClear.svg?react';
 import IconClose from '@/assets/icDefaultChipClose.svg?react';
 
+type ChipVariant = 'default' | 'removeOutline' | 'removeSolid' | 'movable';
+
 export interface DefaultChipProps {
     onDelete?: () => void;
-    variant?: 'default' | 'removeOutline' | 'removeSolid' | 'movable';
+    variant?: ChipVariant;
     dragHandle?: ReactNode;
     children?: ReactNode;
 }
 
-const PADDING: Record<DefaultChipProps['variant'], string> = {
+const PADDING: Record<ChipVariant, string> = {
     default: 'px-2',
     removeOutline: 'ps-2 pe-1',
     removeSolid: 'ps-[9px] pe-[5px]',

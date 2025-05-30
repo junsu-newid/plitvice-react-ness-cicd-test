@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 const COLOR_STYLES = {
     red: 'bg-[#FFDBDB] border-[#FFC3BD] text-[#F46263]',
@@ -15,13 +15,15 @@ const COLOR_STYLES = {
 } as const;
 
 export type StatusColor = keyof typeof COLOR_STYLES;
+// eslint-disable-next-line react-refresh/only-export-components
+export const statusColors: StatusColor[] = Object.keys(COLOR_STYLES) as StatusColor[];
 
 export interface StatusChipProps {
     color: StatusColor;
     children?: ReactNode;
 }
 
-export const StatusChip = ({ color, children }) => {
+export const StatusChip = ({ color, children }: StatusChipProps) => {
     const baseClasses = [
         'inline-flex items-center justify-center',
         'rounded-full border px-2 py-1 h-6',

@@ -78,7 +78,7 @@ export const Default: Story = {
     },
     args: {
         size: 'small',
-        value: defaultComboBoxOptions[0],
+        value: defaultComboBoxOptions[0].value,
         optionList: defaultComboBoxOptions,
     },
 };

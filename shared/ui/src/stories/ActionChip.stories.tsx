@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { ActionChip } from '@/components/chips/ActionChip.tsx';
 import IconSearch from '@/assets/icSearch.svg?react';
@@ -27,7 +26,7 @@ const meta: Meta<typeof ActionChip> = {
             description: '선택 상태',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: false },
+                defaultValue: { summary: 'false' },
             },
         },
         icon: {
@@ -70,12 +69,5 @@ export const WithIcon: Story = {
     args: {
         ...Default.args,
         icon: <IconSearch />,
-    },
-};
-
-export const Selected: Story = {
-    args: {
-        ...Default.args,
-        selected: true,
     },
 };
