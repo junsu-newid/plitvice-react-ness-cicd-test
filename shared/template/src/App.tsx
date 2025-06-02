@@ -1,11 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import '@plitvice/ui/styles/global.css';
-import { SideNavBar } from '@plitvice/ui';
-import { SideNavSection } from '@plitvice/ui/components/navigation/sideNavBar.types.ts';
 import { useState } from 'react';
 import { addDays, startOfDay } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { SingleDatePickerBox, DateRange, DateRangePickerBox } from '@plitvice/ui';
+import { SingleDatePickerBox, DateRange, DateRangePickerBox, SelectOption, TabMenu } from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
@@ -16,82 +14,17 @@ function App() {
                 {t('common.appName')}
             </h1>
             <DatePickerGroup />
-            <SideNavBar sectionList={nav} defaultSelected={'aaa'} />
+            <TabMenu tabList={tabExample} />
         </div>
     );
 }
 
 export default App;
 
-const nav: SideNavSection[] = [
-    {
-        title: 'Feed Builder',
-        child: [
-            {
-                path: '111',
-                label: 'Pages',
-                child: [
-                    {
-                        path: 'aaa',
-                        label: 'Home',
-                    },
-                    {
-                        path: 'bbb',
-                        label: 'Channels',
-                    },
-                    {
-                        path: 'ccc',
-                        label: 'On Demand',
-                    },
-                ],
-            },
-            {
-                path: 'test',
-                label: 'Row Options',
-            },
-        ],
-    },
-    {
-        title: 'Content Setup',
-        child: [
-            {
-                path: '222',
-                label: 'Library',
-                child: [
-                    {
-                        path: 'ddd',
-                        label: 'Channel',
-                    },
-                    {
-                        path: 'eee',
-                        label: 'Series',
-                    },
-                    {
-                        path: 'fff',
-                        label: 'Program',
-                    },
-                ],
-            },
-            {
-                path: '333',
-                label: 'Content Metadata',
-                child: [
-                    {
-                        path: 'ggg',
-                        label: 'Categories',
-                    },
-                    {
-                        path: 'hhh',
-                        label: 'Relevance',
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        title: 'Section 2',
-        child: [],
-    },
+const tabExample: SelectOption[] = [
+    { value: 1, label: 'Action' },
+    { value: 2, label: 'Comedy' },
+    { value: 3, label: 'Romance' },
 ];
 
 export const DatePickerGroup = () => {

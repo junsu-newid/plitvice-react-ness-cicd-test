@@ -11,6 +11,7 @@ export { default as DragHandleIcon } from './assets/icDragHandle.svg?react';
 export { default as CalenderIcon } from './assets/icCalender.svg?react';
 
 export { SideNavBar } from '@/components/navigation/SideNavBar.tsx';
+export { TabMenu } from '@/components/navigation/TabMenu.tsx';
 export { Button } from '@/components/button/Button.tsx';
 export { Toggle } from '@/components/button/Toggle.tsx';
 export { TextCopier } from '@/components/button/TextCopier.tsx';
