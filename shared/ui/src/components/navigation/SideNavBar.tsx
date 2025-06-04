@@ -68,7 +68,7 @@ const SideNavBar = ({
 
     return (
         <SideNavBarContext.Provider value={state}>
-            <nav className={`non-draggable flex flex-col px-[16px] py-[24px]`} style={widthStyle}>
+            <nav className={`non-draggable flex flex-col px-[16px]`} style={widthStyle}>
                 {sectionList.map((section, sectionIndex) => {
                     const topBorder = sectionIndex !== 0 ? `pt-[16px] border-t` : '';
                     return (
