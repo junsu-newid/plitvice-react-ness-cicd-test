@@ -28,7 +28,7 @@ export { Dialog } from '@/components/expandfield/Dialog.tsx';
 export { CellButton } from '@/components/button/CellButton.tsx';
 export { ActionChip } from '@/components/chips/ActionChip.tsx';
 export { StatusChip } from '@/components/chips/StatusChip.tsx';
-export { DefaultChip } from '@/components/chips/DefaultChip.tsx';
+export { TagChip } from '@/components/chips/TagChip.tsx';
 export { SingleDatePickerBox, DateRangePickerBox } from '@/components/datepicker/DatePickerBox.tsx';
 
 export type { SelectOption } from '@/components/selectbox/DropdownList.tsx';
