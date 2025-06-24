@@ -3,16 +3,36 @@ import '@plitvice/ui/styles/global.css';
 import { useState } from 'react';
 import { addDays, startOfDay } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { SingleDatePickerBox, DateRange, DateRangePickerBox, SelectOption, TabMenu } from '@plitvice/ui';
+import {
+    SingleDatePickerBox,
+    DateRange,
+    DateRangePickerBox,
+    SelectOption,
+    TabMenu,
+    Button,
+    Drawer,
+} from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
+
+    const [open, setOpen] = useState<boolean>(false);
+
+    const toggleDrawer = (newOpen: boolean) => () => {
+        setOpen(newOpen);
+    };
 
     return (
         <div className="scrollbar relative mx-auto flex h-[100dvh] max-w-[1200px] flex-col items-center gap-3 overflow-auto">
             <h1 className="box-border w-full whitespace-nowrap break-words bg-gradient-to-r from-[rgb(0,111,185)] via-[rgb(111,44,135)] to-[rgb(221,37,20)] bg-clip-text text-center text-[10rem] leading-[1.2] text-transparent">
                 {t('common.appName')}
             </h1>
+            <Button onClick={toggleDrawer(true)} variant={'normal'}>
+                Open
+            </Button>
+            <Drawer open={open} onClose={toggleDrawer(false)} width={400} className={'flex justify-center'}>
+                <div>Hello Drawer</div>
+            </Drawer>
             <DatePickerGroup />
             <TabMenu tabList={tabExample} />
         </div>
