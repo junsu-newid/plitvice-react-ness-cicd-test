@@ -26,13 +26,13 @@ const ButtonSizeStyles = {
 
 const ButtonVariantStyles = {
     default: {
-        bgColor: 'bg-grey-5',
-        borderColor: 'border-grey-5',
+        bgColor: 'bg-grey-70',
+        borderColor: 'border-grey-70',
         textColor: 'text-grey-70',
-        fillHoverBgColor: 'hover:bg-grey-5',
-        fillPressedBgColor: 'active:bg-grey-5',
-        strokeHoverBgColor: 'hover:bg-grey-5',
-        strokePressedBgColor: 'active:bg-grey-5',
+        fillHoverBgColor: 'hover:bg-grey-60',
+        fillPressedBgColor: 'active:bg-grey-80',
+        strokeHoverBgColor: 'hover:bg-grey-20',
+        strokePressedBgColor: 'active:bg-grey-30',
     },
     normal: {
         bgColor: 'bg-blue-600',
@@ -58,7 +58,7 @@ export const Button = ({ size = 'medium', variant = 'default', fill = true, chil
     const baseClasses = `${ButtonSizeStyles[size].padding} h-fit ${ButtonSizeStyles[size].text} font-medium rounded-[4px] border border-solid transition-colors duration-100`;
     let bgColor = fill ? ButtonVariantStyles[variant].bgColor : 'bg-transparent';
     let borderColor = ButtonVariantStyles[variant].borderColor;
-    let textColor = fill ? 'text-grey-90' : ButtonVariantStyles[variant].textColor;
+    let textColor = fill ? 'text-white' : ButtonVariantStyles[variant].textColor;
 
     let behaveClasses = '';
     if (props.disabled) {
