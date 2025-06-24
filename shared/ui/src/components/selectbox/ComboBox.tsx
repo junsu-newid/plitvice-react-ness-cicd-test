@@ -93,7 +93,7 @@ const ComboBox = ({
                 </div>
                 <button
                     onClick={toggleDropdown}
-                    className={`flex h-full items-center justify-center rounded-r-[4px] border-l bg-transparent px-[9px] ${buttonBorderColor} group-hover:border-blue-500`}
+                    className={`flex h-full items-center justify-center rounded-r-[4px] border-l bg-transparent px-[7px] ${buttonBorderColor} group-hover:border-blue-500`}
                     disabled={disabled}
                 >
                     <DropdownIcon
