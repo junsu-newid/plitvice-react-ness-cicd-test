@@ -1,0 +1,2 @@
+@import 'tailwindcss';
+/* vscode에서는 이렇게 또 선언해줘야 모노레포 상태에서 tailwindcss IntelliSense가 작동함. */
