@@ -167,8 +167,6 @@ export const requestPresignedUrls = async (
         })),
     };
 
-    console.log('Presigned URL 요청 데이터:', requestData);
-
     const response = await api.post('upload/files', {
         json: requestData,
         searchParams: {
@@ -196,11 +194,6 @@ export const notifyUploadCompletion = async (
         files,
     };
 
-    console.log('업로드 완료 알림 전송 데이터:', {
-        url: `upload/files/completed?uploadUserId=${uploadUserId}`,
-        requestData,
-    });
-
     try {
         const response = await api.post('upload/files/completed', {
             json: requestData,
@@ -210,7 +203,7 @@ export const notifyUploadCompletion = async (
         });
 
         const result = await response.json<UploadCompletionResponse>();
-        console.log('업로드 완료 알림 응답:', result);
+
         return result;
     } catch (error) {
         console.error('업로드 완료 알림 에러:', {

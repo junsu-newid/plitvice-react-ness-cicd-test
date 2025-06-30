@@ -1,22 +1,40 @@
 import { SideNavBar } from '@plitvice/ui';
 import { Outlet, useNavigate } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { getUserId } from '@/utils';
-import { UserProvider } from '@/common/contexts/UserContext';
+import { useUser } from '@/hooks/useUser';
 
 const RootLayout = () => {
     const navigate = useNavigate();
-    const [userId, setUserId] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const { isAuthenticated, isLoading, error, authenticate } = useUser();
 
     useEffect(() => {
-        try {
-            const id = getUserId();
-            setUserId(id);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Authentication failed');
-        }
-    }, []);
+        authenticate(getUserId);
+    }, [authenticate]);
+
+    // Error state component
+    const ErrorView = () => (
+        <div className="flex h-full items-center justify-center">
+            <div className="text-center">
+                <h1 className="text-primary mb-4 text-2xl font-bold">403 Forbidden</h1>
+                <div>{error}</div>
+            </div>
+        </div>
+    );
+
+    // Loading state component
+    const LoadingView = () => (
+        <div className="flex h-full items-center justify-center">
+            <div>로딩 중...</div>
+        </div>
+    );
+
+    // Main content renderer
+    const renderContent = () => {
+        if (error) return <ErrorView />;
+        if (isLoading || !isAuthenticated) return <LoadingView />;
+        return <Outlet />;
+    };
 
     return (
         <div className="flex h-full min-h-screen w-full pt-[40px] min-[991px]:pt-[61.5px]">
@@ -27,7 +45,7 @@ const RootLayout = () => {
                         title: '',
                         child: [
                             { path: '/', label: 'File Upload' },
-                            { path: '/file-list', label: 'Encoding File List' },
+                            { path: '/file-list', label: 'Encoded File List' },
                         ],
                     },
                     {
@@ -53,22 +71,7 @@ const RootLayout = () => {
                     </div>
                 )}
 
-                {error ? (
-                    <div className="flex h-full items-center justify-center">
-                        <div className="text-center">
-                            <h1 className="text-primary mb-4 text-2xl font-bold">403 Forbidden</h1>
-                            <div>{error}</div>
-                        </div>
-                    </div>
-                ) : !userId ? (
-                    <div className="flex h-full items-center justify-center">
-                        <div>로딩 중...</div>
-                    </div>
-                ) : (
-                    <UserProvider userId={userId}>
-                        <Outlet />
-                    </UserProvider>
-                )}
+                {renderContent()}
             </div>
         </div>
     );

@@ -1,15 +1,15 @@
 import { Button } from '@plitvice/ui';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import FileDropzone, { MediaFile } from './components/FileDropzone';
 import FileList from './components/FileList';
 import UploadedFilesList from './components/UploadedFilesList';
 import { useMultipartUpload } from '@/hooks/useMultipartUpload';
 import { getUploadedFiles, UploadedFileItem, validateFiles } from '@/services/fileUpload';
 import { useMediaMetadata } from '@/hooks/useMediaInfo';
-import { useUser } from '@/hooks/useUser';
+import { useUserId } from '@/hooks/useUser';
 
 const FileUpload = () => {
-    const { userId } = useUser();
+    const userId = useUserId();
     const [data, setData] = useState<UploadedFileItem[]>([]);
     const [fileList, setFileList] = useState<MediaFile[]>([]);
 
@@ -36,14 +36,36 @@ const FileUpload = () => {
             // 1. 서버에 중복 파일이 있는지 체크
             const fileNameList = newFiles.map((file) => ({ fileName: file.name }));
             const validationResponse = await validateFiles(fileNameList, userId);
-            console.log('**************************************************');
             console.log('validationResponse:', validationResponse);
 
-            // 2. 서버에 중복이 없는 파일들만 현재 첨부된 파일 목록과 중복 체크
+            // 2. 메타데이터 추출 (duration 포함)
+            const filesWithMetadata = await Promise.all(
+                newFiles.map(async (file) => {
+                    try {
+                        const metadataResults = await extractMetadata([file]);
+                        const metadataResult = metadataResults[0];
+
+                        if (metadataResult.metadata) {
+                            // MediaFile에 duration 추가
+                            return Object.assign(file, {
+                                duration: metadataResult.metadata.duration,
+                            });
+                        } else {
+                            console.warn(`메타데이터 추출 실패 (${file.name}):`, metadataResult.error);
+                        }
+                        return file; // 메타데이터 추출 실패 시 원본 파일 반환
+                    } catch (error) {
+                        console.error(`메타데이터 추출 예외 (${file.name}):`, error);
+                        return file; // 에러 발생 시 원본 파일 반환
+                    }
+                }),
+            );
+
+            // 3. 서버에 중복이 없는 파일들만 현재 첨부된 파일 목록과 중복 체크
             const duplicateFilesInCurrentList: MediaFile[] = [];
             const uniqueNewFiles: MediaFile[] = [];
 
-            newFiles.forEach((newFile) => {
+            filesWithMetadata.forEach((newFile) => {
                 const existingFileIndex = fileList.findIndex((existingFile) => existingFile.name === newFile.name);
 
                 if (existingFileIndex !== -1) {
@@ -53,7 +75,7 @@ const FileUpload = () => {
                 }
             });
 
-            // 3. 현재 첨부 목록에 중복이 있으면 덮어쓰기 확인
+            // 4. 현재 첨부 목록에 중복이 있으면 덮어쓰기 확인
             if (duplicateFilesInCurrentList.length > 0) {
                 const duplicateNames = duplicateFilesInCurrentList.map((f) => f.name).join(', ');
                 const shouldOverwrite = confirm(
@@ -74,19 +96,28 @@ const FileUpload = () => {
                                 updatedList[existingIndex] = newFile;
                             }
                         });
-                        return [...updatedList, ...uniqueNewFiles];
+                        const finalList = [...updatedList, ...uniqueNewFiles];
+                        return finalList;
                     });
                 } else {
                     // 중복 파일은 추가하지 않고 새로운 파일만 추가
                     if (uniqueNewFiles.length > 0) {
-                        setFileList((prev) => [...prev, ...uniqueNewFiles]);
+                        setFileList((prev) => {
+                            const finalList = [...prev, ...uniqueNewFiles];
+
+                            return finalList;
+                        });
                     }
                 }
             } else {
-                // 4. 중복이 없으면 모든 파일 추가
-                setFileList((prev) => [...prev, ...newFiles]);
+                // 5. 중복이 없으면 모든 파일 추가
+                setFileList((prev) => {
+                    const finalList = [...prev, ...filesWithMetadata];
+                    return finalList;
+                });
             }
-        } catch {
+        } catch (error) {
+            console.error('handleFilesAdded 에러:', error);
             // 중복파일체크를 하는 것은 정상적인 비즈니스 로직인데 400 상태코드를 반환하는 게 잘못된 API 설계.
             // 올바른 설계:
             // 200 OK + { data: false } → 중복 파일 있음
@@ -107,6 +138,11 @@ const FileUpload = () => {
             return prev.filter((file) => file.id !== fileId);
         });
     };
+
+    // 파일 재정렬 핸들러
+    const handleFilesReorder = useCallback((reorderedFiles: MediaFile[]) => {
+        setFileList(reorderedFiles);
+    }, []);
 
     // 업로드 시작 핸들러
     const handleStartUpload = async () => {
@@ -170,14 +206,24 @@ const FileUpload = () => {
             </div>
             <div className="flex flex-col gap-3 bg-white p-4">
                 <FileDropzone onFilesAdded={handleFilesAdded} disabled={isUploading} />
-                <FileList files={fileList} onRemoveFile={handleRemoveFile} isUploading={isUploading} />
+                <FileList
+                    files={fileList}
+                    onRemoveFile={handleRemoveFile}
+                    isUploading={isUploading}
+                    onFilesReorder={handleFilesReorder}
+                />
                 <div className="flex h-[38px] w-full justify-end">
                     {isUploading ? (
                         <Button size="medium" variant="default" onClick={handleCancelUpload}>
                             Cancel Upload
                         </Button>
                     ) : (
-                        <Button size="medium" disabled={fileList.length === 0} onClick={handleStartUpload}>
+                        <Button
+                            variant="normal"
+                            size="medium"
+                            disabled={fileList.length === 0}
+                            onClick={handleStartUpload}
+                        >
                             Upload Files
                         </Button>
                     )}

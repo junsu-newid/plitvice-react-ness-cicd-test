@@ -1,6 +1,13 @@
 import { createBrowserRouter } from 'react-router';
 import FileUpload from '@/features/fileUpload';
+import EncodingFileList from '@/features/encodingFileList';
+import EncodingServerStatus from '@/features/encodingServerStatus';
+import EncodingPresetList from '@/features/encodingPresetList';
 import RootLayout from '@/common/layouts/RootLayout';
+import { getPresetList } from '@/services/preset';
+import { getFileList, getDefaultDateRange } from '@/services/fileList';
+import { getServerStatus } from '@/services/serverStatus';
+import { getUserId } from '@/utils';
 
 const router = createBrowserRouter([
     {
@@ -13,7 +20,34 @@ const router = createBrowserRouter([
                 Component: FileUpload,
                 hydrateFallbackElement: <div>HydrateFallbackElement</div>,
             },
-            // 여기에 라우트 추가 및 로더 추가 예정.
+            {
+                path: '/file-list',
+                Component: EncodingFileList,
+                loader: async () => {
+                    const userId = getUserId();
+                    const { startDate, endDate } = getDefaultDateRange(); // MM-DD-YYYY 형식
+                    return await getFileList({
+                        uploadUserId: userId,
+                        startDate,
+                        endDate,
+                    });
+                },
+            },
+            {
+                path: '/server-status',
+                Component: EncodingServerStatus,
+                loader: async () => {
+                    return await getServerStatus();
+                },
+            },
+            {
+                path: '/preset-list',
+                Component: EncodingPresetList,
+                loader: async () => {
+                    const userId = getUserId();
+                    return await getPresetList(userId);
+                },
+            },
         ],
     },
 ]);

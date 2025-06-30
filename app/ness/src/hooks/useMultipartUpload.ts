@@ -413,8 +413,6 @@ export const useMultipartUpload = () => {
      * 업로드 취소
      */
     const cancelUpload = useCallback(() => {
-        console.log('업로드 취소 요청됨');
-
         // 진행 중인 요청들 취소
         if (abortController) {
             abortController.abort();

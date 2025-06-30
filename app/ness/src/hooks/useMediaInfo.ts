@@ -89,50 +89,38 @@ export const useMediaMetadata = () => {
     /**
      * Duration 값을 안전하게 파싱 (초 단위로 변환)
      */
-    const parseDuration = useCallback(
-        (tracks: readonly Track[]): number | undefined => {
-            // 1. General 트랙에서 숫자 형태의 Duration 시도
-            const durationValue = safeGetTrackValue(tracks, 'General', 'Duration');
-            const durationNum = toNumber(durationValue);
-            if (durationNum && durationNum > 0) {
-                // MediaInfo.js에서 Duration은 밀리초 단위로 제공되므로 초로 변환
-                console.log('Duration from General (ms):', durationNum);
-                return durationNum / 1000;
+    const parseDuration = useCallback((tracks: readonly Track[]): number | undefined => {
+        // General 트랙에서 Duration 추출
+        const generalTrack = tracks.find((t) => t['@type'] === 'General');
+
+        if (generalTrack?.Duration) {
+            const duration = parseFloat(String(generalTrack.Duration));
+            if (!isNaN(duration) && duration > 0) {
+                // MediaInfo의 Duration은 이미 초 단위
+                return duration;
             }
+        }
 
-            // 2. Video 트랙에서 Duration 시도
-            const videoDurationValue = safeGetTrackValue(tracks, 'Video', 'Duration');
-            const videoDurationNum = toNumber(videoDurationValue);
-            if (videoDurationNum && videoDurationNum > 0) {
-                console.log('Duration from Video (ms):', videoDurationNum);
-                return videoDurationNum / 1000;
+        // Video 트랙에서 Duration 추출
+        const videoTrack = tracks.find((t) => t['@type'] === 'Video');
+        if (videoTrack?.Duration) {
+            const duration = parseFloat(String(videoTrack.Duration));
+            if (!isNaN(duration) && duration > 0) {
+                return duration;
             }
+        }
 
-            // 3. Duration_String 형식 파싱 (HH:MM:SS.mmm)
-            const durationString =
-                safeGetTrackValue(tracks, 'General', 'Duration_String') ||
-                safeGetTrackValue(tracks, 'General', 'Duration/String') ||
-                safeGetTrackValue(tracks, 'General', 'Duration_String1');
-
-            if (typeof durationString === 'string') {
-                console.log('Duration string:', durationString);
-                const timeMatch = durationString.match(/(\d+):(\d+):(\d+)\.?(\d+)?/);
-                if (timeMatch) {
-                    const hours = parseInt(timeMatch[1], 10);
-                    const minutes = parseInt(timeMatch[2], 10);
-                    const seconds = parseInt(timeMatch[3], 10);
-                    const milliseconds = timeMatch[4] ? parseInt(timeMatch[4].padEnd(3, '0').substring(0, 3), 10) : 0;
-
-                    const duration = hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
-                    console.log('Parsed duration from string:', duration);
-                    return duration;
-                }
+        // Audio 트랙에서 Duration 추출
+        const audioTrack = tracks.find((t) => t['@type'] === 'Audio');
+        if (audioTrack?.Duration) {
+            const duration = parseFloat(String(audioTrack.Duration));
+            if (!isNaN(duration) && duration > 0) {
+                return duration;
             }
+        }
 
-            return undefined;
-        },
-        [safeGetTrackValue, toNumber],
-    );
+        return undefined;
+    }, []);
 
     /**
      * 단일 파일의 메타데이터 추출
@@ -172,8 +160,6 @@ export const useMediaMetadata = () => {
                     throw new Error('Invalid MediaInfo result');
                 }
 
-                console.log('MediaInfo 전체 결과:', result);
-
                 const tracks = result.media.track;
 
                 // 기본 정보 추출
@@ -183,9 +169,9 @@ export const useMediaMetadata = () => {
 
                 // Duration 파싱 (초 단위)
                 const duration = parseDuration(tracks);
-                if (!duration || duration <= 0) {
-                    throw new Error('Duration parsing failed or invalid duration');
-                }
+
+                // Duration이 없어도 메타데이터 추출 계속 진행
+                const finalDuration = duration && duration > 0 ? duration : 0;
 
                 // Video 정보 추출
                 const width = toInteger(safeGetTrackValue(tracks, 'Video', 'Width'));
@@ -211,42 +197,22 @@ export const useMediaMetadata = () => {
                 const audioBitRate = toInteger(safeGetTrackValue(tracks, 'Audio', 'BitRate'));
 
                 // 필수 필드 검증
-                const requiredFields = {
-                    fileName,
-                    extension,
-                    resolution,
-                    fileSize,
-                    duration,
-                    bitrate,
-                    codecInfo,
-                    frameRate,
-                    audioCodec,
-                    audioBitRate,
-                };
-
-                // 필수 값 검증
-                for (const [key, value] of Object.entries(requiredFields)) {
-                    if (
-                        value === undefined ||
-                        value === null ||
-                        value === '' ||
-                        (typeof value === 'number' && (isNaN(value) || value <= 0))
-                    ) {
-                        throw new Error(`Missing or invalid ${key}: ${value}`);
-                    }
+                if (!fileName || !fileSize) {
+                    throw new Error('Missing required file information');
                 }
 
+                // 메타데이터 객체 생성
                 const metadata: MediaMetadata = {
                     fileName,
                     extension,
-                    resolution,
+                    resolution: resolution || '',
                     fileSize,
-                    duration,
-                    bitrate: bitrate!,
-                    codecInfo,
-                    frameRate: frameRate!,
-                    audioCodec,
-                    audioBitRate: audioBitRate!,
+                    duration: finalDuration,
+                    bitrate: bitrate || 0,
+                    codecInfo: codecInfo || '',
+                    frameRate: frameRate || 0,
+                    audioCodec: audioCodec || '',
+                    audioBitRate: audioBitRate || 0,
                 };
 
                 // MediaInfo 인스턴스 정리

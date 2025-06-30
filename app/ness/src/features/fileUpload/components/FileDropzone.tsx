@@ -9,20 +9,13 @@ const WHITELIST_FILE_EXTENSIONS = {
     'video/mpeg': ['.mpeg', '.mpg'],
 };
 
-// 확장자를 MIME 타입으로 변환하는 매핑
-// const EXTENSION_TO_MIME_TYPE: { [key: string]: string } = {
-//     '.mp4': 'video/mp4',
-//     '.mov': 'video/quicktime',
-//     '.mpeg': 'video/mpeg',
-//     '.mpg': 'video/mpeg',
-// };
-
 export interface MediaFile extends File {
     preview: string;
     id: string;
     progress?: number;
     uploaded?: boolean;
     error?: string;
+    duration?: number;
 }
 
 interface FileWithPath {
@@ -100,10 +93,7 @@ const FileDropzone = ({ onFilesAdded, disabled = false }: FileDropzoneProps) => 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             const selectedFiles = Array.from(event.target.files);
-            console.log(
-                '파일 선택됨:',
-                selectedFiles.map((f) => f.name),
-            );
+
             processFileList(selectedFiles);
 
             // 입력 요소 초기화
