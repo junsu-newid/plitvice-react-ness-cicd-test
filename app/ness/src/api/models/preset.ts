@@ -1,4 +1,4 @@
-import api from './api';
+import api from '../index.ts';
 
 export interface EncodingOptions {
     // 비디오 설정

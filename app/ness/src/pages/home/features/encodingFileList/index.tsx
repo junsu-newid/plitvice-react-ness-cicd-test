@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { useLoaderData } from 'react-router';
-import { FileListResponse, getFileList, getDefaultDateRangeForInput, parseDateFromInput } from '@/services/fileList';
+import {
+    FileListResponse,
+    getFileList,
+    getDefaultDateRangeForInput,
+    parseDateFromInput,
+} from '@/api/models/fileList.ts';
 import { getUserId } from '@/utils';
 
 const EncodingFileList = () => {

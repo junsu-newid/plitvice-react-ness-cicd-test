@@ -1,4 +1,4 @@
-import api from './api';
+import api from '../index.ts';
 
 // 인코딩 파일 리스트 조회 관련 타입
 interface EncodingFileParams {

@@ -1,5 +1,5 @@
 import { useLoaderData } from 'react-router';
-import { PresetResponse } from '@/services/preset';
+import { PresetResponse } from '@/api/models/preset.ts';
 
 const EncodingPresetList = () => {
     const presetData = useLoaderData() as PresetResponse;

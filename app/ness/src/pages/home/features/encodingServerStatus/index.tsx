@@ -1,5 +1,5 @@
 import { useLoaderData } from 'react-router';
-import { ServerStatusResponse } from '@/services/serverStatus';
+import { ServerStatusResponse } from '@/api/models/serverStatus.ts';
 
 const EncodingServerStatus = () => {
     const serverStatusData = useLoaderData() as ServerStatusResponse;

@@ -1,0 +1,26 @@
+{
+    "common": {
+        "appName": "NEWID",
+        "welcome": "Welcome",
+        "hello": "Hello"
+    },
+    "button": {
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "nav": {
+        "title": "Encoding",
+        "home": {
+            "file": {
+                "title": "File",
+                "upload": "Upload",
+                "list": "List"
+            },
+            "operations": {
+                "title": "Operations",
+                "serverStatus": "Server Status",
+                "presetList": "Preset List"
+            }
+        }
+    }
+}

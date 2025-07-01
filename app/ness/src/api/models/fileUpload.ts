@@ -1,4 +1,4 @@
-import api from './api';
+import api from '../index.ts';
 
 // 중복파일 검증 요청 타입
 interface FileValidateRequest {

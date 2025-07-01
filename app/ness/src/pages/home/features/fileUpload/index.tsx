@@ -1,12 +1,12 @@
 import { Button } from '@plitvice/ui';
 import { useState, useEffect, useCallback } from 'react';
-import FileDropzone, { MediaFile } from './components/FileDropzone';
-import FileList from './components/FileList';
-import UploadedFilesList from './components/UploadedFilesList';
-import { useMultipartUpload } from '@/hooks/useMultipartUpload';
-import { getUploadedFiles, UploadedFileItem, validateFiles } from '@/services/fileUpload';
-import { useMediaMetadata } from '@/hooks/useMediaInfo';
-import { useUserId } from '@/hooks/useUser';
+import FileDropzone, { MediaFile } from './components/FileDropzone.tsx';
+import FileList from './components/FileList.tsx';
+import UploadedFilesList from './components/UploadedFilesList.tsx';
+import { useMultipartUpload } from '@/hooks/useMultipartUpload.ts';
+import { getUploadedFiles, UploadedFileItem, validateFiles } from '@/api/models/fileUpload.ts';
+import { useMediaMetadata } from '@/hooks/useMediaInfo.ts';
+import { useUserId } from '@/hooks/useUser.ts';
 
 const FileUpload = () => {
     const userId = useUserId();

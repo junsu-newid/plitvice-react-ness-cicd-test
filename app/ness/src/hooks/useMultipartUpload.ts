@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import ky from 'ky';
 
-import { requestPresignedUrls, notifyUploadCompletion } from '@/services/fileUpload';
+import { requestPresignedUrls, notifyUploadCompletion } from '@/api/models/fileUpload.ts';
 import { MediaMetadata } from '@/hooks/useMediaInfo';
 
 interface FileWithMetadata {

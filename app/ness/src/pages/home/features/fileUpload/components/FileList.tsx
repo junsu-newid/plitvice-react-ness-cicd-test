@@ -1,5 +1,5 @@
 import { BinIcon } from '@plitvice/ui';
-import { MediaFile } from './FileDropzone';
+import { MediaFile } from './FileDropzone.tsx';
 import { formatFileSize } from '@/utils';
 import {
     createColumnHelper,

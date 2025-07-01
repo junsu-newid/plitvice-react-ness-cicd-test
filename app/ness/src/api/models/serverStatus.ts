@@ -1,4 +1,4 @@
-import api from './api';
+import api from '../index.ts';
 
 export interface ServerInstance {
     instanceId: string;
