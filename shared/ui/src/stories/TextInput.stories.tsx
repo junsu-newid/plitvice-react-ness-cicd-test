@@ -52,6 +52,21 @@ const meta: Meta<TextInputProps> = {
                 defaultValue: { summary: 'outer' },
             },
         },
+        supportingText: {
+            control: 'text',
+            description: '박스 추가 정보',
+            table: {
+                type: { summary: 'string' },
+            },
+        },
+        supportingTextColor: {
+            control: 'color',
+            description: '박스 추가 정보 색깔',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#515152' },
+            },
+        },
         placeholder: {
             control: 'text',
             description: 'Placeholder',

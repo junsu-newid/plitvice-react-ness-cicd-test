@@ -1,5 +1,6 @@
-import { BoxComponentStyles, LabelPosition, Size } from '@/types/common.ts';
+import { LabelPosition, Size } from '@/types/common.ts';
 import useTextField from '@/components/textfield/textInput.hooks.ts';
+import { LabeledInput } from '@/components/textfield/LabeledInput.tsx';
 
 type TextInputSize = Extract<Size, 'medium' | 'large'>;
 
@@ -9,6 +10,8 @@ export interface TextInputProps {
     label?: string;
     labelColor?: string;
     labelPosition?: LabelPosition;
+    supportingText?: string;
+    supportingTextColor?: string;
     value?: string;
     readOnly?: boolean;
     disabled?: boolean;
@@ -26,6 +29,8 @@ const TextInput = ({
     label = '',
     labelColor = '',
     labelPosition = 'outer',
+    supportingText = '',
+    supportingTextColor = '',
     disabled = false,
     readOnly = false,
     onChange = () => {},
@@ -34,44 +39,33 @@ const TextInput = ({
 }: TextInputProps) => {
     const { inputRef, isFocused, value, handleChange } = useTextField(initialValue, onChange, onDone);
 
-    const widthStyle = { width: width > 0 ? `${width}px` : '100%' };
-    const labelTextStyle = {
-        color: labelColor || (labelPosition === 'outer' ? 'var(--color-grey-70)' : 'var(--color-grey-50)'),
-    };
-
-    const { labelSizeClass, textSizeClass, heightClass } = BoxComponentStyles[size];
     const bgClass = disabled ? 'bg-grey-20' : 'bg-white';
     const borderClass = isFocused ? 'border-blue-500' : 'border-grey-40';
 
     return (
-        <div className={`relative flex h-fit flex-col items-start gap-[4px] ${className}`} style={widthStyle}>
-            {labelPosition === 'outer' && label !== '' ? (
-                <label className={`pl-[4px] ${labelSizeClass} non-draggable`} style={labelTextStyle}>
-                    {label}
-                </label>
+        <LabeledInput.Root className={className} size={size} width={width}>
+            {labelPosition === 'outer' ? (
+                <LabeledInput.OuterLabel color={labelColor}>{label}</LabeledInput.OuterLabel>
             ) : null}
-
-            <div
-                className={`flex w-full items-center rounded-[4px] border-[1px] p-0 ${heightClass} ${bgClass} ${borderClass}`}
-            >
-                <div className={`flex h-full w-full flex-col justify-center px-[11px]`}>
-                    {labelPosition === 'inner' && label !== '' && size === 'large' ? (
-                        <label className={`text-m12 non-draggable p-0`} style={labelTextStyle}>
-                            {label}
-                        </label>
-                    ) : null}
-                    <input
-                        className={`placeholder:text-grey-40 w-full ${textSizeClass}`}
-                        placeholder={placeholder}
-                        value={value}
-                        readOnly={readOnly}
-                        disabled={disabled}
-                        onChange={handleChange}
-                        ref={inputRef}
-                    />
-                </div>
-            </div>
-        </div>
+            <LabeledInput.Content className={`px-[11px] ${bgClass} border ${borderClass}`}>
+                {labelPosition === 'inner' ? (
+                    <LabeledInput.InnerLabel color={labelColor}>{label}</LabeledInput.InnerLabel>
+                ) : null}
+                <LabeledInput.Input
+                    className={'placeholder:text-grey-40'}
+                    placeholder={placeholder}
+                    value={value}
+                    readOnly={readOnly}
+                    disabled={disabled}
+                    onChange={handleChange}
+                    ref={inputRef}
+                />
+            </LabeledInput.Content>
+            {supportingText !== '' ? (
+                <LabeledInput.SupportingText color={supportingTextColor}>{supportingText}</LabeledInput.SupportingText>
+            ) : null}
+        </LabeledInput.Root>
     );
 };
+
 export { TextInput };
