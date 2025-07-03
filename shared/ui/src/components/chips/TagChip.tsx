@@ -18,14 +18,14 @@ const PADDING: Record<ChipVariant, string> = {
     movable: 'ps-1 pe-1',
 };
 
-export const DefaultChip = ({ variant = 'default', children, onDelete, dragHandle }: DefaultChipProps) => {
+export const TagChip = ({ variant = 'default', children, onDelete, dragHandle }: DefaultChipProps) => {
     const DeleteIcon = variant === 'removeSolid' ? IconClose : IconClear;
 
     const base = [
         'inline-flex items-center text-grey-90',
         'rounded-full h-6',
         'text-xs font-medium leading-[14px]',
-        'bg-grey-15 hover:bg-blue-100 whitespace-nowrap',
+        'bg-grey-10 hover:bg-blue-100 whitespace-nowrap',
         PADDING[variant],
         variant === 'removeSolid' ? 'py-[5px]' : 'py-[4px] border border-grey-25 hover:border-blue-150',
     ].join(' ');

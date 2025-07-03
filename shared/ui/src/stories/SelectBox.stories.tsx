@@ -44,6 +44,21 @@ const meta: Meta<SelectBoxProps> = {
                 defaultValue: { summary: '#515152' },
             },
         },
+        supportingText: {
+            control: 'text',
+            description: '박스 추가 정보',
+            table: {
+                type: { summary: 'string' },
+            },
+        },
+        supportingTextColor: {
+            control: 'color',
+            description: '박스 추가 정보 색깔',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#515152' },
+            },
+        },
         value: {
             control: 'object',
             description: '초기 세팅 값',

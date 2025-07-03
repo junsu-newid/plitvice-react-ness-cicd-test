@@ -12,15 +12,15 @@ interface ButtonProps extends CustomComponentProps<'button'> {
 
 const ButtonSizeStyles = {
     small: {
-        padding: 'py-[6px] px-[14px]',
+        padding: 'py-[6px] px-[10px]',
         text: 'text-m14',
     },
     medium: {
-        padding: 'py-[10px] px-[18px]',
+        padding: 'py-[10px] px-[14px]',
         text: 'text-m16',
     },
     large: {
-        padding: 'py-[15px] px-[24px]',
+        padding: 'py-[15px] px-[20px]',
         text: 'text-m18',
     },
 };

@@ -3,21 +3,56 @@ import '@plitvice/ui/styles/global.css';
 import { useState } from 'react';
 import { addDays, startOfDay } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { SingleDatePickerBox, DateRange, DateRangePickerBox, SelectOption, TabMenu, TextCopier } from '@plitvice/ui';
+import {
+    SingleDatePickerBox,
+    DateRange,
+    DateRangePickerBox,
+    SelectOption,
+    TabMenu,
+    Button,
+    Drawer,
+    SelectBox,
+    TextInput,
+    ComboBox,
+} from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
-    const test =
-        'qwdqwdqdwqwdqwdqwdqdw qw dqw dqw dwqd qwdqw d qwdqdq dwq dw qwd qwdqdwqdwq dq dwq wd qd qwdqwdqw dq dw qwd qd qdqwdqwdwqdqwdwqd';
+
+    const [open, setOpen] = useState<boolean>(false);
+
+    const toggleDrawer = (newOpen: boolean) => () => {
+        setOpen(newOpen);
+    };
 
     return (
         <div className="scrollbar relative mx-auto flex h-[100dvh] max-w-[1200px] flex-col items-center gap-3 overflow-auto">
             <h1 className="box-border w-full whitespace-nowrap break-words bg-gradient-to-r from-[rgb(0,111,185)] via-[rgb(111,44,135)] to-[rgb(221,37,20)] bg-clip-text text-center text-[10rem] leading-[1.2] text-transparent">
                 {t('common.appName')}
             </h1>
+            <Button onClick={toggleDrawer(true)} variant={'normal'}>
+                Open
+            </Button>
+            <Drawer open={open} onClose={toggleDrawer(false)} width={400} className={'flex justify-center'}>
+                <div>Hello Drawer</div>
+            </Drawer>
             <DatePickerGroup />
             <TabMenu tabList={tabExample} />
-            <TextCopier value={test} className={`line-clamp-2 w-[200px]`} />
+            <TextInput
+                label={'Label'}
+                labelPosition={'inner'}
+                size={'large'}
+                width={300}
+                supportingText={'SupportingText'}
+            />
+            <SelectBox
+                width={300}
+                size={'medium'}
+                supportingText={'SupportingText'}
+                supportingTextColor={'var(--color-red-600)'}
+                optionList={tabExample}
+            />
+            <ComboBox width={300} label={'Label'} labelPosition={'outer'} size={'large'} optionList={tabExample} />
         </div>
     );
 }

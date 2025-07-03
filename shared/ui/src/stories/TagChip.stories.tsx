@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { DefaultChip, DefaultChipProps } from '@/components/chips/DefaultChip';
+import { TagChip, DefaultChipProps } from '@/components/chips/TagChip.tsx';
 import IconDragHandle from '@/assets/icDragHandle.svg?react';
 
 const variants = ['default', 'removeOutline', 'removeSolid', 'movable'] as const;
@@ -12,9 +12,9 @@ const DEFAULT_ARGS: StoryArgProps = {
     children: 'Tag',
 };
 
-const meta: Meta<typeof DefaultChip> = {
-    title: 'Shared/Chips/DefaultChip',
-    component: DefaultChip,
+const meta: Meta<typeof TagChip> = {
+    title: 'Shared/Chips/TagChip',
+    component: TagChip,
     parameters: { layout: 'centered' },
     tags: ['autodocs'],
     argTypes: {
@@ -56,7 +56,7 @@ export const Default: Story = {
         dragHandle: <IconDragHandle />,
         children: 'Tag',
     },
-    render: ({ ...args }) => <DefaultChip {...args} />,
+    render: ({ ...args }) => <TagChip {...args} />,
 };
 
 export const WithIcon: Story = {
@@ -67,5 +67,5 @@ export const WithIcon: Story = {
         dragHandle: <IconDragHandle />,
         children: 'Movable Tag',
     },
-    render: ({ ...args }) => <DefaultChip {...args} />,
+    render: ({ ...args }) => <TagChip {...args} />,
 };
