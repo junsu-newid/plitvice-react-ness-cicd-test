@@ -3,23 +3,13 @@ import '@plitvice/ui/styles/global.css';
 import { useState } from 'react';
 import { addDays, startOfDay } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import {
-    SingleDatePickerBox,
-    DateRange,
-    DateRangePickerBox,
-    SelectOption,
-    TabMenu,
-    Button,
-    Drawer,
-    SelectBox,
-    TextInput,
-    ComboBox,
-} from '@plitvice/ui';
+import { SingleDatePickerBox, DateRange, DateRangePickerBox, Button, Drawer, TooltipBox } from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
-
     const [open, setOpen] = useState<boolean>(false);
+    const text =
+        '프리셋은 presetId 기준으로 렌더링되며, FFmpeg 명령어 내 {INPUT}, {OUTPUT} 토큰은 실행 시 경로로 치환되고, 유저 그룹 및 회사 기준으로 필터링 가능하며, 삭제 전 종속성 확인이 필요하고, 날짜는 UTC 기준 ISO 8601 포맷을 권장합니다.';
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
@@ -36,34 +26,12 @@ function App() {
             <Drawer open={open} onClose={toggleDrawer(false)} width={400} className={'flex justify-center'}>
                 <div>Hello Drawer</div>
             </Drawer>
-            <DatePickerGroup />
-            <TabMenu tabList={tabExample} />
-            <TextInput
-                label={'Label'}
-                labelPosition={'inner'}
-                size={'large'}
-                width={300}
-                supportingText={'SupportingText'}
-            />
-            <SelectBox
-                width={300}
-                size={'medium'}
-                supportingText={'SupportingText'}
-                supportingTextColor={'var(--color-red-600)'}
-                optionList={tabExample}
-            />
-            <ComboBox width={300} label={'Label'} labelPosition={'outer'} size={'large'} optionList={tabExample} />
+            <TooltipBox text={text} className={`line-clamp-2 w-[200px]`} />
         </div>
     );
 }
 
 export default App;
-
-const tabExample: SelectOption[] = [
-    { value: 1, label: 'Action' },
-    { value: 2, label: 'Comedy' },
-    { value: 3, label: 'Romance' },
-];
 
 export const DatePickerGroup = () => {
     return (
