@@ -5,6 +5,7 @@ interface ButtonProps extends CustomComponentProps<'button'> {
     size?: Extract<Size, 'small' | 'medium' | 'large'>;
     variant?: 'default' | 'normal' | 'alert';
     fill?: boolean;
+    disabled?: boolean;
     children?: ReactNode;
     ref?: React.Ref<HTMLButtonElement>;
 }

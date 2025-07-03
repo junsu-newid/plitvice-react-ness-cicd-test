@@ -3,10 +3,12 @@ import '@plitvice/ui/styles/global.css';
 import { useState } from 'react';
 import { addDays, startOfDay } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { SingleDatePickerBox, DateRange, DateRangePickerBox, SelectOption, TabMenu } from '@plitvice/ui';
+import { SingleDatePickerBox, DateRange, DateRangePickerBox, SelectOption, TabMenu, TextCopier } from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
+    const test =
+        'qwdqwdqdwqwdqwdqwdqdw qw dqw dqw dwqd qwdqw d qwdqdq dwq dw qwd qwdqdwqdwq dq dwq wd qd qwdqwdqw dq dw qwd qd qdqwdqwdwqdqwdwqd';
 
     return (
         <div className="scrollbar relative mx-auto flex h-[100dvh] max-w-[1200px] flex-col items-center gap-3 overflow-auto">
@@ -15,6 +17,7 @@ function App() {
             </h1>
             <DatePickerGroup />
             <TabMenu tabList={tabExample} />
+            <TextCopier value={test} className={`line-clamp-2 w-[200px]`} />
         </div>
     );
 }
