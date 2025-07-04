@@ -3,7 +3,16 @@ import '@plitvice/ui/styles/global.css';
 import { useState } from 'react';
 import { addDays, startOfDay } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { SingleDatePickerBox, DateRange, DateRangePickerBox, Button, Drawer, TooltipBox, useToast } from '@plitvice/ui';
+import {
+    SingleDatePickerBox,
+    DateRange,
+    DateRangePickerBox,
+    Button,
+    Drawer,
+    TooltipBox,
+    useToast,
+    TextCopier,
+} from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
@@ -29,6 +38,7 @@ function App() {
                 <div>Hello Drawer</div>
             </Drawer>
             <TooltipBox text={text} className={`line-clamp-2 w-[200px]`} />
+            <TextCopier value={text} className={`line-clamp-2 w-[200px]`} />
         </div>
     );
 }
