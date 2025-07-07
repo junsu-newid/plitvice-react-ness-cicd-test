@@ -1,5 +1,3 @@
-import api from '../index.ts';
-
 export interface ServerInstance {
     instanceId: string;
     instanceName: string;
@@ -14,7 +12,3 @@ export interface ServerStatusResponse {
     msg: string;
     data: ServerInstance[];
 }
-
-export const getServerStatus = async (): Promise<ServerStatusResponse> => {
-    return await api.get('encoding/servers/status').json<ServerStatusResponse>();
-};

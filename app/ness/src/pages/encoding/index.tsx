@@ -14,9 +14,6 @@ function HomeLayout() {
 
     return (
         <Layout>
-            <div className={`border-grey-20 border-b px-[24px] py-[18px]`}>
-                <p className={`text-m18`}>Encoding</p>
-            </div>
             <div className={`overflow-y-auto pb-[48px] pt-[24px]`}>
                 <SideNavBar width={0} sectionList={navMap} onNavigate={navigate} />
             </div>
@@ -28,10 +25,10 @@ export default HomeLayout;
 const getNavMap = (t: TFunction): SideNavSection[] => {
     return [
         {
-            title: t('nav.home.file.title'),
+            title: t('nav.home.encoding.title'),
             child: [
-                { path: '/', label: t('nav.home.file.upload') },
-                { path: '/file-list', label: t('nav.home.file.list') },
+                { path: '/', label: t('nav.home.encoding.upload') },
+                { path: '/file-list', label: t('nav.home.encoding.list') },
             ],
         },
         {

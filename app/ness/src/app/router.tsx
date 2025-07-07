@@ -1,14 +1,16 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import FileUpload from '@/pages/home/features/fileUpload';
-import EncodingFileList from '@/pages/home/features/encodingFileList';
-import EncodingServerStatus from '@/pages/home/features/encodingServerStatus';
-import EncodingPresetList from '@/pages/home/features/encodingPresetList';
+import FileUpload from '@/pages/encoding/features/fileUpload';
+import EncodingFileList from '@/pages/encoding/features/encodingFileList';
+import EncodingPreset from '@/pages/encoding/features/presetList';
 import { getPresetList } from '@/api/models/preset.ts';
 import { getFileList, getDefaultDateRange } from '@/api/models/fileList.ts';
-import { getServerStatus } from '@/api/models/serverStatus.ts';
+import { fetchServerStatus } from '@/api/services/serverStatus.ts';
 import { getUserId } from '@/utils';
 import ErrorPage from '@/app/ErrorPage.tsx';
-import HomeLayout from '@/pages/home';
+import HomeLayout from '@/pages/encoding';
+import { lazy } from 'react';
+
+const ServerStatusPage = lazy(() => import('@/pages/encoding/features/serverStatus'));
 
 const router = createBrowserRouter([
     {
@@ -38,15 +40,15 @@ const router = createBrowserRouter([
             },
             {
                 path: '/server-status',
-                Component: EncodingServerStatus,
+                Component: ServerStatusPage,
                 errorElement: <ErrorPage />,
                 loader: async () => {
-                    return await getServerStatus();
+                    return await fetchServerStatus();
                 },
             },
             {
                 path: '/preset-list',
-                Component: EncodingPresetList,
+                Component: EncodingPreset,
                 errorElement: <ErrorPage />,
                 loader: async () => {
                     const userId = getUserId();

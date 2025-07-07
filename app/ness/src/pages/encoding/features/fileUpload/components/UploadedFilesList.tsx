@@ -33,7 +33,7 @@ const SortIcon = ({ sorted }: { sorted: false | 'asc' | 'desc' }) => {
     if (sorted === 'desc') {
         return <span className="text-blue-600">↓</span>;
     }
-    return <span className="text-gray-300">↕</span>;
+    return <span className="text-grey-50">↕</span>;
 };
 
 const columns = [

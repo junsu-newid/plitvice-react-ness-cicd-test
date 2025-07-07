@@ -3,6 +3,7 @@ import { SelectBoxProps } from '@/components/selectbox/SelectBox.tsx';
 import useComboBox from '@/components/selectbox/comboBox.hooks.ts';
 import DropdownList, { SelectOption } from '@/components/selectbox/DropdownList.tsx';
 import DropdownIcon from '@/assets/icDropdownArrow.svg?react';
+import { LabeledInput } from '@/components/textfield/LabeledInput.tsx';
 
 type ComboBoxSize = Extract<Size, 'medium' | 'large'>;
 
@@ -47,39 +48,28 @@ const ComboBox = ({
         handleKeyDown,
     } = useComboBox(value, optionList, onChange, onInputChange, showAllOptionsOnFocus, allowCustomValue);
 
-    const containerWidth = { width: width > 0 ? `${width}px` : '100%' };
     const fieldColor = disabled ? 'bg-grey-20' : 'bg-white hover:bg-blue-100 hover:border-blue-500 group';
     const fieldBorderColor = isFocused ? 'border-blue-500' : 'border-grey-40';
     const inputBgColor = disabled ? 'bg-transparent' : 'bg-white';
-    const labelTextColor = {
-        color: labelColor || (labelPosition === 'outer' ? 'var(--color-grey-70)' : 'var(--color-grey-50)'),
-    };
     const buttonBorderColor = isFocused ? 'border-blue-500' : 'border-grey-40';
     const iconRotation = isFocused ? 'rotate-180' : 'rotate-0';
 
-    const { labelSizeClass, textSizeClass, heightClass, iconSizeClass } = BoxComponentStyles[size];
+    const { heightClass, iconSizeClass } = BoxComponentStyles[size];
 
     return (
-        <div
-            ref={containerRef}
-            className={`relative flex h-fit flex-col items-start gap-[4px] p-0`}
-            style={containerWidth}
-        >
-            {labelPosition === 'outer' && label !== '' ? (
-                <label className={`pl-[4px] ${labelSizeClass} non-draggable`} style={labelTextColor}>
-                    {label}
-                </label>
+        <LabeledInput.Root className={'p-0'} width={width} size={size} ref={containerRef}>
+            {labelPosition === 'outer' ? (
+                <LabeledInput.OuterLabel color={labelColor}>{label}</LabeledInput.OuterLabel>
             ) : null}
             <div
                 className={`flex w-full ${heightClass} ${fieldColor} ${fieldBorderColor} items-center overflow-hidden rounded-[4px] border-[1px] p-0`}
             >
-                <div className={`flex h-full flex-1 flex-col justify-center px-[11px] ${inputBgColor}`}>
-                    {labelPosition === 'inner' && label !== '' && size === 'large' ? (
-                        <label className={`text-m12 non-draggable p-0`} style={labelTextColor}>
-                            {label}
-                        </label>
+                <LabeledInput.Content className={`flex-1 justify-center px-[11px] ${inputBgColor}`}>
+                    {labelPosition === 'inner' ? (
+                        <LabeledInput.InnerLabel color={labelColor}>{label}</LabeledInput.InnerLabel>
                     ) : null}
-                    <input
+                    <LabeledInput.Input
+                        className={'placeholder:text-grey-40'}
                         ref={inputRef}
                         value={inputValue}
                         placeholder={placeholder}
@@ -88,9 +78,8 @@ const ComboBox = ({
                         onKeyDown={handleKeyDown}
                         readOnly={readOnly}
                         disabled={disabled}
-                        className={`placeholder:text-grey-40 ${textSizeClass}`}
                     />
-                </div>
+                </LabeledInput.Content>
                 <button
                     onClick={toggleDropdown}
                     className={`flex h-full items-center justify-center rounded-r-[4px] border-l bg-transparent px-[7px] ${buttonBorderColor} group-hover:border-blue-500`}
@@ -108,7 +97,7 @@ const ComboBox = ({
                 optionList={filteredList}
                 onSelected={handleSelected}
             />
-        </div>
+        </LabeledInput.Root>
     );
 };
 

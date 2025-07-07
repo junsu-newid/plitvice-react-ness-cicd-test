@@ -57,3 +57,5 @@ export const getUserId = () => {
     }
     return userId;
 };
+
+export const firstUpperCase = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
