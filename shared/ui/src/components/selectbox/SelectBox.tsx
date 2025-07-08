@@ -2,6 +2,7 @@ import { BoxComponentStyles, Size } from '@/types/common.ts';
 import useSelectBox from '@/components/selectbox/selectBox.hooks.ts';
 import DropdownList, { SelectOption } from '@/components/selectbox/DropdownList.tsx';
 import DropdownIcon from '@/assets/icDropdownArrow.svg?react';
+import { LabeledInput } from '../textfield/LabeledInput';
 
 type SelectBoxSize = Extract<Size, 'small' | 'medium'>;
 
@@ -11,6 +12,8 @@ export interface SelectBoxProps {
     placeholder?: string;
     label?: string;
     labelColor?: string;
+    supportingText?: string;
+    supportingTextColor?: string;
     optionList: SelectOption[];
     value?: string | number;
     onChange?: (value: string | number) => void;
@@ -24,6 +27,8 @@ const SelectBox = ({
     placeholder = 'Placeholder',
     label = '',
     labelColor = '',
+    supportingText = '',
+    supportingTextColor = '',
     value = undefined,
     optionList,
     onChange = undefined,
@@ -31,9 +36,8 @@ const SelectBox = ({
     className = '',
 }: SelectBoxProps) => {
     const { isFocused, containerRef, toggleDropdown, handleSelected } = useSelectBox({ onChange });
-    const { labelSizeClass, textSizeClass, heightClass, iconSizeClass } = BoxComponentStyles[size];
-    const containerWidth = { width: width > 0 ? `${width}px` : '100%' };
-    const labelTextColor = { color: labelColor || 'var(--color-grey-70)' };
+    const { heightClass, iconSizeClass } = BoxComponentStyles[size];
+
     const fieldColor = disabled ? 'bg-grey-20' : 'bg-white hover:bg-blue-100 hover:border-blue-500';
     const fieldBorderColor = isFocused ? 'border-blue-500' : 'border-grey-40';
     const hoverBgColor = disabled ? '' : 'hover:bg-blue-100';
@@ -41,26 +45,18 @@ const SelectBox = ({
     const cursor = disabled ? '' : 'cursor-pointer';
 
     return (
-        <div
-            className={`relative flex h-fit flex-col items-start gap-[4px] p-0 ${className}`}
-            style={containerWidth}
-            ref={containerRef}
-        >
-            {label !== '' ? (
-                <label className={`pl-[4px] ${labelSizeClass} non-draggable`} style={labelTextColor}>
-                    {label}
-                </label>
-            ) : null}
+        <LabeledInput.Root className={`p-0 ${className}`} width={width} size={size} ref={containerRef}>
+            <LabeledInput.OuterLabel color={labelColor}>{label}</LabeledInput.OuterLabel>
             <div
                 className={`flex w-full ${heightClass} flex items-center gap-[4px] pl-[11px] pr-[7px] ${fieldColor} ${fieldBorderColor} rounded-[4px] border-[1px] ${hoverBgColor} ${cursor}`}
                 onClick={disabled ? undefined : toggleDropdown}
             >
-                <input
+                <LabeledInput.Input
                     value={optionList.find((option) => option.value === value)?.label || ''}
                     placeholder={placeholder}
                     readOnly={true}
                     disabled={disabled}
-                    className={`h-full w-full cursor-pointer ${textSizeClass}`}
+                    className={`cursor-pointer`}
                 />
                 <div className={`${iconSizeClass}`}>
                     <DropdownIcon
@@ -68,8 +64,11 @@ const SelectBox = ({
                     />
                 </div>
             </div>
+            {supportingText !== '' ? (
+                <LabeledInput.SupportingText color={supportingTextColor}>{supportingText}</LabeledInput.SupportingText>
+            ) : null}
             <DropdownList size={size} isFocused={isFocused} optionList={optionList} onSelected={handleSelected} />
-        </div>
+        </LabeledInput.Root>
     );
 };
 export { SelectBox };
