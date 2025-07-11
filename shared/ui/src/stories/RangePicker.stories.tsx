@@ -59,7 +59,7 @@ const meta: Meta<typeof DateRangePickerBox> = {
             description: '달력 언어 설정',
             table: {
                 type: {
-                    summary: 'date-fns/locale',
+                    summary: 'date-fns/locales',
                 },
                 defaultValue: {
                     summary: 'enUS',
