@@ -9,13 +9,21 @@ const meta: Meta<typeof TooltipBox> = {
         layout: 'centered',
     },
     argTypes: {
-        text: {
+        displayText: {
             control: 'text',
-            description: '텍스트 내용',
+            description: '화면에 표시할 텍스트',
+        },
+        tooltipText: {
+            control: 'text',
+            description: '툴팁에 표시할 텍스트',
         },
         className: {
             control: 'text',
             description: '텍스트 박스 스타일',
+        },
+        maxWidth: {
+            control: 'number',
+            description: '툴팁 최대 너비(px), 기본 280',
         },
     },
 };
@@ -25,7 +33,9 @@ type Story = StoryObj<typeof TooltipBox>;
 
 export const Default: Story = {
     args: {
-        text: '프리셋은 presetId 기준으로 렌더링되며, FFmpeg 명령어 내 {INPUT}, {OUTPUT} 토큰은 실행 시 경로로 치환되고, 유저 그룹 및 회사 기준으로 필터링 가능하며, 삭제 전 종속성 확인이 필요하고, 날짜는 UTC 기준 ISO 8601 포맷을 권장합니다.',
+        displayText: 'Show',
+        tooltipText: 'Display row on/off',
         className: 'line-clamp-2 w-[200px]',
+        maxWidth: 280,
     },
 };

@@ -12,11 +12,14 @@ import {
     TooltipBox,
     useToast,
     TextCopier,
+    TooltipBoxOnOverflow,
 } from '@plitvice/ui';
 
 function App() {
     const { t } = useTranslation();
     const [open, setOpen] = useState<boolean>(false);
+    const displayText = 'Proc Time';
+    const tooltipText = 'Encoding Process Time';
     const text =
         '프리셋은 presetId 기준으로 렌더링되며, FFmpeg 명령어 내 {INPUT}, {OUTPUT} 토큰은 실행 시 경로로 치환되고, 유저 그룹 및 회사 기준으로 필터링 가능하며, 삭제 전 종속성 확인이 필요하고, 날짜는 UTC 기준 ISO 8601 포맷을 권장합니다.';
     const { showToast } = useToast();
@@ -37,7 +40,12 @@ function App() {
             <Drawer open={open} onClose={toggleDrawer(false)} width={400} className={'flex justify-center'}>
                 <div>Hello Drawer</div>
             </Drawer>
-            <TooltipBox text={text} className={`line-clamp-2 w-[200px]`} />
+            <TooltipBox displayText={displayText} tooltipText={tooltipText} className={`line-clamp-2 w-[200px]`} />
+            <TooltipBoxOnOverflow
+                displayText={displayText}
+                tooltipText={tooltipText}
+                className={`line-clamp-2 w-[200px]`}
+            />
             <TextCopier value={text} className={`line-clamp-2 w-[200px]`} />
         </div>
     );

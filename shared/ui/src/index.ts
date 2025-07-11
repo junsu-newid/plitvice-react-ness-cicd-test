@@ -23,6 +23,7 @@ export { CellInput } from '@/components/textfield/CellInput.tsx';
 export { ModInput } from '@/components/textfield/ModInput.tsx';
 export { TextArea } from '@/components/textfield/TextArea';
 export { TooltipBox } from '@/components/textfield/TooltipBox';
+export { TooltipBoxOnOverflow } from '@/components/textfield/TooltipBoxOnOverflow';
 export { SelectBox } from '@/components/selectbox/SelectBox.tsx';
 export { ComboBox } from '@/components/selectbox/ComboBox.tsx';
 export { ModSelectBox } from '@/components/selectbox/ModSelectBox.tsx';
