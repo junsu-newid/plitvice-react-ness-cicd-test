@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ServerStatusType } from '@/types/enum.ts';
 import ServerStatusList from '@/pages/encoding/features/serverStatus/List.tsx';
 import { useEffect, useState } from 'react';
+import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
 
 const ServerStatus = () => {
     const { t } = useTranslation();
@@ -21,7 +22,7 @@ const ServerStatus = () => {
     }, [serverStatusData, selectedStatus]);
 
     return (
-        <div className="flex h-screen min-w-[1200px] flex-col bg-gray-50 p-[36px]">
+        <div className="bg-grey-5 flex h-screen min-w-[1200px] flex-col p-[36px]">
             <h1 className="text-b28">{t('serverStatus.title')}</h1>
             <p className={`text-r14 text-grey-60 whitespace-pre-line pb-[24px] pt-[12px]`}>
                 {t('serverStatus.description')}
@@ -29,7 +30,7 @@ const ServerStatus = () => {
             <div className={`flex w-[1128px] gap-[20px] pb-[24px]`}>
                 {StatusSetting.map((box, index) => (
                     <StatusBox
-                        type={box.type}
+                        title={t(`serverStatus.${box.type}`)}
                         titleSlice={box.titleSlice}
                         color={box.color}
                         count={
@@ -43,9 +44,9 @@ const ServerStatus = () => {
                     />
                 ))}
             </div>
-            <div className="relative h-full overflow-auto rounded-[4px] border border-gray-200 bg-white">
+            <div className="border-grey-20 relative h-full overflow-auto rounded-[4px] border bg-white">
                 {(!filteredData || filteredData.length === 0) && (
-                    <div className="flex h-32 items-center justify-center text-gray-500">업로드된 파일이 없습니다.</div>
+                    <div className="text-grey-90 flex h-32 items-center justify-center">업로드된 파일이 없습니다.</div>
                 )}
                 <ServerStatusList data={filteredData} />
             </div>
@@ -54,31 +55,6 @@ const ServerStatus = () => {
 };
 export default ServerStatus;
 
-type StatusBoxProps = {
-    type: string;
-    titleSlice: string;
-    color: string;
-    count?: number;
-    selected?: boolean;
-    onClick?: () => void;
-};
-function StatusBox({ type, titleSlice, color, count, selected, onClick }: StatusBoxProps) {
-    const { t } = useTranslation();
-    const title = t(`serverStatus.${type}`);
-
-    return (
-        <button
-            className={`hover:bg-grey-10 grid flex-1 grid-cols-[40px_1fr] items-center rounded-[4px] border bg-white p-[17px] ${selected ? 'border-grey-50' : 'border-grey-20'}`}
-            onClick={onClick}
-        >
-            <p className={`text-b24 row-span-2 size-[40px] rounded-[4px] border text-center leading-[40px] ${color}`}>
-                {titleSlice}
-            </p>
-            <p className={`text-b12 text-grey-50 pl-[20px] text-left`}>{title}</p>
-            <p className={`text-b24 pl-[20px] text-left`}>{count}</p>
-        </button>
-    );
-}
 const StatusSetting: StatusBoxProps[] = [
     { type: ServerStatusType[0], titleSlice: 'T', color: 'bg-[#D8E9FD] border-[#4897F9] text-[#4897F9]' },
     { type: ServerStatusType[1], titleSlice: 'P', color: 'bg-[#FEF7B9] border-[#DBA00A] text-[#DBA00A]' },

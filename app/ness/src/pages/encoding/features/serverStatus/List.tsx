@@ -119,7 +119,7 @@ function ServerStatusList({ data }: Props) {
             </colgroup>
             <thead className={'text-b16 text-grey-70 sticky top-0 z-20'}>
                 {table.getHeaderGroups().map((headerGroup) => (
-                    <tr key={headerGroup.id} className={`border-b border-gray-200`}>
+                    <tr key={headerGroup.id} className={`border-grey-10 border-b`}>
                         {headerGroup.headers.map((header) => (
                             <th
                                 key={header.id}
@@ -135,13 +135,13 @@ function ServerStatusList({ data }: Props) {
             </thead>
             <tbody>
                 {table.getRowModel().rows.map((row) => (
-                    <tr key={row.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr key={row.id} className="border-grey-20 hover:bg-grey-10 border-b">
                         {row.getVisibleCells().map((cell) => {
                             const meta = cell.column.columnDef.meta;
                             return (
                                 <td
                                     key={cell.id}
-                                    className={`border-grey-20 text-r14 border-b px-[22px] py-[14px] text-gray-900 ${meta?.widthStyle} ${meta?.tdStyle}`}
+                                    className={`border-grey-20 text-r14 text-grey-90 border-b px-[22px] py-[14px] ${meta?.widthStyle} ${meta?.tdStyle}`}
                                 >
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>

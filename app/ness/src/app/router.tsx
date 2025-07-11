@@ -1,16 +1,18 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import FileUpload from '@/pages/encoding/features/fileUpload';
-import EncodingFileList from '@/pages/encoding/features/encodingFileList';
 import EncodingPreset from '@/pages/encoding/features/presetList';
 import { getPresetList } from '@/api/models/preset.ts';
-import { getFileList, getDefaultDateRange } from '@/api/models/fileList.ts';
+// import { getDefaultDateRange } from '@/api/models/fileList.ts';
+// import { fetchFileList } from '@/api/services/fileList.ts';
 import { fetchServerStatus } from '@/api/services/serverStatus.ts';
 import { getUserId } from '@/utils';
 import ErrorPage from '@/app/ErrorPage.tsx';
 import HomeLayout from '@/pages/encoding';
 import { lazy } from 'react';
+import mockFiles from '@/mockFileList.json';
 
 const ServerStatusPage = lazy(() => import('@/pages/encoding/features/serverStatus'));
+const EncodingFileListPage = lazy(() => import('@/pages/encoding/features/encodingFileList'));
 
 const router = createBrowserRouter([
     {
@@ -26,17 +28,18 @@ const router = createBrowserRouter([
             },
             {
                 path: '/file-list',
-                Component: EncodingFileList,
+                Component: EncodingFileListPage,
                 errorElement: <ErrorPage />,
-                loader: async () => {
-                    const userId = getUserId();
-                    const { startDate, endDate } = getDefaultDateRange(); // MM-DD-YYYY 형식
-                    return await getFileList({
-                        uploadUserId: userId,
-                        startDate,
-                        endDate,
-                    });
-                },
+                // loader: async () => {
+                //     const userId = getUserId();
+                //     const { startDate, endDate } = getDefaultDateRange(); // MM-DD-YYYY 형식
+                //     return await fetchFileList({
+                //         uploadUserId: userId,
+                //         startDate,
+                //         endDate,
+                //     });
+                // },
+                loader: () => mockFiles,
             },
             {
                 path: '/server-status',

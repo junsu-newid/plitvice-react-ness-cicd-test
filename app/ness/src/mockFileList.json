@@ -1,0 +1,105 @@
+{
+    "data": {
+        "encodingFileList": [
+            {
+                "type": "ec2",
+                "status": "pending",
+                "programTitle": "포켓몬XY 56.mpg",
+                "programId": "009f347cfd37b835bee5fac073a3c2297a0c7947251",
+                "duration": 1310,
+                "startedAt": "07-07-2025 07:55:57",
+                "finishedAt": "07-07-2025 07:55:57",
+                "totalTimeSpent": 1238,
+                "notes": "테스트용"
+            },
+            {
+                "type": "ecs",
+                "status": "running",
+                "programTitle": "CSR0000827SS001E0008_Bartender_Original_es_MX_2997p_1920×1080_H264_2ch_20240412.mp4CSR0000827SS001E0008_Bartender_Original_es_MX_2997p_1920×1080_H264_2ch_20240412.mp4",
+                "programId": "c53452733c9c2e99d5d09d65e2a1fa9baadf2df949c53452733c9c2e99d5d09d65e2a1fa9baadf2df949c53452733c9c2e99d5d09d65e2a1fa9baadf2df949",
+                "duration": 0,
+                "startedAt": "04-12-2025 00:00:00",
+                "finishedAt": "04-12-2025 00:00:00",
+                "totalTimeSpent": 0,
+                "notes": "abcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcde"
+            },
+            {
+                "type": "ecs",
+                "status": "running",
+                "programTitle": "CSR0000827SS001E0008_Bartender_Original_es_MX_2997p_1920×1080_H264_2ch_20240412.mp4CSR0000827SS001E0008_Bartender_Original_es_MX_2997p_1920×1080_H264_2ch_20240412.mp4CSR0000827SS001E0008_Bartender_Original_es_MX_2997p_1920×1080_H264_2ch_20240412.mp4CSR0000827SS001E0008_Bartender_Original_es_MX_2997p_1920×1080_H264_2ch_20240412.mp4",
+                "programId": "c53452739c39e242149e6aaf763d35c7071393ce49",
+                "duration": 0,
+                "startedAt": "04-10-2025 00:00:00",
+                "finishedAt": "04-10-2025 00:00:00",
+                "totalTimeSpent": 0,
+                "notes": "자막 싱크 확인 필요 / 음성 2개 트랙 중 첫 번째만 사용함 / HLS로만 배포 예정"
+            },
+            {
+                "type": "ecs",
+                "status": "stopped",
+                "programTitle": "CSR0000827SS001E0006_Bartender_Original_es_MX_2997p_1920×1080_H264_2ch_20240327.mp4",
+                "programId": "c53452736c3d7363f97f44de13c9ba4d4bd9da4b49",
+                "duration": 0,
+                "startedAt": "03-27-2025 00:00:00",
+                "finishedAt": "03-27-2025 00:00:00",
+                "totalTimeSpent": 1238,
+                "notes": "HLS 우선 인코딩 요청 / MP4는 추후 제공 오디오는 1번 트랙(한국어)만 사용 자막 싱크 후반부 밀림 있음 27분 이후 영상 끊김 현상 있음 – 인코딩 중 오류 주의"
+            },
+            {
+                "type": "ecs",
+                "status": "stopped",
+                "programTitle": "포켓몬XY 55.mpg",
+                "programId": "009f347cfe1bfa81e2070feb28470c72d65c210c167",
+                "duration": 0,
+                "startedAt": "02-02-2025 05:18:15",
+                "finishedAt": "05-05-2025 05:18:15",
+                "totalTimeSpent": 3720,
+                "notes": "자막 싱크 후반부 밀림 있음 / 27분 이후 영상 끊김 현상 있음"
+            },
+            {
+                "type": "ec2",
+                "status": "completed",
+                "programTitle": "포켓몬XY 54.mpg",
+                "programId": "009f347cadec48a2db93226345b95ca8077fc693167",
+                "duration": 0,
+                "startedAt": "02-02-2025 05:18:15",
+                "finishedAt": "05-05-2025 05:18:15",
+                "totalTimeSpent": 7500,
+                "notes": "abcdeabcdeabcdeabcde"
+            },
+            {
+                "type": "ec2",
+                "status": "completed",
+                "programTitle": "CSR0000827SS001E0002_Bartender_Original_es_MX_2997p_1920×1080_H264_2ch_20240327.mp4",
+                "programId": "c534527392272aa5099f7b3c8340ad9c899fdca435",
+                "duration": 0,
+                "startedAt": "03-27-2025 00:00:00",
+                "finishedAt": "03-27-2025 00:00:00",
+                "totalTimeSpent": 3012,
+                "notes": "이십글 이십글 이십글 이십글 이십글 이십글 이십글 이십글"
+            },
+            {
+                "type": "ecs",
+                "status": "completed",
+                "programTitle": "CSR0000827SS001E0001_Bartender_Original_es_MX_2997p_1920×1080_H264_2ch_20240327.mp4",
+                "programId": "c5345273a0b315c946c197e5d67dc55811dde8cb35",
+                "duration": 0,
+                "startedAt": "03-27-2025 00:00:00",
+                "finishedAt": "03-27-2025 00:00:00",
+                "totalTimeSpent": 6000,
+                "notes": "이십글자이십글자이십글자이십글자이십이십글자이십글자이십글자이십글자이십"
+            },
+            {
+                "type": "ec2",
+                "status": "completed",
+                "programTitle": "포켓몬XY 53.mpg",
+                "programId": "009f347c57e6fbe5bc83f30a9787a43e4c8359c9167",
+                "duration": 0,
+                "startedAt": "02-02-2025 05:18:15",
+                "finishedAt": "05-05-2025 05:18:15",
+                "totalTimeSpent": 6540,
+                "notes": "이십글자이십글자이십글자이십글자이십글자"
+            }
+        ]
+    }
+}

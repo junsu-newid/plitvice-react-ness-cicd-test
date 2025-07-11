@@ -1,5 +1,3 @@
-import api from '../index.ts';
-
 export interface EncodingStatistics {
     total: number;
     pending: number;
@@ -37,16 +35,6 @@ export interface FileListParams {
     endDate: string; // MM-DD-YYYY format
 }
 
-export const getFileList = async (params: FileListParams): Promise<FileListResponse> => {
-    const searchParams = new URLSearchParams({
-        uploadUserId: params.uploadUserId,
-        startDate: params.startDate,
-        endDate: params.endDate,
-    });
-
-    return await api.get(`encoding/files?${searchParams.toString()}`).json<FileListResponse>();
-};
-
 // 날짜 유틸리티 함수들 - MM-DD-YYYY 형식으로 변경
 export const formatDate = (date: Date): string => {
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -73,16 +61,5 @@ export const getDefaultDateRange = () => {
     return {
         startDate: formatDate(thirtyDaysAgo), // MM-DD-YYYY
         endDate: formatDate(today), // MM-DD-YYYY
-    };
-};
-
-export const getDefaultDateRangeForInput = () => {
-    const today = new Date();
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(today.getDate() - 30);
-
-    return {
-        startDate: formatDateForInput(thirtyDaysAgo), // YYYY-MM-DD for input
-        endDate: formatDateForInput(today), // YYYY-MM-DD for input
     };
 };

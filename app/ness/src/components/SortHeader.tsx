@@ -7,7 +7,7 @@ type Props<T extends object> = {
 };
 function SortHeader<T extends object>({ title, column }: Props<T>) {
     const sorted = column.getIsSorted();
-    const opacity = sorted == false ? 'opacity-0 group-hover:opacity-50' : 'opacity-100';
+    const opacity = sorted == false ? 'opacity-0 group-hover:opacity-100' : 'opacity-100';
     const rotate = sorted === 'desc' ? 'rotate-180' : '';
 
     return (
@@ -16,7 +16,7 @@ function SortHeader<T extends object>({ title, column }: Props<T>) {
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
             {title}
-            <SortingIcon className={`text-grey-50 ${opacity} ${rotate}`} />
+            <SortingIcon className={`text-grey-50 ${opacity} ${rotate} group-hover:text-primary`} />
         </button>
     );
 }

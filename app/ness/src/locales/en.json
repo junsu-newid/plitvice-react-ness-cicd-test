@@ -9,7 +9,9 @@
         "cancel": "Cancel",
         "close": "Close",
         "start": "Start",
-        "stop": "Stop"
+        "stop": "Stop",
+        "apply": "Apply",
+        "reset": "Reset"
     },
     "nav": {
         "home": {
@@ -24,6 +26,25 @@
                 "presetList": "Preset List"
             }
         }
+    },
+    "fileList": {
+        "title": "Encoded Files",
+        "description": "This page displays the list of encoded files from the past 30 days.\nYou can check the status and processing details of each task.",
+        "totalQueues": "Total Queues",
+        "pending": "Pending",
+        "running": "Running",
+        "stopped": "Stopped",
+        "completed": "Completed",
+        "tableCol0": "Server",
+        "tableCol1": "Status",
+        "tableCol2": "Type",
+        "tableCol3": "Name",
+        "tableCol4": "Program ID",
+        "tableCol5": "Duration",
+        "tableCol6": "Started At",
+        "tableCol7": "Finished At",
+        "tableCol8": "Proc Time",
+        "tableCol9": "Note"
     },
     "serverStatus": {
         "title": "Server Status",
