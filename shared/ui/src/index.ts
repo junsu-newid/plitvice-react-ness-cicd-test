@@ -10,6 +10,7 @@ export { default as DefaultChipCloseIcon } from './assets/icDefaultChipClose.svg
 export { default as DragHandleIcon } from './assets/icDragHandle.svg?react';
 export { default as CalenderIcon } from './assets/icCalender.svg?react';
 export { default as SortingIcon } from './assets/icSorting.svg?react';
+export { default as WarningIcon } from './assets/icWarning.svg?react';
 
 export { SideNavBar } from '@/components/navigation/SideNavBar.tsx';
 export { TabMenu } from '@/components/navigation/TabMenu.tsx';
