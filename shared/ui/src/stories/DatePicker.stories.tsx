@@ -54,7 +54,7 @@ const meta: Meta<typeof SingleDatePickerBox> = {
             description: '달력 언어 설정',
             table: {
                 type: {
-                    summary: 'date-fns/locales',
+                    summary: 'date-fns/locale',
                 },
                 defaultValue: {
                     summary: 'enUS',
