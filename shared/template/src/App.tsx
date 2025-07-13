@@ -14,6 +14,8 @@ import {
     TextCopier,
     TooltipBoxOnOverflow,
 } from '@plitvice/ui';
+import { SelectBox } from '@plitvice/ui/components/selectbox/SelectBox.tsx';
+import { SelectOption } from '@plitvice/ui/components/selectbox/DropdownList.tsx';
 
 function App() {
     const { t } = useTranslation();
@@ -47,6 +49,8 @@ function App() {
                 className={`line-clamp-2 w-[200px]`}
             />
             <TextCopier value={text} className={`line-clamp-2 w-[200px]`} />
+            <div className={`h-[400px]`} />
+            <SelectBox optionList={defaultComboBoxOptions} />
         </div>
     );
 }
@@ -80,6 +84,12 @@ const SingleDatePicker = () => {
         </div>
     );
 };
+
+const defaultComboBoxOptions: SelectOption[] = [
+    { value: 'item01', label: 'Item01' },
+    { value: 'item02', label: 'Item02' },
+    { value: 'item03', label: 'Item03' },
+];
 
 const RangeTimePicker = () => {
     const today = startOfDay(new Date());

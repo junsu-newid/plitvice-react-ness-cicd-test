@@ -35,7 +35,7 @@ const SelectBox = ({
     disabled = false,
     className = '',
 }: SelectBoxProps) => {
-    const { isFocused, containerRef, toggleDropdown, handleSelected } = useSelectBox({ onChange });
+    const { isFocused, direction, containerRef, toggleDropdown, handleSelected } = useSelectBox({ onChange });
     const { heightClass, iconSizeClass } = BoxComponentStyles[size];
 
     const fieldColor = disabled ? 'bg-grey-20' : 'bg-white hover:bg-blue-100 hover:border-blue-500';
@@ -67,7 +67,13 @@ const SelectBox = ({
             {supportingText !== '' ? (
                 <LabeledInput.SupportingText color={supportingTextColor}>{supportingText}</LabeledInput.SupportingText>
             ) : null}
-            <DropdownList size={size} isFocused={isFocused} optionList={optionList} onSelected={handleSelected} />
+            <DropdownList
+                size={size}
+                isFocused={isFocused}
+                optionList={optionList}
+                onSelected={handleSelected}
+                direction={direction}
+            />
         </LabeledInput.Root>
     );
 };
