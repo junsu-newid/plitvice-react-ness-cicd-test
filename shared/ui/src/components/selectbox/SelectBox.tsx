@@ -9,6 +9,7 @@ type SelectBoxSize = Extract<Size, 'small' | 'medium'>;
 export interface SelectBoxProps {
     size?: SelectBoxSize;
     width?: number;
+    border?: boolean;
     placeholder?: string;
     label?: string;
     labelColor?: string;
@@ -24,6 +25,7 @@ export interface SelectBoxProps {
 const SelectBox = ({
     size = 'small',
     width = 0,
+    border = true,
     placeholder = 'Placeholder',
     label = '',
     labelColor = '',
@@ -39,7 +41,7 @@ const SelectBox = ({
     const { heightClass, iconSizeClass } = BoxComponentStyles[size];
 
     const fieldColor = disabled ? 'bg-grey-20' : 'bg-white hover:bg-blue-100 hover:border-blue-500';
-    const fieldBorderColor = isFocused ? 'border-blue-500' : 'border-grey-40';
+    const fieldBorderColor = isFocused ? 'border-blue-500' : border ? 'border-grey-40' : 'border-transparent';
     const hoverBgColor = disabled ? '' : 'hover:bg-blue-100';
     const rotation = isFocused ? 'rotate-180' : 'rotate-0';
     const cursor = disabled ? '' : 'cursor-pointer';
@@ -48,7 +50,7 @@ const SelectBox = ({
         <LabeledInput.Root className={`p-0 ${className}`} width={width} size={size} ref={containerRef}>
             <LabeledInput.OuterLabel color={labelColor}>{label}</LabeledInput.OuterLabel>
             <div
-                className={`flex w-full ${heightClass} flex items-center gap-[4px] pl-[11px] pr-[7px] ${fieldColor} ${fieldBorderColor} rounded-[4px] border-[1px] ${hoverBgColor} ${cursor}`}
+                className={`flex w-full ${heightClass} flex items-center gap-[4px] pl-[11px] pr-[7px] ${fieldColor} ${fieldBorderColor} rounded-[4px] border ${hoverBgColor} ${cursor}`}
                 onClick={disabled ? undefined : toggleDropdown}
             >
                 <LabeledInput.Input

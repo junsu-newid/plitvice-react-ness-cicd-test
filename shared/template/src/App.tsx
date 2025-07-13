@@ -50,7 +50,7 @@ function App() {
             />
             <TextCopier value={text} className={`line-clamp-2 w-[200px]`} />
             <div className={`h-[400px]`} />
-            <SelectBox optionList={defaultComboBoxOptions} />
+            <SelectBox optionList={defaultComboBoxOptions} border={true} />
         </div>
     );
 }
