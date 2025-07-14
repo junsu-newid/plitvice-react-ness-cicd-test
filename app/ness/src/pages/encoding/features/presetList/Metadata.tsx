@@ -24,7 +24,7 @@ function EncodingPresetMetadataSheet({ content, onClose }: Props) {
                             <p className={`text-r14`}>
                                 {Array.isArray(value)
                                     ? value.map((item: string, index) => (
-                                          <StatusChip color={'gray'} key={`encoding-option-res-${index}`}>
+                                          <StatusChip color={'grey'} key={`encoding-option-res-${index}`}>
                                               {item}
                                           </StatusChip>
                                       ))

@@ -40,7 +40,7 @@ function ServerStatusList({ data }: Props) {
             columnHelper.accessor('status', {
                 header: ({ column }) => <SortHeader title={t('serverStatus.tableCol1')} column={column} />,
                 cell: (info) => {
-                    let chipColor: StatusColor = 'gray';
+                    let chipColor: StatusColor = 'grey';
                     switch (info.getValue()) {
                         case ServerStatusType[1]:
                             chipColor = 'yellow';
