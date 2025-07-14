@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 
 interface Props {
     displayText: string;
@@ -7,12 +7,29 @@ interface Props {
     maxWidth?: number;
 }
 
-function TooltipBox({ displayText, tooltipText, className, maxWidth = 280 }: Props) {
+function TooltipBoxOnOverflow({ displayText, tooltipText, className, maxWidth = 280 }: Props) {
     const [showTooltip, setShowTooltip] = useState(false);
+    const [isOverflowing, setIsOverflowing] = useState(true);
     const textRef = useRef<HTMLParagraphElement>(null);
 
+    useLayoutEffect(() => {
+        const checkOverflow = () => {
+            const element = textRef.current;
+            if (element) {
+                setIsOverflowing(element.scrollHeight - 1 > element.clientHeight);
+            }
+        };
+
+        checkOverflow();
+        window.addEventListener('resize', checkOverflow);
+
+        return () => window.removeEventListener('resize', checkOverflow);
+    }, [displayText, tooltipText]);
+
     const handleMouseEnter = () => {
-        setShowTooltip(true);
+        if (isOverflowing) {
+            setShowTooltip(true);
+        }
     };
 
     const handleMouseLeave = () => {
@@ -36,4 +53,4 @@ function TooltipBox({ displayText, tooltipText, className, maxWidth = 280 }: Pro
         </div>
     );
 }
-export { TooltipBox };
+export { TooltipBoxOnOverflow };
