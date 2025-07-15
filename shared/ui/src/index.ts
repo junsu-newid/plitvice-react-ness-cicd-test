@@ -12,6 +12,7 @@ export { default as CalenderIcon } from './assets/icCalender.svg?react';
 export { default as SortingIcon } from './assets/icSorting.svg?react';
 export { default as WarningIcon } from './assets/icWarning.svg?react';
 export { default as ErrorIcon } from './assets/icError.svg?react';
+export { default as InfoIcon } from './assets/icInfo.svg?react';
 
 export { SideNavBar } from '@/components/navigation/SideNavBar.tsx';
 export { TabMenu } from '@/components/navigation/TabMenu.tsx';
@@ -23,8 +24,7 @@ export { TextInput } from '@/components/textfield/TextInput.tsx';
 export { CellInput } from '@/components/textfield/CellInput.tsx';
 export { ModInput } from '@/components/textfield/ModInput.tsx';
 export { TextArea } from '@/components/textfield/TextArea';
-export { TooltipBox } from '@/components/textfield/TooltipBox';
-export { TooltipBoxOnOverflow } from '@/components/textfield/TooltipBoxOnOverflow';
+export { Tooltip } from '@/components/textfield/Tooltip.tsx';
 export { SelectBox } from '@/components/selectbox/SelectBox.tsx';
 export { ComboBox } from '@/components/selectbox/ComboBox.tsx';
 export { ModSelectBox } from '@/components/selectbox/ModSelectBox.tsx';
