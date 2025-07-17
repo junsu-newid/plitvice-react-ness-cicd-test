@@ -24,7 +24,7 @@ export interface DropdownListProps {
     showAllOptionsOnFocus?: boolean;
     optionList: SelectOption[];
     onSelected?: (option: SelectOption) => void;
-    direction: 'up' | 'down';
+    direction?: 'up' | 'down';
 }
 
 export interface SelectOption {
@@ -41,7 +41,7 @@ const DropdownList = ({
     showAllOptionsOnFocus = true,
     optionList,
     onSelected,
-    direction,
+    direction = 'down',
 }: DropdownListProps) => {
     const { filteredList } = useDropdownList(isFocused, inputValue, showAllOptionsOnFocus, optionList);
 
