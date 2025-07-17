@@ -12,6 +12,7 @@ import {
     Tooltip,
     useToast,
     InfoIcon,
+    Checkbox,
     CopyTooltip,
 } from '@plitvice/ui';
 import { SelectBox } from '@plitvice/ui/components/selectbox/SelectBox.tsx';
@@ -40,6 +41,7 @@ function App() {
                 <div>Hello Drawer</div>
             </Drawer>
             <TooltipGroup />
+            <CheckboxGroup />
             <div className={`h-[400px]`} />
             <SelectBox optionList={defaultComboBoxOptions} border={true} />
             <DatePickerGroup />
@@ -136,6 +138,45 @@ const RangeTimePicker = () => {
                 maxDays={8}
                 onChange={setDateRange}
             />
+        </div>
+    );
+};
+
+const CheckboxGroup = () => {
+    const [items, setItems] = useState([
+        { id: 1, name: 'Item 1', checked: false },
+        { id: 2, name: 'Item 2', checked: true },
+        { id: 3, name: 'Item 3', checked: false },
+    ]);
+
+    const checkedCount = items.filter((item) => item.checked).length;
+    const isAllChecked = checkedCount === items.length;
+    const isIndeterminate = checkedCount > 0 && checkedCount < items.length;
+
+    const handleSelectAll = (checked: boolean) => {
+        setItems((prev) => prev.map((item) => ({ ...item, checked })));
+    };
+
+    const handleItemCheck = (id: number, checked: boolean) => {
+        setItems((prev) => prev.map((item) => (item.id === id ? { ...item, checked } : item)));
+    };
+
+    return (
+        <div className="flex flex-col rounded bg-gray-50 p-2">
+            <Checkbox checked={isAllChecked} indeterminate={isIndeterminate} onChange={handleSelectAll}>
+                Select All
+            </Checkbox>
+            <div className="flex flex-col pl-2">
+                {items.map((item) => (
+                    <Checkbox
+                        id={item.id.toString()}
+                        checked={item.checked}
+                        onChange={(checked: boolean) => handleItemCheck(item.id, checked)}
+                    >
+                        {item.name}
+                    </Checkbox>
+                ))}
+            </div>
         </div>
     );
 };

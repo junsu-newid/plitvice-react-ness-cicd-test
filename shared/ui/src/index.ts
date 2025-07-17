@@ -38,6 +38,7 @@ export { SingleDatePickerBox, DateRangePickerBox } from '@/components/datepicker
 export { ToastProvider } from '@/components/toast/Toast.context.tsx';
 export { useToast } from '@/components/toast/Toast.hooks.ts';
 export { copyToClipboard } from '../../util/copyToClipboard.ts';
+export { Checkbox } from '@/components/button/CheckBox.tsx';
 
 export type { SelectOption } from '@/components/selectbox/DropdownList.tsx';
 export type { SideNavMap } from '@/components/navigation/sideNavBar.types.ts';
