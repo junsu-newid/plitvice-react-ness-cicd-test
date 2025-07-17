@@ -12,6 +12,7 @@ import {
     Tooltip,
     useToast,
     InfoIcon,
+    CopyTooltip,
 } from '@plitvice/ui';
 import { SelectBox } from '@plitvice/ui/components/selectbox/SelectBox.tsx';
 import { SelectOption } from '@plitvice/ui/components/selectbox/DropdownList.tsx';
@@ -52,9 +53,22 @@ const TooltipGroup = () => {
     const displayText = 'Proc Time';
     const text =
         '프리셋은 presetId 기준으로 렌더링되며, FFmpeg 명령어 내 {INPUT}, {OUTPUT} 토큰은 실행 시 경로로 치환되고, 유저 그룹 및 회사 기준으로 필터링 가능하며, 삭제 전 종속성 확인이 필요하고, 날짜는 UTC 기준 ISO 8601 포맷을 권장합니다.';
+    const { showToast } = useToast();
 
     return (
         <>
+            <CopyTooltip text={text} />
+            <CopyTooltip
+                text={'프리셋은 presetId 기준으로 렌더링'}
+                className={`line-clamp-1 w-[400px] bg-orange-100`}
+                onCopySuccess={() => showToast('텍스트가 복사되었습니다.', 'info')}
+            />
+            <CopyTooltip
+                maxWidth={560}
+                text={text}
+                className={`line-clamp-1 w-[400px] bg-orange-100`}
+                onCopySuccess={() => showToast('텍스트가 복사되었습니다.', 'info')}
+            />
             <Tooltip text={text} maxWidth={280}>
                 <p>{displayText}</p>
             </Tooltip>
