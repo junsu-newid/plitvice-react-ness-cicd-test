@@ -74,4 +74,4 @@ const DropdownList = ({
         </ul>
     );
 };
-export default DropdownList;
+export { DropdownList };

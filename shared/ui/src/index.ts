@@ -25,6 +25,7 @@ export { ModInput } from '@/components/textfield/ModInput.tsx';
 export { TextArea } from '@/components/textfield/TextArea';
 export { Tooltip } from '@/components/textfield/Tooltip.tsx';
 export { CopyTooltip } from '@/components/textfield/CopyTooltip.tsx';
+export { DropdownList } from '@/components/selectbox/DropdownList.tsx';
 export { SelectBox } from '@/components/selectbox/SelectBox.tsx';
 export { ComboBox } from '@/components/selectbox/ComboBox.tsx';
 export { ModSelectBox } from '@/components/selectbox/ModSelectBox.tsx';
