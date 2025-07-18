@@ -40,7 +40,7 @@ const SelectBox = ({
     const { isFocused, direction, containerRef, toggleDropdown, handleSelected } = useSelectBox({ onChange });
     const { heightClass, iconSizeClass } = BoxComponentStyles[size];
 
-    const fieldColor = disabled ? 'bg-grey-20' : 'bg-white hover:bg-blue-100 hover:border-blue-500';
+    const fieldColor = disabled ? 'bg-grey-20' : 'bg-transparent hover:bg-blue-100 hover:border-blue-500';
     const fieldBorderColor = isFocused ? 'border-blue-500' : border ? 'border-grey-40' : 'border-transparent';
     const hoverBgColor = disabled ? '' : 'hover:bg-blue-100';
     const rotation = isFocused ? 'rotate-180' : 'rotate-0';
