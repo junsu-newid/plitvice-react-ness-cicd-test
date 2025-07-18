@@ -37,7 +37,7 @@ function Tooltip({ children, text, show = true, place = 'bottom', maxWidth = 280
                     wordBreak: 'break-all',
                     borderRadius: '6px',
                     padding: '10px 12px',
-                    zIndex: 10,
+                    zIndex: 10001,
                     width: 'max-content',
                     ...(maxWidth !== undefined && { maxWidth: `${maxWidth}px` }),
                 }}
