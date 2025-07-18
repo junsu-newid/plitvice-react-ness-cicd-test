@@ -61,9 +61,9 @@ export const SelectAll: Story = {
 
 const SelectAllComponent = () => {
     const [items, setItems] = useState([
-        { id: 1, name: 'Item 1', checked: false },
-        { id: 2, name: 'Item 2', checked: true },
-        { id: 3, name: 'Item 3', checked: false },
+        { id: 'item1', name: 'item 1', checked: false },
+        { id: 'item2', name: 'item 2', checked: true },
+        { id: 'item3', name: 'item 3', checked: false },
     ]);
 
     const checkedCount = items.filter((item) => item.checked).length;
@@ -74,7 +74,7 @@ const SelectAllComponent = () => {
         setItems((prev) => prev.map((item) => ({ ...item, checked })));
     };
 
-    const handleItemCheck = (id: number, checked: boolean) => {
+    const handleItemCheck = (id: string, checked: boolean) => {
         setItems((prev) => prev.map((item) => (item.id === id ? { ...item, checked } : item)));
     };
 
@@ -86,7 +86,7 @@ const SelectAllComponent = () => {
             <div className="flex flex-col pl-2">
                 {items.map((item) => (
                     <Checkbox
-                        id={item.id.toString()}
+                        id={item.id}
                         checked={item.checked}
                         onChange={(checked: boolean) => handleItemCheck(item.id, checked)}
                     >
@@ -115,16 +115,8 @@ const AllStatesComponent = () => {
             </div>
             <div>
                 <div className="flex gap-1">
-                    <Checkbox>Label</Checkbox>
-                    <Checkbox>
-                        <span className="text-m16 text-red-500">Custom Label</span>
-                    </Checkbox>
-                </div>
-            </div>
-            <div>
-                <div className="flex gap-1">
                     <Checkbox checked={isChecked} onChange={setIsChecked}>
-                        {isChecked ? 'checked' : 'unchecked'}
+                        {isChecked ? <span className="text-red-500">checked</span> : 'unchecked'}
                     </Checkbox>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback, useId } from 'react';
+import React, { useRef, useEffect, useState, useId } from 'react';
 import CheckmarkIcon from '@/assets/icCheckmark.svg?react';
 import IndeterminateIcon from '@/assets/icIndeterminate.svg?react';
 
@@ -25,9 +25,6 @@ export const Checkbox = ({
     const generatedId = useId();
     const checkboxId = id || generatedId;
 
-    const [isHovered, setIsHovered] = useState(false);
-    const [isPressed, setIsPressed] = useState(false);
-
     const [uncontrolledChecked, setUncontrolledChecked] = useState(false);
     const isChecked = checked !== undefined ? checked : uncontrolledChecked;
 
@@ -49,27 +46,6 @@ export const Checkbox = ({
         onChange?.(value);
     };
 
-    const handleMouseEnter = useCallback(() => setIsHovered(true), []);
-    const handleMouseLeave = useCallback(() => {
-        setIsHovered(false);
-        setIsPressed(false);
-    }, []);
-
-    const handleMouseDown = useCallback(() => !disabled && setIsPressed(true), [disabled]);
-    const handleMouseUp = useCallback(() => setIsPressed(false), []);
-
-    const getBoxClasses = () => {
-        if (disabled) {
-            return isChecked || indeterminate ? 'border-grey-30 bg-grey-30' : 'border-grey-30 bg-grey-10';
-        }
-
-        if (isChecked || indeterminate) {
-            return isPressed ? 'border-blue-700 bg-blue-700' : 'border-blue-600 bg-blue-600';
-        }
-
-        return isPressed ? 'border-grey-40 bg-white' : 'border-grey-30 bg-white';
-    };
-
     const renderIcon = () => {
         const iconColor = disabled ? 'text-grey-10' : 'text-white';
 
@@ -84,6 +60,30 @@ export const Checkbox = ({
         return null;
     };
 
+    const getCustomInputClasses = () => {
+        const classes = [
+            'appearance-none rounded-[2px] border-2 transition-all duration-200',
+            'focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-100 focus:ring-offset-0',
+        ];
+
+        if (disabled) {
+            classes.push('border-grey-30 bg-grey-10');
+            if (isChecked || indeterminate) {
+                classes.push('bg-grey-30');
+            }
+        } else {
+            classes.push('hover:ring-4 hover:ring-blue-100');
+
+            if (isChecked || indeterminate) {
+                classes.push('border-blue-600 bg-blue-600', 'active:border-blue-700 active:bg-blue-700');
+            } else {
+                classes.push('border-grey-30 bg-white', 'active:border-grey-40');
+            }
+        }
+
+        return classes.join(' ');
+    };
+
     useEffect(() => {
         if (checkboxRef.current) {
             checkboxRef.current.indeterminate = indeterminate;
@@ -95,39 +95,20 @@ export const Checkbox = ({
             htmlFor={checkboxId}
             className={`inline-flex items-center ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} ${className}`}
         >
-            <div className="relative">
-                {/* Native input */}
+            <div className="relative flex h-[24px] w-[24px] items-center justify-center">
                 <input
-                    ref={checkboxRef}
+                    className={`h-[16px] w-[16px] shrink-0 ${getCustomInputClasses()}`}
                     type="checkbox"
                     id={checkboxId}
-                    className="sr-only"
+                    disabled={disabled}
                     checked={isChecked}
                     onChange={handleChange}
-                    disabled={disabled}
+                    ref={checkboxRef}
                 />
 
-                {/* Click Area */}
-                <div
-                    className="relative flex h-[24px] w-[24px] items-center justify-center"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={handleMouseUp}
-                >
-                    {/* Hover background */}
-                    {!disabled && isHovered && <div className="absolute inset-px rounded bg-blue-100" />}
-
-                    {/* Checkbox */}
-                    <div
-                        className={`relative flex h-[16px] w-[16px] items-center justify-center rounded-[2px] border-[2px] transition-all duration-200 ${getBoxClasses()}`}
-                    >
-                        {renderIcon()}
-                    </div>
-                </div>
+                <div className="absolute flex h-[16px] w-[16px] items-center justify-center">{renderIcon()}</div>
             </div>
 
-            {/* Label */}
             {children && (
                 <div className={`text-r16 pl-[4px] ${disabled ? 'text-grey-40' : 'text-grey-90'}`}>{children}</div>
             )}
