@@ -27,7 +27,7 @@ function Tooltip({ children, text, show = true, place = 'bottom', maxWidth = 280
             <ReactTooltip
                 id={tooltipId}
                 place={place}
-                offset={12}
+                offset={6}
                 style={{
                     backgroundColor: 'var(--color-grey-90)',
                     color: 'white',
