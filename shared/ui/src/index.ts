@@ -13,6 +13,7 @@ export { default as SortingIcon } from './assets/icSorting.svg?react';
 export { default as WarningIcon } from './assets/icWarning.svg?react';
 export { default as ErrorIcon } from './assets/icError.svg?react';
 export { default as InfoIcon } from './assets/icInfo.svg?react';
+export { default as MoreVertIcon } from './assets/icMoreVert.svg?react';
 
 export { SideNavBar } from '@/components/navigation/SideNavBar.tsx';
 export { TabMenu } from '@/components/navigation/TabMenu.tsx';
