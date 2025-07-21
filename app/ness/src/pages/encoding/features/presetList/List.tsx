@@ -10,8 +10,8 @@ import {
     useReactTable,
 } from '@tanstack/react-table';
 import SortHeader from '@/components/SortHeader.tsx';
-import { TooltipBox } from '@plitvice/ui/components/textfield/TooltipBox.tsx';
-import { TagChip } from '@plitvice/ui/components/chips/TagChip.tsx';
+import { Tooltip } from '@plitvice/ui';
+import CommonChips from '@/components/CommonChips.tsx';
 
 interface Props {
     data: PresetItem[];
@@ -44,7 +44,7 @@ function EncodingPresetList({ data, onItemClick }: Props) {
             }),
             columnHelper.accessor('userGroup', {
                 header: ({ column }) => <SortHeader title={t('presetList.tableCol2')} column={column} />,
-                cell: (info) => <TagChip variant={'default'}>{info.getValue()}</TagChip>,
+                cell: (info) => <CommonChips value={info.getValue()} />,
                 enableSorting: true,
             }),
             columnHelper.accessor('companyName', {
@@ -54,7 +54,11 @@ function EncodingPresetList({ data, onItemClick }: Props) {
             }),
             columnHelper.accessor('notes', {
                 header: t('presetList.tableCol4'),
-                cell: (info) => <TooltipBox text={info.getValue()} className={`line-clamp-2`} />,
+                cell: (info) => (
+                    <Tooltip text={info.getValue()}>
+                        <p className={`line-clamp-2`}>{info.getValue()}</p>
+                    </Tooltip>
+                ),
             }),
             columnHelper.accessor('createdAt', {
                 header: ({ column }) => <SortHeader title={t('presetList.tableCol5')} column={column} />,
@@ -66,15 +70,6 @@ function EncodingPresetList({ data, onItemClick }: Props) {
                 cell: (info) => <p>{info.getValue()}</p>,
                 enableSorting: true,
             }),
-            // columnHelper.accessor('ffmpegCommand', {
-            //     header: t('presetList.tableCol8'),
-            //     cell: (info) => <TextCopier value={info.getValue()} className={`line-clamp-2`} />,
-            // }),
-            // columnHelper.accessor('options', {
-            //     header: () => t('presetList.tableCol4'),
-            //     cell: (info) => '-',
-            //     enableSorting: true,
-            // }),
         ],
         [t],
     );
@@ -90,7 +85,7 @@ function EncodingPresetList({ data, onItemClick }: Props) {
     return (
         <table className={'absolute left-0 top-0 w-full table-fixed border-separate border-spacing-0 text-left'}>
             <colgroup>
-                <col width="92px" />
+                <col width="106px" />
                 <col width="168px" />
                 <col width="160px" />
                 <col width="188px" />
@@ -100,7 +95,7 @@ function EncodingPresetList({ data, onItemClick }: Props) {
             </colgroup>
             <thead className={'text-b16 text-grey-70 sticky top-0 z-20'}>
                 {table.getHeaderGroups().map((headerGroup) => (
-                    <tr key={headerGroup.id} className={`border-b border-gray-200`}>
+                    <tr key={headerGroup.id}>
                         {headerGroup.headers.map((header) => (
                             <th
                                 key={header.id}
@@ -116,13 +111,13 @@ function EncodingPresetList({ data, onItemClick }: Props) {
             </thead>
             <tbody>
                 {table.getRowModel().rows.map((row) => (
-                    <tr key={row.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr key={row.id} className="border-grey-20 hover:bg-grey-10 border-b">
                         {row.getVisibleCells().map((cell) => {
                             const meta = cell.column.columnDef.meta;
                             return (
                                 <td
                                     key={cell.id}
-                                    className={`border-grey-20 text-r14 text-grey-90 border-b px-[22px] py-[14px] ${meta?.widthStyle} ${meta?.tdStyle}`}
+                                    className={`border-grey-20 text-r16 text-grey-90 border-b px-[22px] py-[14px] ${meta?.widthStyle} ${meta?.tdStyle}`}
                                 >
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>

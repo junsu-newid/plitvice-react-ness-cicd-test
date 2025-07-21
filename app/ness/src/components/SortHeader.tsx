@@ -11,13 +11,13 @@ function SortHeader<T extends object>({ title, column }: Props<T>) {
     const rotate = sorted === 'desc' ? 'rotate-180' : '';
 
     return (
-        <button
-            className="text-grey-70 group flex items-center gap-1"
+        <p
+            className="non-draggable group flex cursor-pointer items-center gap-[4px]"
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
             {title}
-            <SortingIcon className={`text-grey-50 ${opacity} ${rotate} group-hover:text-primary`} />
-        </button>
+            <SortingIcon className={`text-grey-50 group-hover:text-blue-600 ${opacity} ${rotate}`} />
+        </p>
     );
 }
 export default SortHeader;

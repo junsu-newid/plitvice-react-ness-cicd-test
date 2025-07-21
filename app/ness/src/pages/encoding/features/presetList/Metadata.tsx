@@ -1,7 +1,7 @@
 import { PresetItem } from '@/api/models/preset.ts';
 import { useTranslation } from 'react-i18next';
 import { firstUpperCase } from '@/utils';
-import { Drawer, Button, TextCopier, StatusChip, useToast } from '@plitvice/ui';
+import { Drawer, Button, StatusChip, useToast, copyToClipboard } from '@plitvice/ui';
 
 type Props = {
     content?: PresetItem;
@@ -12,6 +12,12 @@ function EncodingPresetMetadataSheet({ content, onClose }: Props) {
     const { t } = useTranslation();
     const { showToast } = useToast();
 
+    const handleCommandCopy = (text?: string) => {
+        if (text) {
+            copyToClipboard(text, () => showToast(t('presetList.toastClipboard'), 'info'));
+        }
+    };
+
     const EncodingOption = () => {
         const options = content?.options || {};
 
@@ -21,7 +27,7 @@ function EncodingPresetMetadataSheet({ content, onClose }: Props) {
                     return (
                         <div key={`encoding-option-${index}`} className={`flex items-start`}>
                             <p className={`text-m14 text-grey-50 w-[90px]`}>{firstUpperCase(key)}: </p>
-                            <p className={`text-r14`}>
+                            <p className={`text-r14 flex gap-[6px]`}>
                                 {Array.isArray(value)
                                     ? value.map((item: string, index) => (
                                           <StatusChip color={'grey'} key={`encoding-option-res-${index}`}>
@@ -58,11 +64,12 @@ function EncodingPresetMetadataSheet({ content, onClose }: Props) {
                     <h3>{t('presetList.drawerTitle1')}</h3>
                 </div>
                 <div className={`p-[16px]`}>
-                    <TextCopier
-                        value={content?.ffmpegCommand ?? ''}
-                        onSuccess={() => showToast(t('presetList.toastClipboard'), 'info')}
-                        className={`line-clamp-16`}
-                    />
+                    <p
+                        className={`line-clamp-16 cursor-copy`}
+                        onClick={() => handleCommandCopy(content?.ffmpegCommand)}
+                    >
+                        {content?.ffmpegCommand ?? ''}
+                    </p>
                 </div>
             </div>
         </Drawer>

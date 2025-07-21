@@ -1,7 +1,7 @@
 {
     "name": "ness",
     "private": true,
-    "version": "0.0.0",
+    "version": "0.1.1",
     "type": "module",
     "scripts": {
         "dev": "vite --host",
@@ -32,6 +32,7 @@
     },
     "devDependencies": {
         "@eslint/js": "catalog:",
+        "@tanstack/react-query": "catalog:",
         "@types/js-cookie": "^3.0.6",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
@@ -45,6 +46,7 @@
         "typescript": "catalog:",
         "typescript-eslint": "catalog:",
         "vite": "catalog:",
+        "vite-plugin-static-copy": "^3.1.1",
         "vite-plugin-svgr": "catalog:",
         "vite-tsconfig-paths": "catalog:"
     }

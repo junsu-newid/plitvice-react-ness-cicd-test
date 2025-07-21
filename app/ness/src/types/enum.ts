@@ -1,5 +1,4 @@
 export const ServerStatusType = ['total', 'pending', 'running', 'stopping', 'stopped'];
-export const EncodingListType = ['totalQueues', 'pending', 'running', 'stopped', 'completed'];
-export type SortIconType = {
-    sorted: false | 'asc' | 'desc';
-};
+export const QueueStatusType = ['totalQueues', 'pending', 'running', 'stopped', 'completed'];
+
+export const CHUNK_SIZE = 50 * 1024 * 1024;

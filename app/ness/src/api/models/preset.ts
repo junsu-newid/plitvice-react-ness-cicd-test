@@ -1,5 +1,3 @@
-import api from '../index.ts';
-
 export interface EncodingOptions {
     // 비디오 설정
     video?: {
@@ -42,7 +40,3 @@ export interface PresetResponse {
     msg: string;
     data: PresetItem[];
 }
-
-export const getPresetList = async (userId: string): Promise<PresetResponse> => {
-    return await api.get(`preset/user/${userId}`).json<PresetResponse>();
-};

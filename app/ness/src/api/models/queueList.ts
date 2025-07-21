@@ -6,12 +6,13 @@ export interface EncodingStatistics {
     stopped: number;
 }
 
-export interface EncodingFileItem {
+export interface QueueFileItem {
     programId: string;
     programTitle: string | null;
     status: string;
     type: string;
     duration: number;
+    createdAt: string;
     startedAt: string;
     finishedAt: string | null;
     totalTimeSpent: number | null;
@@ -20,7 +21,7 @@ export interface EncodingFileItem {
 
 export interface EncodingFilesData {
     statistics: EncodingStatistics;
-    encodingFileList: EncodingFileItem[];
+    encodingFileList: QueueFileItem[];
 }
 
 export interface FileListResponse {

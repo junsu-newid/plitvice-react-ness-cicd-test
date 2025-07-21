@@ -9,11 +9,13 @@ import {
 import { ServerInstance } from '@/api/models/serverStatus.ts';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StatusChip, Button } from '@plitvice/ui';
+import { StatusChip, Button, useToast } from '@plitvice/ui';
 import { ServerStatusType } from '@/types/enum.ts';
 import { firstUpperCase } from '@/utils';
 import SortHeader from '@/components/SortHeader.tsx';
 import { StatusColor } from '@plitvice/ui/components/chips/StatusChip.tsx';
+import CommonChips from '@/components/CommonChips.tsx';
+import { putServerStatus } from '@/api/services/serverStatus.ts';
 
 interface Props {
     data: ServerInstance[];
@@ -22,19 +24,26 @@ const columnHelper = createColumnHelper<ServerInstance>();
 
 function ServerStatusList({ data }: Props) {
     const { t } = useTranslation();
+    const { showToast } = useToast();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'instanceName', desc: false }]);
+
+    const handlePutStatus = (instanceId: string, status: string) => {
+        putServerStatus(instanceId, status)
+            .then((res) => {
+                if (res.code === 20000) {
+                    showToast(`${instanceId} ${status}`, 'info');
+                } else {
+                    showToast(`${instanceId} failed to ${status}`, 'error');
+                }
+            })
+            .catch(() => showToast(`${instanceId} failed to ${status}`, 'error'));
+    };
 
     const columns = useMemo(
         () => [
             columnHelper.accessor('serverType', {
                 header: ({ column }) => <SortHeader title={t('serverStatus.tableCol0')} column={column} />,
-                cell: (info) => (
-                    <p
-                        className={`text-m12 text-grey-90 bg-grey-10 border-grey-20 w-fit rounded-[24px] border px-[8px] py-[4px]`}
-                    >
-                        {info.getValue()}
-                    </p>
-                ),
+                cell: (info) => <CommonChips value={info.getValue()} />,
                 enableSorting: true,
             }),
             columnHelper.accessor('status', {
@@ -56,16 +65,19 @@ function ServerStatusList({ data }: Props) {
                         <div className={`flex items-center justify-between gap-[12px] truncate`}>
                             <StatusChip color={chipColor}>● {firstUpperCase(info.getValue())}</StatusChip>
                             <div className={'flex gap-[12px]'}>
-                                <Button fill={false} size={'small'} disabled={info.getValue() === ServerStatusType[2]}>
+                                <Button
+                                    fill={false}
+                                    size={'small'}
+                                    disabled={info.row.original.serverType !== 'cloud'}
+                                    onClick={() => handlePutStatus(info.row.original.instanceId, 'start')}
+                                >
                                     {t('button.start')}
                                 </Button>
                                 <Button
                                     fill={false}
                                     size={'small'}
-                                    disabled={
-                                        info.getValue() === ServerStatusType[3] ||
-                                        info.getValue() === ServerStatusType[4]
-                                    }
+                                    disabled={info.row.original.serverType !== 'cloud'}
+                                    onClick={() => handlePutStatus(info.row.original.instanceId, 'stop')}
                                 >
                                     {t('button.stop')}
                                 </Button>
@@ -74,15 +86,20 @@ function ServerStatusList({ data }: Props) {
                     );
                 },
                 enableSorting: true,
+                sortingFn: (rowA, rowB) => {
+                    const indexA = ServerStatusType.indexOf(rowA.original.status);
+                    const indexB = ServerStatusType.indexOf(rowB.original.status);
+                    return indexA - indexB;
+                },
             }),
             columnHelper.accessor('instanceName', {
                 header: ({ column }) => <SortHeader title={t('serverStatus.tableCol2')} column={column} />,
-                cell: (info) => info.getValue(),
+                cell: (info) => <p className={`line-clamp-1 break-all`}>{info.getValue()}</p>,
                 enableSorting: true,
             }),
             columnHelper.accessor('instanceId', {
                 header: ({ column }) => <SortHeader title={t('serverStatus.tableCol3')} column={column} />,
-                cell: (info) => info.getValue() || '-',
+                cell: (info) => <p className={`line-clamp-1 break-all`}>{info.getValue()}</p>,
                 enableSorting: true,
             }),
             columnHelper.accessor('createdAt', {
@@ -110,7 +127,7 @@ function ServerStatusList({ data }: Props) {
     return (
         <table className={'absolute left-0 top-0 w-full table-fixed border-separate border-spacing-0 text-left'}>
             <colgroup>
-                <col width="114px" />
+                <col width="118px" />
                 <col width="260px" />
                 <col width="100%" />
                 <col width="80%" />
@@ -141,7 +158,7 @@ function ServerStatusList({ data }: Props) {
                             return (
                                 <td
                                     key={cell.id}
-                                    className={`border-grey-20 text-r14 text-grey-90 border-b px-[22px] py-[14px] ${meta?.widthStyle} ${meta?.tdStyle}`}
+                                    className={`border-grey-20 text-r16 text-grey-90 border-b px-[22px] py-[14px] ${meta?.widthStyle} ${meta?.tdStyle}`}
                                 >
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>

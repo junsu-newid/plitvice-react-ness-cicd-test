@@ -1,5 +1,5 @@
 import api from '../index.ts';
-import { FileListParams, FileListResponse } from '@/api/models/fileList.ts';
+import { FileListParams, FileListResponse } from '@/api/models/queueList.ts';
 
 export const fetchFileList = async (params: FileListParams): Promise<FileListResponse> => {
     const searchParams = new URLSearchParams({

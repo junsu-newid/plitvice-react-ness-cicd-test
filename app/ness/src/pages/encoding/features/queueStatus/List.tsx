@@ -9,19 +9,20 @@ import {
 } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EncodingFileItem } from '@/api/models/fileList.ts';
-import { StatusChip, TagChip, TooltipBox } from '@plitvice/ui';
+import { QueueFileItem } from '@/api/models/queueList.ts';
+import { StatusChip, Tooltip } from '@plitvice/ui';
 import { StatusColor } from '@plitvice/ui/components/chips/StatusChip.tsx';
-import { EncodingListType } from '@/types/enum.ts';
+import { QueueStatusType } from '@/types/enum.ts';
 import SortHeader from '@/components/SortHeader.tsx';
-import { TooltipBoxOnOverflow } from '@plitvice/ui/components/textfield/TooltipBoxOnOverflow.tsx';
+import CommonChips from '@/components/CommonChips.tsx';
 
 interface Props {
-    data: EncodingFileItem[];
+    data: QueueFileItem[];
+    onItemClick: (item: QueueFileItem) => void;
 }
-const columnHelper = createColumnHelper<EncodingFileItem>();
+const columnHelper = createColumnHelper<QueueFileItem>();
 
-function EncodingFileList({ data }: Props) {
+function QueueStatusList({ data, onItemClick }: Props) {
     const { t } = useTranslation();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'status', desc: false }]);
 
@@ -52,22 +53,22 @@ function EncodingFileList({ data }: Props) {
     const columns = useMemo(
         () => [
             columnHelper.accessor('type', {
-                header: ({ column }) => <SortHeader title={t('fileList.tableCol0')} column={column} />,
-                cell: (info) => <TagChip>{info.getValue() || '-'}</TagChip>,
+                header: ({ column }) => <SortHeader title={t('queueStatus.tableCol0')} column={column} />,
+                cell: (info) => <CommonChips value={info.getValue()} />,
                 enableSorting: true,
             }),
             columnHelper.accessor('status', {
-                header: ({ column }) => <SortHeader title={t('fileList.tableCol1')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('queueStatus.tableCol1')} column={column} />,
                 cell: (info) => {
                     let chipColor: StatusColor = 'green';
                     switch (info.getValue()) {
-                        case EncodingListType[1]:
+                        case QueueStatusType[1]:
                             chipColor = 'yellow';
                             break;
-                        case EncodingListType[2]:
+                        case QueueStatusType[2]:
                             chipColor = 'cyan';
                             break;
-                        case EncodingListType[3]:
+                        case QueueStatusType[3]:
                             chipColor = 'red';
                             break;
                     }
@@ -78,67 +79,63 @@ function EncodingFileList({ data }: Props) {
                     );
                 },
                 enableSorting: true,
+                sortingFn: (rowA, rowB) => {
+                    const indexA = QueueStatusType.indexOf(rowA.original.status);
+                    const indexB = QueueStatusType.indexOf(rowB.original.status);
+                    return indexA - indexB;
+                },
             }),
             columnHelper.accessor('totalTimeSpent', {
                 header: () => (
-                    <TooltipBox
-                        className="flex items-center gap-1"
-                        displayText={t('fileList.tableCol8')}
-                        tooltipText={'Encoding Process Time'}
-                    />
+                    <Tooltip text={'Encoding Process Time'}>
+                        <p>{t('queueStatus.tableCol2')}</p>
+                    </Tooltip>
                 ),
                 cell: (info) => <p className={`text-center`}>{formatProcTime(info.getValue())}</p>,
                 enableSorting: true,
+                meta: { thStyle: 'text-center' },
             }),
             columnHelper.accessor('programTitle', {
                 header: ({ column }) => (
-                    <SortHeader title={t('fileList.tableCol3')} column={column as Column<EncodingFileItem, string>} />
+                    <SortHeader title={t('queueStatus.tableCol3')} column={column as Column<QueueFileItem, string>} />
                 ),
                 cell: (info) => (
-                    <TooltipBoxOnOverflow
-                        className={'line-clamp-2 break-all'}
-                        displayText={info.getValue() || '-'}
-                        tooltipText={info.getValue() || '-'}
-                    />
+                    <Tooltip text={info.getValue() || '-'}>
+                        {info.getValue() ? (
+                            <p
+                                onClick={() => onItemClick(info.row.original)}
+                                className={'line-clamp-2 cursor-pointer break-all hover:text-blue-600 hover:underline'}
+                            >
+                                {info.getValue()}
+                            </p>
+                        ) : (
+                            '-'
+                        )}
+                    </Tooltip>
                 ),
                 enableSorting: true,
             }),
             columnHelper.accessor('programId', {
-                header: ({ column }) => <SortHeader title={t('fileList.tableCol4')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('queueStatus.tableCol4')} column={column} />,
                 cell: (info) => (
-                    <TooltipBoxOnOverflow
-                        className={'line-clamp-2 break-all'}
-                        displayText={info.getValue() || '-'}
-                        tooltipText={info.getValue() || '-'}
-                    />
+                    <a
+                        className={`line-clamp-1 break-all hover:text-blue-600 hover:underline`}
+                        target={'_blank'}
+                        href={`https://partner.its-newid.net/?cmd=edit&id=${info.getValue()}`}
+                    >
+                        {info.getValue()}
+                    </a>
                 ),
                 enableSorting: true,
             }),
             columnHelper.accessor('duration', {
-                header: () => <p className="flex items-center gap-1">{t('fileList.tableCol5')}</p>,
+                header: () => t('queueStatus.tableCol5'),
                 cell: (info) => <p className={`text-center`}>{formatDuration(info.getValue()) || '-'}</p>,
                 enableSorting: true,
+                meta: { thStyle: 'text-center' },
             }),
-            columnHelper.accessor('notes', {
-                header: () => <p className="flex items-center gap-1">{t('fileList.tableCol9')}</p>,
-                cell: (info) => (
-                    <TooltipBoxOnOverflow
-                        className={'line-clamp-2 break-all'}
-                        displayText={info.getValue() || '-'}
-                        tooltipText={info.getValue() || '-'}
-                    />
-                ),
-                enableSorting: true,
-            }),
-            columnHelper.accessor('startedAt', {
-                header: ({ column }) => <SortHeader title={t('fileList.tableCol6')} column={column} />,
-                cell: (info) => <p>{info.getValue() || '-'}</p>,
-                enableSorting: true,
-            }),
-            columnHelper.accessor('finishedAt', {
-                header: ({ column }) => (
-                    <SortHeader title={t('fileList.tableCol7')} column={column as Column<EncodingFileItem, string>} />
-                ),
+            columnHelper.accessor('createdAt', {
+                header: ({ column }) => <SortHeader title={t('queueStatus.tableCol7')} column={column} />,
                 cell: (info) => <p>{info.getValue() || '-'}</p>,
                 enableSorting: true,
             }),
@@ -157,22 +154,23 @@ function EncodingFileList({ data }: Props) {
     return (
         <table className={'absolute left-0 top-0 w-full table-fixed border-separate border-spacing-0 text-left'}>
             <colgroup>
-                <col width="96px" />
-                <col width="134px" />
+                <col width="118px" />
+                <col width="136px" />
                 <col width="120px" />
-                <col style={{ minWidth: '400px', width: '60%' }} />
-                <col style={{ minWidth: '400px', width: '60%' }} />
-                <col width="111px" />
-                <col width="324px" />
-                <col width="156px" />
+                <col width="100%" />
+                <col width="80%" />
+                <col width="112px" />
                 <col width="156px" />
             </colgroup>
-            <thead className={'text-m16 text-grey-70 sticky top-0 z-20'}>
+            <thead className={'text-b16 text-grey-70 sticky top-0 z-20'}>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id} className={`border-grey-10 border-b`}>
                         {headerGroup.headers.map((header) => (
-                            <th key={header.id} className={`border-grey-20 border-b-[2px] bg-white px-[22px]`}>
-                                <h3 className={`leading-[50px]`}>
+                            <th
+                                key={header.id}
+                                className={`border-grey-20 border-b-[2px] bg-white px-[22px] ${header.column.columnDef.meta?.thStyle}`}
+                            >
+                                <h3 className={`py-[14px]`}>
                                     {flexRender(header.column.columnDef.header, header.getContext())}
                                 </h3>
                             </th>
@@ -187,7 +185,7 @@ function EncodingFileList({ data }: Props) {
                             return (
                                 <td
                                     key={cell.id}
-                                    className={`border-grey-20 text-r14 text-grey-90 border-b px-[22px] py-[14px]`}
+                                    className={`border-grey-20 text-r16 text-grey-90 h-[70px] border-b px-[22px] py-[14px]`}
                                 >
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
@@ -199,4 +197,4 @@ function EncodingFileList({ data }: Props) {
         </table>
     );
 }
-export default EncodingFileList;
+export default QueueStatusList;

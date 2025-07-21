@@ -17,8 +17,8 @@
         "home": {
             "encoding": {
                 "title": "Encoding",
-                "upload": "Upload",
-                "list": "List"
+                "fileUploads": "File Upload",
+                "queueStatus": "Queue Status"
             },
             "operations": {
                 "title": "Operations",
@@ -27,24 +27,76 @@
             }
         }
     },
-    "fileList": {
-        "title": "Encoded Files",
+    "fileUploads": {
+        "title": "File Uploads",
+        "description": "Upload encoding files and start the process when you're ready.\nMonitor progress in real time from the Encoding File List and manage each task efficiently.",
+        "errorFileType": "Invalid file type. Please upload a valid format (MP4, MOV, MPEG, MPG, SRT).",
+        "alertNowUploading": "File upload in progress..",
+        "section0": {
+            "title": "Files and Folders",
+            "description": "Drag and drop files here to upload, or click",
+            "or": "or",
+            "empty": "No file selected for upload",
+            "tableCol0": "Name",
+            "tableCol1": "Duration",
+            "tableCol2": "Size",
+            "tableCol3": "Progress",
+            "alertDelete": "Delete \"{fileName}\"?",
+            "ready": "Ready",
+            "pending": "Pending",
+            "uploading": "Uploading",
+            "uploaded": "Upload complete",
+            "encoded": "in Queue",
+            "error": "Error"
+        },
+        "section1": {
+            "title": "Uploaded Files",
+            "empty": "No files have been uploaded",
+            "btn": "Run Encoding",
+            "ready": "● Ready",
+            "error": "● Error",
+            "errorDesc": "Not Found",
+            "tableCol0": "Status",
+            "tableCol1": "Preset",
+            "tableCol2": "Name",
+            "tableCol3": "Uploaded At",
+            "tableCol4": "Until",
+            "infoSuccess": "Queued for encoding.",
+            "errorQueued": "Failed to queue for encoding.",
+            "tooltipPreset": "Apply preset to all"
+        },
+        "total": "Total",
+        "pending": "Pending",
+        "running": "Running",
+        "stopping": "Stopping",
+        "stopped": "Stopped",
+        "tableCol0": "Server",
+        "tableCol1": "Status",
+        "tableCol2": "Instance Name",
+        "tableCol3": "Instance ID",
+        "tableCol4": "Created At",
+        "tableCol5": "Updated At"
+    },
+    "queueStatus": {
+        "title": "Queue Status",
         "description": "This page displays the list of encoded files from the past 30 days.\nYou can check the status and processing details of each task.",
+        "statusTitle": "Statistics",
         "totalQueues": "Total Queues",
         "pending": "Pending",
         "running": "Running",
         "stopped": "Stopped",
         "completed": "Completed",
+        "tableTitle": "Encoding Files",
         "tableCol0": "Server",
         "tableCol1": "Status",
-        "tableCol2": "Type",
+        "tableCol2": "Proc Time",
         "tableCol3": "Name",
         "tableCol4": "Program ID",
         "tableCol5": "Duration",
-        "tableCol6": "Started At",
-        "tableCol7": "Finished At",
-        "tableCol8": "Proc Time",
-        "tableCol9": "Note"
+        "tableCol7": "Created At",
+        "drawerTitle0": "Started At",
+        "drawerTitle1": "Finished At",
+        "drawerTitle2": "Note"
     },
     "serverStatus": {
         "title": "Server Status",

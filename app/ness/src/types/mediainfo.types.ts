@@ -1,3 +1,34 @@
+export interface MediaFile {
+    origin: File;
+    preview: string;
+    id: string;
+    progress?: number;
+    status?: MediaFileStatus;
+    errorMsg?: string;
+    metadata?: MediaMetadata;
+    subtitles?: MediaSubFile[];
+}
+
+export interface MediaSubFile {
+    file: File;
+    language: string;
+}
+
+export interface MediaMetadata {
+    fileName: string;
+    extension: string;
+    resolution: string;
+    fileSize: number;
+    duration: number;
+    bitrate: number;
+    codecInfo: string;
+    frameRate: number;
+    audioCodec: string;
+    audioBitRate: number;
+}
+
+export type MediaFileStatus = 'pending' | 'uploading' | 'uploaded' | 'encoded' | 'error';
+
 /** Format of the result type */
 export type FormatType = 'object' | 'JSON' | 'XML' | 'HTML' | 'text';
 

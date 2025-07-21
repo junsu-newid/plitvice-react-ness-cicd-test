@@ -15,7 +15,16 @@ const Layout = ({ children }: Props) => {
     }, [authenticate]);
 
     return (
-        <div className={'relative grid h-screen w-full grid-cols-[240px_1fr] justify-start overflow-hidden'}>
+        <div
+            className={
+                'relative grid h-full w-full grid-cols-[240px_1fr] grid-rows-[60px_1fr] justify-start overflow-hidden'
+            }
+        >
+            <div className={`col-span-2 bg-blue-600 px-[24px] py-[16px]`}>
+                <a href={`./`}>
+                    <img src={`/logo.png`} width={110} height={28} alt={'logo'} />
+                </a>
+            </div>
             <div className={`overflow-hidden`}>{children}</div>
             <div className={'bg-grey-5 border-grey-20 relative h-full w-full overflow-auto border-l'}>
                 <Suspense fallback={<LoadingMask />}>

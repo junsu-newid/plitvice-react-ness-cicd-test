@@ -1,45 +1,43 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import FileUpload from '@/pages/encoding/features/fileUpload';
-import EncodingPreset from '@/pages/encoding/features/presetList';
-import { getPresetList } from '@/api/models/preset.ts';
-// import { getDefaultDateRange } from '@/api/models/fileList.ts';
-// import { fetchFileList } from '@/api/services/fileList.ts';
+import FileUploadsPage from '@/pages/encoding/features/fileUploads';
+import EncodingPresetPage from '@/pages/encoding/features/presetList';
+import { fetchPresetList } from '@/api/services/preset.ts';
 import { fetchServerStatus } from '@/api/services/serverStatus.ts';
 import { getUserId } from '@/utils';
 import ErrorPage from '@/app/ErrorPage.tsx';
 import HomeLayout from '@/pages/encoding';
 import { lazy } from 'react';
-import mockFiles from '@/mockFileList.json';
+import { getDefaultDateRange } from '@/api/models/queueList.ts';
+import { fetchFileList } from '@/api/services/fileList.ts';
 
 const ServerStatusPage = lazy(() => import('@/pages/encoding/features/serverStatus'));
-const EncodingFileListPage = lazy(() => import('@/pages/encoding/features/encodingFileList'));
+const EncodingFileListPage = lazy(() => import('@/pages/encoding/features/queueStatus'));
 
 const router = createBrowserRouter([
     {
         path: '/',
         Component: HomeLayout,
-        errorElement: <div>404 Not Found</div>, // 공통 에러페이지 컴포넌트 추가 영역
+        errorElement: <div>404 Not Found</div>,
         children: [
             {
                 index: true,
-                Component: FileUpload,
+                Component: FileUploadsPage,
                 errorElement: <ErrorPage />,
                 hydrateFallbackElement: <div>HydrateFallbackElement</div>,
             },
             {
-                path: '/file-list',
+                path: '/queue-status',
                 Component: EncodingFileListPage,
                 errorElement: <ErrorPage />,
-                // loader: async () => {
-                //     const userId = getUserId();
-                //     const { startDate, endDate } = getDefaultDateRange(); // MM-DD-YYYY 형식
-                //     return await fetchFileList({
-                //         uploadUserId: userId,
-                //         startDate,
-                //         endDate,
-                //     });
-                // },
-                loader: () => mockFiles,
+                loader: async () => {
+                    const userId = getUserId();
+                    const { startDate, endDate } = getDefaultDateRange();
+                    return await fetchFileList({
+                        uploadUserId: userId,
+                        startDate,
+                        endDate,
+                    });
+                },
             },
             {
                 path: '/server-status',
@@ -51,11 +49,11 @@ const router = createBrowserRouter([
             },
             {
                 path: '/preset-list',
-                Component: EncodingPreset,
+                Component: EncodingPresetPage,
                 errorElement: <ErrorPage />,
                 loader: async () => {
                     const userId = getUserId();
-                    return await getPresetList(userId);
+                    return await fetchPresetList(userId);
                 },
             },
         ],

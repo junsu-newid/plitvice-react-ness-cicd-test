@@ -5,9 +5,12 @@ import { ServerStatusType } from '@/types/enum.ts';
 import ServerStatusList from '@/pages/encoding/features/serverStatus/List.tsx';
 import { useEffect, useState } from 'react';
 import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
+import { useFileUploadsContext } from '@/pages/encoding/FileUploadsContext.tsx';
+import { WarningIcon } from '@plitvice/ui';
 
-const ServerStatus = () => {
+const ServerStatusPage = () => {
     const { t } = useTranslation();
+    const { isUploading } = useFileUploadsContext();
     const serverStatusData = useLoaderData() as ServerStatusResponse;
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [filteredData, setFilteredData] = useState<ServerInstance[]>([]);
@@ -22,12 +25,12 @@ const ServerStatus = () => {
     }, [serverStatusData, selectedStatus]);
 
     return (
-        <div className="bg-grey-5 flex h-screen min-w-[1200px] flex-col p-[36px]">
-            <h1 className="text-b28">{t('serverStatus.title')}</h1>
+        <div className="bg-grey-5 flex h-full min-w-[1200px] flex-col p-[36px]">
+            <h1>{t('serverStatus.title')}</h1>
             <p className={`text-r14 text-grey-60 whitespace-pre-line pb-[24px] pt-[12px]`}>
                 {t('serverStatus.description')}
             </p>
-            <div className={`flex w-[1128px] gap-[20px] pb-[24px]`}>
+            <div className={`flex w-[1128px] gap-[12px] pb-[24px]`}>
                 {StatusSetting.map((box, index) => (
                     <StatusBox
                         title={t(`serverStatus.${box.type}`)}
@@ -50,10 +53,16 @@ const ServerStatus = () => {
                 )}
                 <ServerStatusList data={filteredData} />
             </div>
+            {isUploading ? (
+                <div className={`fixed right-[36px] top-[56px] flex items-center gap-[4px]`}>
+                    <WarningIcon className={`animate-[warning-color-anim_2s_ease-in-out_infinite]`} />
+                    <p className={`text-r14`}>{t('fileUploads.alertNowUploading')}</p>
+                </div>
+            ) : null}
         </div>
     );
 };
-export default ServerStatus;
+export default ServerStatusPage;
 
 const StatusSetting: StatusBoxProps[] = [
     { type: ServerStatusType[0], titleSlice: 'T', color: 'bg-[#D8E9FD] border-[#4897F9] text-[#4897F9]' },
