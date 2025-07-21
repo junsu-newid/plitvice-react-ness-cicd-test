@@ -100,18 +100,22 @@ function QueueStatusList({ data, onItemClick }: Props) {
                     <SortHeader title={t('queueStatus.tableCol3')} column={column as Column<QueueFileItem, string>} />
                 ),
                 cell: (info) => (
-                    <Tooltip text={info.getValue() || '-'}>
-                        {info.getValue() ? (
-                            <p
-                                onClick={() => onItemClick(info.row.original)}
-                                className={'line-clamp-2 cursor-pointer break-all hover:text-blue-600 hover:underline'}
-                            >
-                                {info.getValue()}
-                            </p>
-                        ) : (
-                            '-'
-                        )}
-                    </Tooltip>
+                    <div className={`flex items-center`}>
+                        <Tooltip text={info.getValue() || '-'}>
+                            {info.getValue() ? (
+                                <p
+                                    onClick={() => onItemClick(info.row.original)}
+                                    className={
+                                        'line-clamp-2 cursor-pointer break-all hover:text-blue-600 hover:underline'
+                                    }
+                                >
+                                    {info.getValue()}
+                                </p>
+                            ) : (
+                                '-'
+                            )}
+                        </Tooltip>
+                    </div>
                 ),
                 enableSorting: true,
             }),
