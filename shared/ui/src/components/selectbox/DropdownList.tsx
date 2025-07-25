@@ -51,7 +51,7 @@ const DropdownList = ({
 
     return (
         <ul
-            className={`border-grey-20 absolute left-0 right-0 ${positionClasses} max-h-[200px] overflow-y-auto rounded-[4px] border bg-white px-0 py-[6px] shadow-md ${display} non-draggable z-[10000]`}
+            className={`border-grey-20 absolute left-0 right-0 ${positionClasses} max-h-[200px] overflow-y-auto rounded-[4px] border bg-white px-0 py-[6px] shadow-[0_4px_8px_0_rgba(28,28,28,0.30)] ${display} non-draggable z-[10000]`}
             role="listbox"
             aria-multiselectable="false"
         >
