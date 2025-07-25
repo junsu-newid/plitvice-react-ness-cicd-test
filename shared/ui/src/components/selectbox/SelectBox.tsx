@@ -10,6 +10,7 @@ export interface SelectBoxProps {
     size?: SelectBoxSize;
     width?: number;
     border?: boolean;
+    bgColor?: string;
     placeholder?: string;
     label?: string;
     labelColor?: string;
@@ -26,6 +27,7 @@ const SelectBox = ({
     size = 'small',
     width = 0,
     border = true,
+    bgColor = '#00000000',
     placeholder = 'Placeholder',
     label = '',
     labelColor = '',
@@ -40,7 +42,7 @@ const SelectBox = ({
     const { isFocused, direction, containerRef, toggleDropdown, handleSelected } = useSelectBox({ onChange });
     const { heightClass, iconSizeClass } = BoxComponentStyles[size];
 
-    const fieldColor = disabled ? 'bg-grey-20' : 'bg-transparent hover:bg-blue-100 hover:border-blue-500';
+    const fieldColor = disabled ? 'bg-grey-20' : 'hover:bg-blue-100 hover:border-blue-500';
     const fieldBorderColor = isFocused ? 'border-blue-500' : border ? 'border-grey-40' : 'border-transparent';
     const hoverBgColor = disabled ? '' : 'hover:bg-blue-100';
     const rotation = isFocused ? 'rotate-180' : 'rotate-0';
@@ -52,6 +54,7 @@ const SelectBox = ({
             <div
                 className={`flex w-full ${heightClass} flex items-center gap-[4px] pl-[11px] pr-[7px] ${fieldColor} ${fieldBorderColor} rounded-[4px] border ${hoverBgColor} ${cursor}`}
                 onClick={disabled ? undefined : toggleDropdown}
+                style={{ backgroundColor: bgColor }}
             >
                 <LabeledInput.Input
                     value={optionList.find((option) => option.value === value)?.label || ''}
