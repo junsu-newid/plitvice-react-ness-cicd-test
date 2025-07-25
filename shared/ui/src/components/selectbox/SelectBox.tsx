@@ -50,7 +50,7 @@ const SelectBox = ({
 
     return (
         <LabeledInput.Root className={`p-0 ${className}`} width={width} size={size} ref={containerRef}>
-            <LabeledInput.OuterLabel color={labelColor}>{label}</LabeledInput.OuterLabel>
+            {label ? <LabeledInput.OuterLabel color={labelColor}>{label}</LabeledInput.OuterLabel> : null}
             <div
                 className={`flex w-full ${heightClass} flex items-center gap-[4px] pl-[11px] pr-[7px] ${fieldColor} ${fieldBorderColor} rounded-[4px] border ${hoverBgColor} ${cursor}`}
                 onClick={disabled ? undefined : toggleDropdown}

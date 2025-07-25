@@ -53,7 +53,7 @@ function App() {
                 ]}
             />
             <div className={`h-[400px]`} />
-            <SelectBox optionList={defaultComboBoxOptions} border={true} />
+            <SelectBox optionList={defaultComboBoxOptions} border={true} width={200} label={'test'} size={'medium'} />
             <DatePickerGroup />
         </div>
     );
