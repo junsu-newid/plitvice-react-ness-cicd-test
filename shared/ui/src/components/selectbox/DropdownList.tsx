@@ -1,5 +1,5 @@
-import useDropdownList from '@/components/selectbox/dropdownList.hooks.ts';
-import { Size } from '@/types/common.ts';
+import useDropdownList from '@/components/selectbox/dropdownList.hooks';
+import { Size } from '@/types/common';
 
 const SizeStyles = {
     small: {

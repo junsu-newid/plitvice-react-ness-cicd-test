@@ -1,9 +1,10 @@
-async function copyToClipboard(text: string, onSuccess?: () => void): Promise<void> {
+async function copyToClipboard(text: string): Promise<boolean> {
     try {
         await navigator.clipboard.writeText(text);
-        onSuccess?.();
+        return true;
     } catch (e) {
         console.error('Copy failed', e);
+        return false;
     }
 }
 

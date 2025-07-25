@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Checkbox } from '@/components/button/CheckBox.tsx';
+import { Checkbox } from '@/components/button/CheckBox';
 
 const meta: Meta<typeof Checkbox> = {
     title: 'Shared/Button/Checkbox',

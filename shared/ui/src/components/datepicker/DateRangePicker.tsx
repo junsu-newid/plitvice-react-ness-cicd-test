@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { DateRange, DayButtonProps, DayPickerProps } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import { useDateRangePicker } from './DateRangePicker.hooks.ts';
-import { DatePicker } from '@/components/datepicker/DatePicker.tsx';
-import { CustomDayButton } from '@/components/datepicker/DatePicker.custom.tsx';
+import { useDateRangePicker } from './DateRangePicker.hooks';
+import { DatePicker } from '@/components/datepicker/DatePicker';
+import { CustomDayButton } from '@/components/datepicker/DatePicker.custom';
 import {
     BaseDatePickerProps,
     DEFAULT_BUTTON_TEXT_GROUP,
@@ -12,8 +12,8 @@ import {
     ValidationErrorMap,
     ValidationMessages,
     ValidationState,
-} from '@/components/datepicker/DatePicker.types.ts';
-import { InfoIcon, Tooltip } from '@/index.ts';
+} from '@/components/datepicker/DatePicker.types';
+import { InfoIcon, Tooltip } from '@/index';
 
 export const RANGE_VALIDATION_MESSAGES: Record<ValidationErrorMap['range'], string> = {
     invalidRange: 'Invalid range',

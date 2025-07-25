@@ -1,6 +1,6 @@
-import { BoxComponentStyles, Size } from '@/types/common.ts';
-import useSelectBox from '@/components/selectbox/selectBox.hooks.ts';
-import { SelectOption, DropdownList } from '@/components/selectbox/DropdownList.tsx';
+import { BoxComponentStyles, Size } from '@/types/common';
+import useSelectBox from '@/components/selectbox/selectBox.hooks';
+import { SelectOption, DropdownList } from '@/components/selectbox/DropdownList';
 import DropdownIcon from '@/assets/icDropdownArrow.svg?react';
 import { LabeledInput } from '../textfield/LabeledInput';
 

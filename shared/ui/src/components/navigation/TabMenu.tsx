@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SelectOption } from '@/components/selectbox/DropdownList.tsx';
+import { SelectOption } from '@/components/selectbox/DropdownList';
 
 interface Props {
     tabList: SelectOption[];

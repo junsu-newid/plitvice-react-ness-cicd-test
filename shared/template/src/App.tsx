@@ -15,10 +15,9 @@ import {
     Checkbox,
     CopyTooltip,
     TabMenu,
+    ActionChip,
 } from '@plitvice/ui';
-import { SelectBox } from '@plitvice/ui/components/selectbox/SelectBox.tsx';
-import { SelectOption } from '@plitvice/ui/components/selectbox/DropdownList.tsx';
-import { RadioButton } from '@plitvice/ui/components/button/RadioButton.tsx';
+import { RadioButton } from '@plitvice/ui/components/button/RadioButton';
 
 function App() {
     const { t } = useTranslation();
@@ -42,6 +41,12 @@ function App() {
             <Drawer open={open} onClose={toggleDrawer(false)} width={400} className={'flex justify-center'}>
                 <div>Hello Drawer</div>
             </Drawer>
+            <ActionChip size={'extraSmall'} onClick={() => {}}>
+                Chip
+            </ActionChip>
+            <ActionChip size={'medium'} icon={<InfoIcon />} selected={true} onClick={() => {}}>
+                Chip
+            </ActionChip>
             <TooltipGroup />
             <CheckboxGroup />
             <RadioButton>Label</RadioButton>
@@ -120,12 +125,6 @@ const SingleDatePicker = () => {
     );
 };
 
-const defaultComboBoxOptions: SelectOption[] = [
-    { value: 'item01', label: 'Item01' },
-    { value: 'item02', label: 'Item02' },
-    { value: 'item03', label: 'Item03' },
-];
-
 const RangeTimePicker = () => {
     const today = startOfDay(new Date());
     // const today = new Date('2025-07-08');
@@ -146,7 +145,11 @@ const RangeTimePicker = () => {
                 showTime={true}
                 value={dateRange}
                 maxDays={8}
-                onChange={setDateRange}
+                onChange={(value: DateRange | undefined) => {
+                    if (value) {
+                        setDateRange(value);
+                    }
+                }}
             />
         </div>
     );
@@ -179,6 +182,7 @@ const CheckboxGroup = () => {
             <div className="flex flex-col pl-2">
                 {items.map((item) => (
                     <Checkbox
+                        key={item.id}
                         id={item.id.toString()}
                         checked={item.checked}
                         onChange={(checked: boolean) => handleItemCheck(item.id, checked)}

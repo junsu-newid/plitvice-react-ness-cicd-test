@@ -7,7 +7,19 @@ import svgr from 'vite-plugin-svgr';
 import tailwindcss from '@tailwindcss/vite';
 // https://vite.dev/config/
 export default defineConfig({
-    plugins: [react(), viteTsConfigPaths(), dts(), svgr(), tailwindcss()],
+    plugins: [
+        react(),
+        viteTsConfigPaths(),
+        dts({
+            include: ['src'],
+            insertTypesEntry: true,
+            outDir: 'dist',
+            tsconfigPath: './tsconfig.app.json',
+            entryRoot: 'src',
+        }),
+        svgr(),
+        tailwindcss(),
+    ],
     build: {
         lib: {
             entry: resolve(__dirname, 'src/index.ts'),

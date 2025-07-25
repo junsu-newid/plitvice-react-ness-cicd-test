@@ -1,6 +1,6 @@
-import { BoxComponentStyles, Size } from '@/types/common.ts';
-import useModSelectBox from '@/components/selectbox/ModSelectBox.hooks.ts';
-import { DropdownList, SelectOption } from '@/components/selectbox/DropdownList.tsx';
+import { BoxComponentStyles, Size } from '@/types/common';
+import useModSelectBox from '@/components/selectbox/ModSelectBox.hooks';
+import { DropdownList, SelectOption } from '@/components/selectbox/DropdownList';
 import DropdownIcon from '@/assets/icDropdownArrow.svg?react';
 
 export interface ModSelectBoxProps {
