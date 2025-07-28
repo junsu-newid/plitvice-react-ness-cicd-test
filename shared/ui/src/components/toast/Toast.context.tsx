@@ -1,6 +1,6 @@
 import { createContext, useState, useCallback, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import Toast from './Toast.tsx';
+import Toast from './Toast';
 
 export type ToastType = 'success' | 'error' | 'info' | 'warning';
 
@@ -12,7 +12,7 @@ export interface ToastMessage {
     showCloseButton?: boolean;
 }
 
-interface ToastContextValue {
+export interface ToastContextValue {
     showToast: (
         message: string,
         type: ToastMessage['type'],

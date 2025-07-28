@@ -10,7 +10,7 @@ import {
     isSameMonth,
     startOfDay,
 } from 'date-fns';
-import { BoxType, DateRangePickerProps } from '@/components/datepicker/DateRangePicker.tsx';
+import { BoxType, DateRangePickerProps } from '@/components/datepicker/DateRangePicker';
 import {
     combineDateTime,
     formatDate,
@@ -20,9 +20,10 @@ import {
     isWithinDays,
     validateDate,
     validateTime,
-} from '@/components/datepicker/DatePicker.utils.ts';
-import { ParsedDate, ParsedTime } from '@/components/datepicker/DatePicker.types.tsx';
+} from '@/components/datepicker/DatePicker.utils';
 import {
+    ParsedDate,
+    ParsedTime,
     BoxState,
     DEFAULT_BOX_STATE,
     DEFAULT_DATE_STATE,
@@ -31,7 +32,7 @@ import {
     isBoxValid,
     VALID_STATE,
     ValidationState,
-} from '@/components/datepicker/DatePicker.types.ts';
+} from '@/components/datepicker/DatePicker.types';
 
 type Props = Pick<
     DateRangePickerProps,

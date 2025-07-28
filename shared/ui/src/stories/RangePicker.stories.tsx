@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { addDays, startOfDay } from 'date-fns';
 import { enUS, ko } from 'date-fns/locale';
-import { DateRange, DateRangePickerBox } from '@/index.ts';
+import { DateRange, DateRangePickerBox } from '@/index';
 import React, { useState } from 'react';
-import { DEFAULT_BUTTON_TEXT_GROUP } from '@/components/datepicker/DatePicker.types.ts';
-import { RANGE_VALIDATION_MESSAGES } from '@/components/datepicker/DateRangePicker.tsx';
+import { DEFAULT_BUTTON_TEXT_GROUP } from '@/components/datepicker/DatePicker.types';
+import { RANGE_VALIDATION_MESSAGES } from '@/components/datepicker/DateRangePicker';
 
 const LOCALES = {
     ko,
@@ -60,7 +60,7 @@ const meta: Meta<typeof DateRangePickerBox> = {
             description: '달력 언어 설정',
             table: {
                 type: {
-                    summary: 'date-fns/locales',
+                    summary: 'date-fns/locale',
                 },
                 defaultValue: {
                     summary: 'enUS',

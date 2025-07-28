@@ -4,20 +4,20 @@ import {
     BaseDatePickerProps,
     DEFAULT_BUTTON_TEXT_GROUP,
     ValidationMessages,
-} from '@/components/datepicker/DatePicker.types.ts';
+} from '@/components/datepicker/DatePicker.types';
 import {
     SINGLE_VALIDATION_MESSAGES,
     SingleDatePicker,
     SingleDatePickerProps,
-} from '@/components/datepicker/SingleDatePicker.tsx';
+} from '@/components/datepicker/SingleDatePicker';
 import { DateRange } from 'react-day-picker';
 import {
     DateRangePicker,
     DateRangePickerProps,
     RANGE_VALIDATION_MESSAGES,
-} from '@/components/datepicker/DateRangePicker.tsx';
+} from '@/components/datepicker/DateRangePicker';
 import { DatePicker } from './DatePicker';
-import { useDatePickerBox } from '@/components/datepicker/DatePickerBox.hooks.ts';
+import { useDatePickerBox } from '@/components/datepicker/DatePickerBox.hooks';
 import { useMemo } from 'react';
 
 type DateBoxProps<T extends BaseDatePickerProps> = Pick<

@@ -8,8 +8,8 @@ import {
     isInvalidValue,
     validateDate,
     validateTime,
-} from '@/components/datepicker/DatePicker.utils.ts';
-import { SingleDatePickerProps } from '@/components/datepicker/SingleDatePicker.tsx';
+} from '@/components/datepicker/DatePicker.utils';
+import { SingleDatePickerProps } from '@/components/datepicker/SingleDatePicker';
 import {
     BoxState,
     DEFAULT_BOX_STATE,
@@ -21,7 +21,7 @@ import {
     ParsedTime,
     VALID_STATE,
     ValidationState,
-} from '@/components/datepicker/DatePicker.types.ts';
+} from '@/components/datepicker/DatePicker.types';
 
 type Props = Pick<
     SingleDatePickerProps,

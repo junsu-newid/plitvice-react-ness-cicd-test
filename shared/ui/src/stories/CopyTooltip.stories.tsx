@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { PlacesType } from 'react-tooltip';
-import { CopyTooltip } from '@/components/textfield/CopyTooltip.tsx';
+import { CopyTooltip } from '@/components/textfield/CopyTooltip';
 
 const TOOLTIP_PLACES: PlacesType[] = [
     'top',

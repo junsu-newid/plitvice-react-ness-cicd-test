@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { SelectOption } from '@/components/selectbox/DropdownList.tsx';
+import { SelectOption } from '@/components/selectbox/DropdownList';
 
 interface SelectBoxHookProps {
     onChange?: (value: string | number) => void;

@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { Tooltip, TooltipProps } from '@/components/textfield/Tooltip.tsx';
-import { copyToClipboard } from '@/index';
+import { Tooltip, TooltipProps } from '@/components/textfield/Tooltip';
+import { copyToClipboard } from '@plitvice/util';
 
 type Props = Pick<TooltipProps, 'className' | 'text' | 'place' | 'maxWidth'>;
 
@@ -30,9 +30,13 @@ function CopyTooltip({
         return () => window.removeEventListener('resize', checkOverflow);
     }, [text]);
 
-    const handleClick = () => {
+    const handleClick = async () => {
         if (!isOverflowing) return;
-        copyToClipboard(text, onCopySuccess);
+
+        const success = await copyToClipboard(text);
+        if (success) {
+            onCopySuccess?.();
+        }
     };
 
     return (

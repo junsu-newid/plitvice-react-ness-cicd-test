@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { RadioButton } from '@/components/button/RadioButton.tsx';
+import { RadioButton } from '@/components/button/RadioButton';
 
 const meta: Meta<typeof RadioButton> = {
     title: 'Shared/Button/RadioButton',
@@ -47,7 +47,18 @@ export const Default: Story = {
 };
 
 export const States: Story = {
-    render: () => <StateGroup />,
+    render: () => (
+        <div className="space-y-6">
+            <div>
+                <div className="flex gap-1">
+                    <RadioButton checked={false} />
+                    <RadioButton checked={true} />
+                    <RadioButton disabled={true} />
+                    <RadioButton disabled={true} checked={true} />
+                </div>
+            </div>
+        </div>
+    ),
 };
 
 export const Options: Story = {
@@ -83,21 +94,6 @@ const RadioGroup = () => {
                     )}
                 </RadioButton>
             ))}
-        </div>
-    );
-};
-
-const StateGroup = () => {
-    return (
-        <div className="space-y-6">
-            <div>
-                <div className="flex gap-1">
-                    <RadioButton checked={false} />
-                    <RadioButton checked={true} />
-                    <RadioButton disabled={true} />
-                    <RadioButton disabled={true} checked={true} />
-                </div>
-            </div>
         </div>
     );
 };

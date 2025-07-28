@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { DayButtonProps, DayPickerProps } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import { useSingleDatePicker } from '@/components/datepicker/SingleDatePicker.hooks.ts';
-import { DatePicker } from '@/components/datepicker/DatePicker.tsx';
-import { CustomDayButton } from '@/components/datepicker/DatePicker.custom.tsx';
+import { useSingleDatePicker } from '@/components/datepicker/SingleDatePicker.hooks';
+import { DatePicker } from '@/components/datepicker/DatePicker';
+import { CustomDayButton } from '@/components/datepicker/DatePicker.custom';
 import {
     BaseDatePickerProps,
     DEFAULT_BUTTON_TEXT_GROUP,
@@ -12,8 +12,8 @@ import {
     ValidationErrorMap,
     ValidationMessages,
     ValidationState,
-} from '@/components/datepicker/DatePicker.types.ts';
-import { InfoIcon, Tooltip } from '@/index.ts';
+} from '@/components/datepicker/DatePicker.types';
+import { InfoIcon, Tooltip } from '@/index';
 
 export const SINGLE_VALIDATION_MESSAGES: Record<ValidationErrorMap['single'], string> = {
     invalidDate: 'Invalid date',
