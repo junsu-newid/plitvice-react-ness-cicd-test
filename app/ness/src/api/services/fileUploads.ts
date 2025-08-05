@@ -86,7 +86,6 @@ export const notifyUploadCompletion = async (
     }
 };
 
-// 업로드된 파일 목록 조회 API
 export const fetchUploadedFiles = async (uploadUserId: string): Promise<FileListResponse> => {
     const response = await api.get('upload/files', {
         searchParams: {
@@ -97,15 +96,20 @@ export const fetchUploadedFiles = async (uploadUserId: string): Promise<FileList
     return await response.json<FileListResponse>();
 };
 
+export const deleteUploadsFiles = (programIdList: string[], uploadUserId: string) =>
+    api.delete('upload/files', {
+        json: { programIds: programIdList },
+        searchParams: { uploadUserId },
+    });
+
 export const requestRunEncoding = async (
     fileList: UploadedFileItem[],
     uploadUserId: string,
+    isAutoEncoding: boolean,
 ): Promise<FileListResponse> => {
     const response = await api.post('encoding/queue', {
         json: { encodingQueues: fileList },
-        searchParams: {
-            uploadUserId,
-        },
+        searchParams: { uploadUserId, isAutoEncoding },
     });
 
     return await response.json<FileListResponse>();

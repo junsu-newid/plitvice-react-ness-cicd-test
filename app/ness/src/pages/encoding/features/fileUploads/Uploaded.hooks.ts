@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { SelectOption } from '@plitvice/ui';
 import { fetchPresetList } from '@/api/services/preset.ts';
 import { UploadedFileItem } from '@/api/models/fileUploads.ts';
-import { fetchUploadedFiles, requestRunEncoding } from '@/api/services/fileUploads.ts';
+import { deleteUploadsFiles, fetchUploadedFiles, requestRunEncoding } from '@/api/services/fileUploads.ts';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface Props {
@@ -52,10 +52,17 @@ const useFileUploaded = ({ userId }: Props) => {
         [queryClient, userId],
     );
 
+    const removeFile = useCallback(
+        (programId: string) => {
+            deleteUploadsFiles([programId], userId);
+        },
+        [userId],
+    );
+
     const runEncoding = useCallback(
         async (data: UploadedFileItem[]) => {
             try {
-                const result = await requestRunEncoding(data, userId);
+                const result = await requestRunEncoding(data, userId, false);
                 if (result.code === 20000) {
                     queryClient.setQueryData<UploadedFileItem[]>(['uploaded_files', userId], () => []);
                     return true;
@@ -74,6 +81,7 @@ const useFileUploaded = ({ userId }: Props) => {
         presetOptionList,
         changePreset,
         changePresetAll,
+        removeFile,
         runEncoding,
     };
 };

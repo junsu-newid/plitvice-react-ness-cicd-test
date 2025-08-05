@@ -12,7 +12,9 @@
             "@/*": ["src/*"],
             // shared path fixes can be required for the workspace
             "@plitvice/ui": ["../../shared/ui/src"],
-            "@plitvice/ui/*": ["../../shared/ui/src/*"]
+            "@plitvice/ui/*": ["../../shared/ui/src/*"],
+            "@plitvice/util": ["../../shared/util/src"],
+            "@plitvice/util/*": ["../../shared/util/src/*"]
         },
 
         /* Bundler mode */

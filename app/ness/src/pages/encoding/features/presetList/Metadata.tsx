@@ -1,7 +1,8 @@
 import { PresetItem } from '@/api/models/preset.ts';
 import { useTranslation } from 'react-i18next';
 import { firstUpperCase } from '@/utils';
-import { Drawer, Button, StatusChip, useToast, copyToClipboard } from '@plitvice/ui';
+import { Drawer, Button, StatusChip, useToast } from '@plitvice/ui';
+import { copyToClipboard } from '@plitvice/util';
 
 type Props = {
     content?: PresetItem;
@@ -14,7 +15,11 @@ function EncodingPresetMetadataSheet({ content, onClose }: Props) {
 
     const handleCommandCopy = (text?: string) => {
         if (text) {
-            copyToClipboard(text, () => showToast(t('presetList.toastClipboard'), 'info'));
+            copyToClipboard(text).then((result) => {
+                if (result) {
+                    showToast(t('presetList.toastClipboard'), 'info');
+                }
+            });
         }
     };
 

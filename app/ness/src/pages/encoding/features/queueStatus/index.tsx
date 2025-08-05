@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router';
-import { QueueFileItem, FileListResponse, formatDateForInput, parseDateFromInput } from '@/api/models/queueList.ts';
+import { QueueFileItem, FileListResponse } from '@/api/models/queueList.ts';
 import { useTranslation } from 'react-i18next';
 import { DateRange, DateRangePickerBox, WarningIcon } from '@plitvice/ui';
 import QueueStatusList from '@/pages/encoding/features/queueStatus/List.tsx';
 import { QueueStatusType } from '@/types/enum.ts';
 import { startOfDay, subDays } from 'date-fns';
 import { fetchFileList } from '@/api/services/fileList.ts';
-import { getUserId } from '@/utils';
+import { formatDateForInput, getUserId, parseDateFromInput } from '@/utils';
 import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
-import { useFileUploadsContext } from '@/pages/encoding/FileUploadsContext.tsx';
+import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
 import QueueStatusMetadataSheet from '@/pages/encoding/features/queueStatus/Metadata.tsx';
 
 const QueueStatusPage = () => {
     const { t } = useTranslation();
-    const { isUploading } = useFileUploadsContext();
+    const { isUploading } = useGlobalContext();
     const initialData = useLoaderData() as FileListResponse;
     const [data, setData] = useState(initialData);
     const allFiles = data.data.encodingFileList;
@@ -113,7 +113,7 @@ const QueueStatusPage = () => {
             </div>
             <QueueStatusMetadataSheet content={selectedItem} onClose={() => setSelectedItem(undefined)} />
             {isUploading ? (
-                <div className={`fixed right-[36px] top-[56px] flex items-center gap-[4px]`}>
+                <div className={`fixed right-[36px] top-[96px] flex items-center gap-[4px]`}>
                     <WarningIcon className={`animate-[warning-color-anim_2s_ease-in-out_infinite]`} />
                     <p className={`text-r14`}>{t('fileUploads.alertNowUploading')}</p>
                 </div>

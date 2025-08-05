@@ -5,12 +5,12 @@ import { ServerStatusType } from '@/types/enum.ts';
 import ServerStatusList from '@/pages/encoding/features/serverStatus/List.tsx';
 import { useEffect, useState } from 'react';
 import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
-import { useFileUploadsContext } from '@/pages/encoding/FileUploadsContext.tsx';
+import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
 import { WarningIcon } from '@plitvice/ui';
 
 const ServerStatusPage = () => {
     const { t } = useTranslation();
-    const { isUploading } = useFileUploadsContext();
+    const { isUploading } = useGlobalContext();
     const serverStatusData = useLoaderData() as ServerStatusResponse;
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [filteredData, setFilteredData] = useState<ServerInstance[]>([]);
@@ -54,7 +54,7 @@ const ServerStatusPage = () => {
                 <ServerStatusList data={filteredData} />
             </div>
             {isUploading ? (
-                <div className={`fixed right-[36px] top-[56px] flex items-center gap-[4px]`}>
+                <div className={`fixed right-[36px] top-[96px] flex items-center gap-[4px]`}>
                     <WarningIcon className={`animate-[warning-color-anim_2s_ease-in-out_infinite]`} />
                     <p className={`text-r14`}>{t('fileUploads.alertNowUploading')}</p>
                 </div>

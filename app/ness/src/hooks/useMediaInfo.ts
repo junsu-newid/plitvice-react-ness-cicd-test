@@ -2,12 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import mediaInfoFactory, { MediaInfo } from 'mediainfo.js';
 import type { MediaFile, MediaInfoResult, MediaMetadata, Track } from '@/types/mediainfo.types';
 
-export interface MediaMetadataResult {
-    file: File;
-    metadata: MediaMetadata | null;
-    error?: string;
-}
-
 export const useMediaMetadata = () => {
     const mediaInfoRef = useRef<MediaInfo<'JSON'> | null>(null);
     const [isExtracting, setIsExtracting] = useState(false);
@@ -70,10 +64,10 @@ export const useMediaMetadata = () => {
                 }
 
                 return {
-                    fileName,
-                    extension,
+                    fileName: fileName,
+                    extension: extension,
                     resolution: resolution || '',
-                    fileSize,
+                    fileSize: fileSize,
                     duration: finalDuration,
                     bitrate: bitrate || 0,
                     codecInfo: codecInfo || '',
@@ -90,39 +84,29 @@ export const useMediaMetadata = () => {
     }, []);
 
     const extractMetadata = useCallback(
-        async (mediaFiles: MediaFile[]): Promise<MediaMetadataResult[]> => {
+        async (fileList: File[]): Promise<MediaFile[]> => {
             setIsExtracting(true);
 
             try {
-                const results: MediaMetadataResult[] = [];
+                const results: MediaFile[] = [];
 
-                for (const mediaFile of mediaFiles) {
+                for (const file of fileList) {
                     try {
-                        const metadata = await extractSingleFileMetadata(mediaFile.origin);
-
-                        if (metadata) {
-                            results.push({ file: mediaFile.origin, metadata });
-                        } else {
-                            results.push({
-                                file: mediaFile.origin,
-                                metadata: null,
-                                error: 'Upload cannot proceed due to missing file details',
-                            });
-                        }
+                        const metadata = await extractSingleFileMetadata(file);
+                        results.push(fileToMediaFile(file, metadata || undefined));
                     } catch {
-                        results.push({
-                            file: mediaFile.origin,
-                            metadata: null,
-                            error: 'Upload cannot proceed due to missing file details',
-                        });
+                        results.push(fileToMediaFile(file));
                     }
                 }
 
                 return results;
             } catch {
-                return mediaFiles.map((mediaFile) => ({
-                    file: mediaFile.origin,
-                    metadata: null,
+                return fileList.map((file) => ({
+                    origin: file,
+                    preview: URL.createObjectURL(file as Blob),
+                    id: `${file.name}-${file.size}-${file.lastModified}-${Date.now()}`,
+                    progress: 0,
+                    status: 'error',
                     error: 'Upload cannot proceed due to missing file details',
                 }));
             } finally {
@@ -136,6 +120,30 @@ export const useMediaMetadata = () => {
         extractMetadata,
         isExtracting,
     };
+};
+
+const fileToMediaFile = (file: File, metadata?: MediaMetadata): MediaFile => {
+    const preview = URL.createObjectURL(file as Blob);
+    const id = `${file.name}-${file.size}-${file.lastModified}-${Date.now()}`;
+    if (metadata) {
+        return {
+            origin: file,
+            preview: preview,
+            id: id,
+            progress: 0,
+            status: 'pending',
+            metadata: metadata,
+        } as MediaFile;
+    } else {
+        return {
+            origin: file,
+            preview: preview,
+            id: id,
+            progress: 0,
+            status: 'error',
+            error: 'Upload cannot proceed due to missing file details',
+        } as MediaFile;
+    }
 };
 
 const parseDuration = (tracks: readonly Track[]): number | undefined => {

@@ -5,22 +5,26 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import Layout from '@/app/Layout.tsx';
 import { SideNavBar } from '@plitvice/ui/components/navigation/SideNavBar.tsx';
-import { FileUploadsProvider } from '@/pages/encoding/FileUploadsContext.tsx';
+import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
 
 function HomeLayout() {
     const { t } = useTranslation();
-    const navMap = useMemo(() => getNavMap(t), [t]);
+    const { auth } = useGlobalContext();
+    const navMap = useMemo(() => {
+        const map = getNavMap(t);
+        if (auth.userGroup !== 'master') {
+            map.pop();
+        }
+        return map;
+    }, [t, auth]);
     const navigate = useNavigate();
-    // const { isAuthenticated, isLoading, error, authenticate } = useUser();
 
     return (
-        <FileUploadsProvider>
-            <Layout>
-                <div className={`h-full overflow-y-auto pb-[48px] pt-[24px]`}>
-                    <SideNavBar width={0} sectionList={navMap} onNavigate={navigate} />
-                </div>
-            </Layout>
-        </FileUploadsProvider>
+        <Layout>
+            <div className={`h-full overflow-y-auto pb-[48px] pt-[24px]`}>
+                <SideNavBar width={0} sectionList={navMap} onNavigate={navigate} />
+            </div>
+        </Layout>
     );
 }
 export default HomeLayout;

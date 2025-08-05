@@ -2,11 +2,11 @@ export interface MediaFile {
     origin: File;
     preview: string;
     id: string;
-    progress?: number;
-    status?: MediaFileStatus;
-    errorMsg?: string;
+    progress: number;
+    status: MediaFileStatus;
     metadata?: MediaMetadata;
     subtitles?: MediaSubFile[];
+    error?: string;
 }
 
 export interface MediaSubFile {

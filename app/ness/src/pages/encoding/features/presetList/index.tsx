@@ -1,7 +1,7 @@
 import { useLoaderData } from 'react-router';
 import { PresetItem, PresetResponse } from '@/api/models/preset.ts';
 import { useTranslation } from 'react-i18next';
-import { useFileUploadsContext } from '@/pages/encoding/FileUploadsContext.tsx';
+import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
 import EncodingPresetList from '@/pages/encoding/features/presetList/List.tsx';
 import EncodingPresetMetadataSheet from '@/pages/encoding/features/presetList/Metadata.tsx';
 import { useState } from 'react';
@@ -9,7 +9,7 @@ import { WarningIcon } from '@plitvice/ui';
 
 const EncodingPresetPage = () => {
     const { t } = useTranslation();
-    const { isUploading } = useFileUploadsContext();
+    const { isUploading } = useGlobalContext();
     const presetData = useLoaderData() as PresetResponse;
     const [selectedItem, setSelectedItem] = useState<PresetItem>();
 
@@ -31,7 +31,7 @@ const EncodingPresetPage = () => {
             </div>
             <EncodingPresetMetadataSheet content={selectedItem} onClose={handleDrawerClose} />
             {isUploading ? (
-                <div className={`fixed right-[36px] top-[56px] flex items-center gap-[4px]`}>
+                <div className={`fixed right-[36px] top-[96px] flex items-center gap-[4px]`}>
                     <WarningIcon className={`animate-[warning-color-anim_2s_ease-in-out_infinite]`} />
                     <p className={`text-r14`}>{t('fileUploads.alertNowUploading')}</p>
                 </div>

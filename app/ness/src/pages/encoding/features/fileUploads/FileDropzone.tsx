@@ -30,23 +30,13 @@ const FileDropzone = ({ onAddFile, disabled = false }: FileDropzoneProps) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const folderInputRef = useRef<HTMLInputElement>(null);
 
-    const processFileList = (acceptedFiles: FileWithPath[] | File[]) => {
+    const processFileList = async (acceptedFiles: File[]) => {
         if (acceptedFiles.length === 0) return;
 
-        // const validFiles = acceptedFiles.filter((file) => {
-        //     const isValid = isValidMediaFile(file.name);
-        //     if (isValid) {
-        //         const subripList = subripFiles.filter((subrip) => subrip.name.startsWith(getFileName(file.name)));
-        //         subripList.map((subrip) => {
-        //             file.
-        //         })
-        //     }
-        //     return isValid;
-        // });
         const mediaFileList = acceptedFiles.filter((file) => isValidMediaFile(file.name));
         const subFileList = acceptedFiles.filter((file) => isValidSubFile(file.name));
 
-        onAddFile(mediaFileList as File[], subFileList as File[]);
+        onAddFile(mediaFileList, subFileList);
     };
 
     const handleFileSelect = (e: MouseEvent) => {

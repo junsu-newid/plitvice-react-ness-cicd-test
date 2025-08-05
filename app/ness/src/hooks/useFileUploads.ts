@@ -1,5 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
-import { notifyUploadCompletion, requestPresignedFile, validateFile } from '@/api/services/fileUploads.ts';
+import { useCallback, useState } from 'react';
+import {
+    deleteUploadsFiles,
+    notifyUploadCompletion,
+    requestPresignedFile,
+    validateFile,
+} from '@/api/services/fileUploads.ts';
 import {
     PartUploadResult,
     splitFileIntoChunks,
@@ -7,43 +12,34 @@ import {
     uploadSubtitleFile,
 } from '@/pages/encoding/features/fileUploads/Uploading.utils.ts';
 import { MediaFile, MediaFileStatus } from '@/types/mediainfo.types.ts';
-import { useUserId } from '@/hooks/useUser.ts';
 
-function useFileUploads() {
-    const userId = useUserId();
+interface Props {
+    userId: string;
+}
+
+function useFileUploads({ userId }: Props) {
     const [isUploading, setIsUploading] = useState(false);
     const [fileList, setFileList] = useState<MediaFile[]>([]);
     const [abortController, setAbortController] = useState<AbortController | null>(null);
 
-    const removeFile = useCallback(
-        (fileId: string) => {
-            setFileList((prev) => {
-                const fileToRemove = prev.find((file) => file.id === fileId);
-                if (fileToRemove && fileToRemove.preview) {
-                    if (fileToRemove.status === 'uploading') {
-                        abortController?.abort();
-                    }
-                    URL.revokeObjectURL(fileToRemove.preview);
-                }
-                return prev.filter((file) => file.id !== fileId);
-            });
-        },
-        [abortController],
-    );
+    const removeFile = useCallback((fileName: string) => {
+        setFileList((prev) => {
+            const fileToRemove = prev.find((file) => file.origin.name === fileName);
+            if (fileToRemove && fileToRemove.preview) {
+                URL.revokeObjectURL(fileToRemove.preview);
+            }
+            return prev.filter((file) => file.origin.name !== fileName);
+        });
+    }, []);
 
     const uploadSingleFile = useCallback(
         async (
             file: MediaFile,
             onProgress: (progress: number) => void,
             onStatus: (status: MediaFileStatus) => void,
+            controller: AbortController,
         ) => {
-            const controller = new AbortController();
-            setAbortController(controller);
             try {
-                if (controller.signal.aborted) {
-                    throw new Error('업로드가 취소되었습니다.');
-                }
-
                 const validate = await validateFile(file.origin.name, userId);
                 if (validate) {
                     onStatus('uploaded');
@@ -56,7 +52,8 @@ function useFileUploads() {
                 if (file.subtitles && file.subtitles.length > 0 && videoFileInfo.subtitles) {
                     for (const subtitle of file.subtitles) {
                         if (controller.signal.aborted) {
-                            throw new Error('업로드가 취소되었습니다.');
+                            deleteUploadsFiles([videoFileInfo.programId], userId);
+                            return;
                         }
 
                         const subtitlePresignedUrl = videoFileInfo.subtitles.find(
@@ -71,12 +68,18 @@ function useFileUploads() {
                     }
                 }
 
+                if (controller.signal.aborted) {
+                    deleteUploadsFiles([videoFileInfo.programId], userId);
+                    return;
+                }
+
                 const chunks = splitFileIntoChunks(file.origin);
                 const totalParts = chunks.length;
                 const uploadResults: PartUploadResult[] = [];
                 for (let i = 0; i < chunks.length; i++) {
                     if (controller.signal.aborted) {
-                        throw new Error('업로드가 취소되었습니다.');
+                        deleteUploadsFiles([videoFileInfo.programId], userId);
+                        return;
                     }
 
                     const chunk = chunks[i];
@@ -89,6 +92,7 @@ function useFileUploads() {
                         file.origin.type,
                         partNumber,
                         controller.signal,
+                        () => deleteUploadsFiles([videoFileInfo.programId], userId),
                     );
                     uploadResults.push(result);
 
@@ -98,7 +102,7 @@ function useFileUploads() {
                 }
 
                 if (controller.signal.aborted) {
-                    throw new Error('업로드가 취소되었습니다.');
+                    return;
                 }
 
                 const completionData = {
@@ -111,47 +115,62 @@ function useFileUploads() {
                 await notifyUploadCompletion(completionData, userId);
                 onStatus('uploaded');
             } catch (error) {
-                onStatus('error');
-                throw error;
+                if (error instanceof Error && error.name !== 'AbortError') {
+                    onStatus('error');
+                }
             }
         },
         [userId],
     );
 
-    const cancelUpload = useCallback(() => {
+    const runUploads = useCallback(async () => {
+        if (isUploading) return;
+        setIsUploading(true);
+
+        const controller = new AbortController();
+        setAbortController(controller);
+
+        for (const file of fileList) {
+            if (file.status === 'pending') {
+                console.log(file.origin.name);
+                const handleProgress = (progress: number) =>
+                    setFileList((prev) =>
+                        prev.map((prevFile) =>
+                            prevFile.id === file.id
+                                ? { ...prevFile, status: 'uploading', progress: progress }
+                                : prevFile,
+                        ),
+                    );
+
+                const handleStatus = (status: MediaFileStatus) =>
+                    setFileList((prev) =>
+                        prev.map((prevFile) => (prevFile.id === file.id ? { ...prevFile, status: status } : prevFile)),
+                    );
+                await uploadSingleFile(file, handleProgress, handleStatus, controller);
+                if (controller.signal.aborted) {
+                    handleProgress(0);
+                    handleStatus('pending');
+                    break;
+                }
+            }
+        }
+
+        setIsUploading(false);
+    }, [fileList, isUploading, uploadSingleFile]);
+
+    const pauseUploads = useCallback(() => {
+        setIsUploading(false);
         abortController?.abort();
     }, [abortController]);
 
-    useEffect(() => {
-        if (isUploading) return;
-
-        const pendingFile = fileList.find((item) => item.status === 'pending');
-        if (pendingFile === undefined) {
-            return;
-        }
-
-        const handleProgress = (progress: number) =>
-            setFileList((prev) =>
-                prev.map((file) =>
-                    file.id === pendingFile.id ? { ...file, status: 'uploading', progress: progress } : file,
-                ),
-            );
-
-        const handleStatus = (status: MediaFileStatus) =>
-            setFileList((prev) =>
-                prev.map((file) => (file.id === pendingFile.id ? { ...file, status: status } : file)),
-            );
-
-        setIsUploading(true);
-        uploadSingleFile(pendingFile, handleProgress, handleStatus).finally(() => setIsUploading(false));
-    }, [userId, isUploading, fileList, uploadSingleFile]);
-
     return {
+        userGroup: 'none',
         isUploading,
         fileList,
         setFileList,
         removeFile,
-        cancelUpload,
+        runUploads,
+        pauseUploads,
     };
 }
 export default useFileUploads;

@@ -3,11 +3,10 @@ import FileUploadsPage from '@/pages/encoding/features/fileUploads';
 import EncodingPresetPage from '@/pages/encoding/features/presetList';
 import { fetchPresetList } from '@/api/services/preset.ts';
 import { fetchServerStatus } from '@/api/services/serverStatus.ts';
-import { getUserId } from '@/utils';
+import { getDefaultDateRange, getUserId } from '@/utils';
 import ErrorPage from '@/app/ErrorPage.tsx';
 import HomeLayout from '@/pages/encoding';
 import { lazy } from 'react';
-import { getDefaultDateRange } from '@/api/models/queueList.ts';
 import { fetchFileList } from '@/api/services/fileList.ts';
 
 const ServerStatusPage = lazy(() => import('@/pages/encoding/features/serverStatus'));

@@ -1,23 +1,4 @@
 /**
- * 초를 h:m:s 형태로 변환
- */
-export const formatDuration = (seconds: number) => {
-    if (!seconds || seconds <= 0) return '0s';
-
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-
-    if (hours > 0) {
-        return `${hours}h ${minutes}m ${remainingSeconds}s`;
-    } else if (minutes > 0) {
-        return `${minutes}m ${remainingSeconds}s`;
-    } else {
-        return `${remainingSeconds}s`;
-    }
-};
-
-/**
  * 바이트를 읽기 쉬운 형태로 변환
  */
 export const formatFileSize = (bytes: number) => {
@@ -59,3 +40,59 @@ export const getUserId = () => {
 };
 
 export const firstUpperCase = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
+export const formatDuration = (seconds?: number): string => {
+    if (!seconds || seconds <= 0) return '-';
+
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+};
+
+export const getFileName = (filename: string): string => {
+    const lastDotIndex = filename.lastIndexOf('.');
+    if (lastDotIndex === -1 || lastDotIndex === 0) {
+        return filename;
+    }
+    return filename.slice(0, lastDotIndex);
+};
+
+export const getLanguageCode = (filename: string): string | null => {
+    const originFileName = getFileName(filename);
+    const parts = originFileName.split('_');
+    if (parts.length > 1) {
+        return parts.pop() || null;
+    }
+    return null;
+};
+
+// 날짜 유틸리티 함수들 - MM-DD-YYYY 형식으로 변경
+export const formatDate = (date: Date): string => {
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}-${day}-${year}`;
+};
+
+// HTML input[type="date"]는 YYYY-MM-DD 형식을 사용하므로 변환 함수 추가
+export const formatDateForInput = (date: Date): string => {
+    return date.toISOString().split('T')[0]; // YYYY-MM-DD
+};
+
+export const parseDateFromInput = (dateString: string): string => {
+    const [year, month, day] = dateString.split('-');
+    return `${month}-${day}-${year}`; // MM-DD-YYYY로 변환
+};
+
+export const getDefaultDateRange = () => {
+    const today = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+
+    return {
+        startDate: formatDate(thirtyDaysAgo), // MM-DD-YYYY
+        endDate: formatDate(today), // MM-DD-YYYY
+    };
+};

@@ -1,18 +1,14 @@
-import { ReactNode, Suspense, useEffect } from 'react';
+import { ReactNode, Suspense } from 'react';
 import { Outlet } from 'react-router';
-import { getUserId } from '@/utils';
-import { useUser } from '@/hooks/useUser.ts';
 import LoadingMask from '@/app/LoadingMask.tsx';
+import FileUploadsPage from '@/pages/encoding/features/fileUploads';
+import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
 
 interface Props {
     children: ReactNode;
 }
 const Layout = ({ children }: Props) => {
-    const { authenticate } = useUser();
-
-    useEffect(() => {
-        authenticate(getUserId);
-    }, [authenticate]);
+    const { auth } = useGlobalContext();
 
     return (
         <div
@@ -25,13 +21,24 @@ const Layout = ({ children }: Props) => {
                     <img src={`/logo.png`} width={110} height={28} alt={'logo'} />
                 </a>
             </div>
-            <div className={`overflow-hidden`}>{children}</div>
-            <div className={'bg-grey-5 border-grey-20 relative h-full w-full overflow-auto border-l'}>
-                <Suspense fallback={<LoadingMask />}>
-                    <Outlet />
-                </Suspense>
-                <LoadingMask />
-            </div>
+            {auth.userGroup !== 'cp' ? (
+                <>
+                    <div className={`overflow-hidden`}>{children}</div>
+                    <div className={'bg-grey-5 border-grey-20 relative h-full w-full overflow-auto border-l'}>
+                        <Suspense fallback={<LoadingMask />}>
+                            <Outlet />
+                        </Suspense>
+                        <LoadingMask />
+                    </div>{' '}
+                </>
+            ) : (
+                <>
+                    <div className={`col-span-2 h-full w-full overflow-hidden`}>
+                        <FileUploadsPage />
+                    </div>
+                    <LoadingMask />
+                </>
+            )}
         </div>
     );
 };

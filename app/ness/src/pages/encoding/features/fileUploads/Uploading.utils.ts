@@ -25,6 +25,7 @@ export const uploadChunk = async (
     contentType: string,
     partNumber: number,
     signal: AbortSignal,
+    onPause: () => void,
 ): Promise<PartUploadResult> => {
     try {
         const response = await ky.put(url, {
@@ -47,9 +48,8 @@ export const uploadChunk = async (
         };
     } catch (error) {
         if (error instanceof Error && error.name === 'AbortError') {
-            throw new Error('업로드가 취소되었습니다.');
+            onPause();
         }
-        console.error(`Part ${partNumber} 업로드 실패:`, error);
         throw error;
     }
 };
