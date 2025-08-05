@@ -4,19 +4,20 @@
     "version": "0.1.2",
     "type": "module",
     "scripts": {
-        "dev": "vite --host",
-        "build": "tsc -b && vite build",
-        "lint": "eslint .",
-        "lint:fix": "eslint --fix .",
-        "prettier": "prettier --write .",
-        "preview": "vite preview"
+        "build": "react-router build",
+        "dev": "react-router dev",
+        "start": "react-router-serve ./build/server/index.js",
+        "typecheck": "react-router typegen && tsc",
+        "typegen": "react-router typegen"
     },
     "dependencies": {
         "@plitvice/ui": "workspace:*",
+        "@plitvice/util": "workspace:*",
         "@tailwindcss/vite": "catalog:",
         "@tanstack/react-table": "^8.21.3",
         "date-fns": "^4.1.0",
         "i18next": "catalog:",
+        "isbot": "catalog:",
         "jotai": "catalog:",
         "js-cookie": "^3.0.5",
         "ky": "^1.8.1",
@@ -31,6 +32,13 @@
         "tailwindcss": "catalog:"
     },
     "devDependencies": {
+        "@react-router/dev": "catalog:",
+        "@react-router/fs-routes": "catalog:",
+        "@react-router/node": "catalog:",
+        "@react-router/serve": "catalog:",
+        "@tailwindcss/vite": "catalog:",
+        "i18next-resources-to-backend": "catalog:",
+        "tailwindcss": "catalog:",
         "@eslint/js": "catalog:",
         "@tanstack/react-query": "catalog:",
         "@types/js-cookie": "^3.0.6",

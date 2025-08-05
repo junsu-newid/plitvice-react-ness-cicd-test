@@ -22,7 +22,7 @@ export default defineConfig({
     ],
     build: {
         lib: {
-            entry: resolve(__dirname, 'src/index.ts'),
+            entry: resolve(__dirname, 'app/index.ts'),
             name: 'ui',
             fileName: (format) => `ui.${format}.js`, // modern browser(esm format), legacy browser(umd format)
         },

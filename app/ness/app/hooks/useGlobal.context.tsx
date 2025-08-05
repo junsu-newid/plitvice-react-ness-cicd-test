@@ -4,7 +4,7 @@ import { MediaFile } from '@/types/mediainfo.types.ts';
 import useFileUploads from '@/hooks/useFileUploads.ts';
 
 interface GlobalContextType {
-    userGroup: string;
+    userId: string;
     isUploading: boolean;
     fileList: MediaFile[];
     setFileList: Dispatch<SetStateAction<MediaFile[]>>;

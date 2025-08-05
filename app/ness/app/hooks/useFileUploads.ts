@@ -164,7 +164,7 @@ function useFileUploads({ userId }: Props) {
     }, [abortController]);
 
     return {
-        userGroup: 'none',
+        userId: 'minho',
         isUploading,
         fileList,
         setFileList,

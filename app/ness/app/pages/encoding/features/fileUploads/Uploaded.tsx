@@ -25,12 +25,12 @@ const date = new Date();
 
 const FileUploadedList = () => {
     const { t } = useTranslation();
-    const { auth } = useGlobalContext();
+    const { userId } = useGlobalContext();
     const { showToast } = useToast();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'uploadedAt', desc: false }]);
     const [isOpenPresetAll, setIsOpenPresetAll] = useState(false);
     const { uploadedList, presetOptionList, changePreset, changePresetAll, removeFile, runEncoding } = useFileUploaded({
-        userId: auth.userId,
+        userId: userId,
     });
     const availableEncoding = useCallback(() => {
         if (uploadedList.length > 0 && presetOptionList.length > 0) {
@@ -139,7 +139,7 @@ const FileUploadedList = () => {
                                     border={false}
                                     optionList={presetOptionList}
                                     value={origin.presetId}
-                                    onChange={(value: number) => changePreset(origin.programId, value)}
+                                    onChange={(value) => changePreset(origin.programId, value as number)}
                                 />
                             </div>
                         );
