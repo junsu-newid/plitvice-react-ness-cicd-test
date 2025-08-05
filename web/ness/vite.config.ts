@@ -26,7 +26,7 @@ export default defineConfig({
         }),
     ],
     server: {
-        port: 5173,
+        port: 3002,
         fs: {
             allow: [searchForWorkspaceRoot(process.cwd()), '../../dist/MediaInfoModule.wasm'],
         },

@@ -1,6 +1,6 @@
 packages:
     - 'shared/*'
-    - 'app/*'
+    - 'web/*'
 
 catalog:
     react: ^19.0.0

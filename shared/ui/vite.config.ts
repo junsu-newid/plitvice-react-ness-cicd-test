@@ -14,7 +14,7 @@ export default defineConfig({
             include: ['src'],
             insertTypesEntry: true,
             outDir: 'dist',
-            tsconfigPath: './tsconfig.app.json',
+            tsconfigPath: './tsconfig.web.json',
             entryRoot: 'src',
         }),
         svgr(),
@@ -22,7 +22,7 @@ export default defineConfig({
     ],
     build: {
         lib: {
-            entry: resolve(__dirname, 'app/index.ts'),
+            entry: resolve(__dirname, 'web/index.ts'),
             name: 'ui',
             fileName: (format) => `ui.${format}.js`, // modern browser(esm format), legacy browser(umd format)
         },
