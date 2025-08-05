@@ -2,8 +2,8 @@ import { useLoaderData } from 'react-router';
 import { PresetItem, PresetResponse } from '@/api/models/preset.ts';
 import { useTranslation } from 'react-i18next';
 import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
-import EncodingPresetList from '@/pages/encoding/features/presetList/List.tsx';
-import EncodingPresetMetadataSheet from '@/pages/encoding/features/presetList/Metadata.tsx';
+import EncodingPresetList from '@/pages/presetList/List.tsx';
+import EncodingPresetMetadataSheet from '@/pages/presetList/Metadata.tsx';
 import { useState } from 'react';
 import { WarningIcon } from '@plitvice/ui';
 

@@ -13,7 +13,7 @@ import { UploadedFileItem } from '@/api/models/fileUploads.ts';
 import { StatusChip } from '@plitvice/ui/components/chips/StatusChip.tsx';
 import { BinIcon, Button, ErrorIcon, SelectBox, Tooltip, useToast } from '@plitvice/ui';
 import { differenceInCalendarDays, parse, startOfToday } from 'date-fns';
-import useFileUploaded from '@/pages/encoding/features/fileUploads/Uploaded.hooks.ts';
+import useFileUploaded from '@/pages/fileUploads/Uploaded.hooks.ts';
 import CommonChips from '@/components/CommonChips.tsx';
 import { MoreVertIcon } from '@plitvice/ui';
 import { DropdownList, SelectOption } from '@plitvice/ui/components/selectbox/DropdownList.tsx';

@@ -3,14 +3,14 @@ import { useLoaderData } from 'react-router';
 import { QueueFileItem, FileListResponse } from '@/api/models/queueList.ts';
 import { useTranslation } from 'react-i18next';
 import { DateRange, DateRangePickerBox, WarningIcon } from '@plitvice/ui';
-import QueueStatusList from '@/pages/encoding/features/queueStatus/List.tsx';
+import QueueStatusList from '@/pages/queueStatus/List.tsx';
 import { QueueStatusType } from '@/types/enum.ts';
 import { startOfDay, subDays } from 'date-fns';
 import { fetchFileList } from '@/api/services/fileList.ts';
 import { formatDateForInput, getUserId, parseDateFromInput } from '@/utils';
 import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
 import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
-import QueueStatusMetadataSheet from '@/pages/encoding/features/queueStatus/Metadata.tsx';
+import QueueStatusMetadataSheet from '@/pages/queueStatus/Metadata.tsx';
 
 const QueueStatusPage = () => {
     const { t } = useTranslation();

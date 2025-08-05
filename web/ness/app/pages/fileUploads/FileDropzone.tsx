@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef } from 'react';
+import { MouseEvent, ChangeEvent, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '@plitvice/ui';
 
@@ -39,7 +39,7 @@ const FileDropzone = ({ onAddFile, disabled = false }: FileDropzoneProps) => {
         onAddFile(mediaFileList, subFileList);
     };
 
-    const handleFileSelect = (e: MouseEvent) => {
+    const handleFileSelect = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         e.stopPropagation();
         if (fileInputRef.current && !disabled) {

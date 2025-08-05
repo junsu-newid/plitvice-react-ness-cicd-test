@@ -40,3 +40,4 @@ catalog:
     '@react-router/fs-routes': ^7.7.1
     isbot: ^5.1.27
     i18next-resources-to-backend: ^1.2.1
+    remix-utils: ^8.8.0

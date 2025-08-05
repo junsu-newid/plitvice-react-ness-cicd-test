@@ -2,7 +2,7 @@ import { useLoaderData } from 'react-router';
 import { ServerInstance, ServerStatusResponse } from '@/api/models/serverStatus.ts';
 import { useTranslation } from 'react-i18next';
 import { ServerStatusType } from '@/types/enum.ts';
-import ServerStatusList from '@/pages/encoding/features/serverStatus/List.tsx';
+import ServerStatusList from '@/pages/serverStatus/List.tsx';
 import { useEffect, useState } from 'react';
 import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
 import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';

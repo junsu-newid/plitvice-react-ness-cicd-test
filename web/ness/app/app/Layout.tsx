@@ -1,7 +1,7 @@
 import { ReactNode, Suspense } from 'react';
 import { Outlet } from 'react-router';
 import LoadingMask from '@/app/LoadingMask.tsx';
-import FileUploadsPage from '@/pages/encoding/features/fileUploads';
+import FileUploadsPage from '@/pages/fileUploads';
 import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
 
 interface Props {

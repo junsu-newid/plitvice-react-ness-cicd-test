@@ -10,7 +10,7 @@ import {
     splitFileIntoChunks,
     uploadChunk,
     uploadSubtitleFile,
-} from '@/pages/encoding/features/fileUploads/Uploading.utils.ts';
+} from '@/pages/fileUploads/Uploading.utils.ts';
 import { MediaFile, MediaFileStatus } from '@/types/mediainfo.types.ts';
 
 interface Props {

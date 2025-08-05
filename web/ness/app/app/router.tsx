@@ -1,16 +1,16 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import FileUploadsPage from '@/pages/encoding/features/fileUploads';
-import EncodingPresetPage from '@/pages/encoding/features/presetList';
+import FileUploadsPage from '@/pages/fileUploads';
+import EncodingPresetPage from '@/pages/presetList';
 import { fetchPresetList } from '@/api/services/preset.ts';
 import { fetchServerStatus } from '@/api/services/serverStatus.ts';
 import { getDefaultDateRange, getUserId } from '@/utils';
 import ErrorPage from '@/app/ErrorPage.tsx';
-import HomeLayout from '@/pages/encoding';
+import HomeLayout from '@/pages';
 import { lazy } from 'react';
 import { fetchFileList } from '@/api/services/fileList.ts';
 
-const ServerStatusPage = lazy(() => import('@/pages/encoding/features/serverStatus'));
-const EncodingFileListPage = lazy(() => import('@/pages/encoding/features/queueStatus'));
+const ServerStatusPage = lazy(() => import('@/pages/serverStatus'));
+const EncodingFileListPage = lazy(() => import('@/pages/queueStatus'));
 
 const router = createBrowserRouter([
     {

@@ -9,14 +9,14 @@ import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
 
 function HomeLayout() {
     const { t } = useTranslation();
-    const { auth } = useGlobalContext();
+    const { userId } = useGlobalContext();
     const navMap = useMemo(() => {
         const map = getNavMap(t);
-        if (auth.userGroup !== 'master') {
+        if (userId !== 'master') {
             map.pop();
         }
         return map;
-    }, [t, auth]);
+    }, [t, userId]);
     const navigate = useNavigate();
 
     return (
