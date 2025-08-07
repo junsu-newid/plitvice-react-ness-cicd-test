@@ -58,7 +58,7 @@ const FileDropzone = ({ onAddFile, disabled = false }: FileDropzoneProps) => {
         }
     };
 
-    const handleFolderSelect = (e: MouseEvent) => {
+    const handleFolderSelect = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         e.stopPropagation();
         if (folderInputRef.current && !disabled) {

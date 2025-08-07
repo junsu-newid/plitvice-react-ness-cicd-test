@@ -29,9 +29,3 @@ export interface FileListResponse {
     msg: string;
     data: EncodingFilesData;
 }
-
-export interface FileListParams {
-    uploadUserId: string;
-    startDate: string; // MM-DD-YYYY format
-    endDate: string; // MM-DD-YYYY format
-}

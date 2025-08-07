@@ -1,21 +1,34 @@
-import { ReactNode, Suspense, useMemo } from 'react';
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useNavigate } from 'react-router';
+import { ReactNode, useMemo } from 'react';
+import {
+    isRouteErrorResponse,
+    Links,
+    Meta,
+    Outlet,
+    Scripts,
+    ScrollRestoration,
+    LoaderFunctionArgs,
+    useLoaderData,
+    data,
+} from 'react-router';
 import type { Route } from './+types/root';
 import { I18nextProvider, useTranslation } from 'react-i18next';
 import i18n from '@/locales';
-import { GlobalProvider, useGlobalContext } from '@/hooks/useGlobal.context.tsx';
 import { ToastProvider } from '@plitvice/ui';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@plitvice/ui/styles/global.css';
-import LoadingMask from '@/app/LoadingMask.tsx';
-import FileUploadsPage from '@/pages/fileUploads';
+import LoadingMask from '@/components/LoadingMask.tsx';
+import FileUploadPage from '@/pages/fileUpload';
 import { SideNavBar } from '@plitvice/ui/components/navigation/SideNavBar.tsx';
 import { TFunction } from 'i18next';
 import { SideNavSection } from '@plitvice/ui/components/navigation/sideNavBar.types.ts';
+import { getSession } from '@/session.server.ts';
+import { COOKIE, ENCRYPT_KEY } from '@/types/enum.ts';
 
 export const links: Route.LinksFunction = () => [];
 
-const queryClient = new QueryClient();
+export async function loader({ request }: LoaderFunctionArgs) {
+    const session = await getSession(request.headers.get(COOKIE));
+    return data({ userEncryptKey: session.get(ENCRYPT_KEY) });
+}
 
 export function Layout({ children }: { children: ReactNode }) {
     return (
@@ -23,7 +36,7 @@ export function Layout({ children }: { children: ReactNode }) {
             <head>
                 <title>Ness</title>
                 <meta charSet="utf-8" />
-                <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+                <link rel="icon" type="image/svg+xml" href="/ness/favicon.png" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <Meta />
                 <Links />
@@ -38,18 +51,14 @@ export function Layout({ children }: { children: ReactNode }) {
                     overflow: 'hidden',
                 }}
             >
-                <div className={`col-span-2 bg-blue-600 px-[24px] py-[16px]`}>
+                <div className={`bg-blue-600 px-[24px] py-[16px]`}>
                     <a href={`./`}>
-                        <img src={`/logo.png`} width={110} height={28} alt={'logo'} />
+                        <img src={`/ness/logo.png`} width={110} height={28} alt={'logo'} />
                     </a>
                 </div>
-                <I18nextProvider i18n={i18n}>
-                    <QueryClientProvider client={queryClient}>
-                        <GlobalProvider>
-                            <ToastProvider>{children}</ToastProvider>
-                        </GlobalProvider>
-                    </QueryClientProvider>
-                </I18nextProvider>
+                <div className={'relative grid h-full w-full grid-cols-[240px_1fr] justify-start overflow-hidden'}>
+                    {children}
+                </div>
                 <ScrollRestoration />
                 <Scripts />
             </body>
@@ -59,43 +68,42 @@ export function Layout({ children }: { children: ReactNode }) {
 
 export default function App() {
     const { t } = useTranslation();
-    const { userId } = useGlobalContext();
-    const navMap = useMemo(() => {
-        const map = getNavMap(t);
-        if (userId !== 'minho') {
-            map.pop();
-        }
-        return map;
-    }, [t, userId]);
-    const navigate = useNavigate();
+    const { userEncryptKey } = useLoaderData();
+    const navMap = useMemo(() => getNavMap(t), [t]);
 
     return (
-        <div className={'relative grid h-full w-full grid-cols-[240px_1fr] justify-start overflow-hidden'}>
-            {userId !== 'cp' ? (
-                <>
-                    <div className={`h-full overflow-y-auto pb-[48px] pt-[24px]`}>
-                        <SideNavBar width={0} sectionList={navMap} onNavigate={navigate} />
-                    </div>
-                    <div className={'bg-grey-5 border-grey-20 relative h-full w-full overflow-auto border-l'}>
-                        <Suspense fallback={<LoadingMask />}>
+        <I18nextProvider i18n={i18n}>
+            <ToastProvider>
+                {userEncryptKey !== 'cp' ? (
+                    <>
+                        <nav className={`h-full overflow-y-auto pb-[48px] pt-[24px]`}>
+                            <SideNavBar
+                                width={0}
+                                sectionList={navMap}
+                                onNavigate={(path) => (document.location.href = path)}
+                            />
+                        </nav>
+                        <main className={'bg-grey-5 border-grey-20 relative h-full w-full overflow-auto border-l'}>
                             <Outlet />
-                        </Suspense>
+                            <LoadingMask />
+                        </main>{' '}
+                    </>
+                ) : (
+                    <>
+                        <main className={`col-span-2 h-full w-full overflow-hidden`}>
+                            <FileUploadPage />
+                        </main>
                         <LoadingMask />
-                    </div>{' '}
-                </>
-            ) : (
-                <>
-                    <div className={`col-span-2 h-full w-full overflow-hidden`}>
-                        <FileUploadsPage />
-                    </div>
-                    <LoadingMask />
-                </>
-            )}
-        </div>
+                    </>
+                )}
+            </ToastProvider>
+        </I18nextProvider>
     );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+    const { t } = useTranslation();
+    const navMap = useMemo(() => getNavMap(t), [t]);
     let message = 'Oops!';
     let details = 'An unexpected error occurred.';
     let stack: string | undefined;
@@ -109,15 +117,20 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     }
 
     return (
-        <main className="container mx-auto p-4 pt-16">
-            <h1>{message}</h1>
-            <p>{details}</p>
-            {stack && (
-                <pre className="w-full overflow-x-auto p-4">
-                    <code>{stack}</code>
-                </pre>
-            )}
-        </main>
+        <>
+            <nav className={`h-full overflow-y-auto pb-[48px] pt-[24px]`}>
+                <SideNavBar width={0} sectionList={navMap} onNavigate={(path) => (document.location.href = path)} />
+            </nav>
+            <main className={'bg-grey-5 border-grey-20 relative h-full w-full border-l'}>
+                <h1>{message}</h1>
+                <p>{details}</p>
+                {stack && (
+                    <pre className="w-full p-4">
+                        <code>{stack}</code>
+                    </pre>
+                )}
+            </main>
+        </>
     );
 }
 
@@ -126,15 +139,15 @@ const getNavMap = (t: TFunction): SideNavSection[] => {
         {
             title: t('nav.home.encoding.title'),
             child: [
-                { path: '/', label: t('nav.home.encoding.fileUploads') },
-                { path: '/queue-status', label: t('nav.home.encoding.queueStatus') },
+                { path: '/ness/file-upload', label: t('nav.home.encoding.fileUpload') },
+                { path: '/ness/queue-status', label: t('nav.home.encoding.queueStatus') },
             ],
         },
         {
             title: t('nav.home.operations.title'),
             child: [
-                { path: '/server-status', label: t('nav.home.operations.serverStatus') },
-                { path: '/preset-list', label: t('nav.home.operations.presetList') },
+                { path: '/ness/server-status', label: t('nav.home.operations.serverStatus') },
+                { path: '/ness/preset-list', label: t('nav.home.operations.presetList') },
             ],
         },
     ];

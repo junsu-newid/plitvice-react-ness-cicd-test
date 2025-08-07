@@ -13,33 +13,34 @@ import { UploadedFileItem } from '@/api/models/fileUploads.ts';
 import { StatusChip } from '@plitvice/ui/components/chips/StatusChip.tsx';
 import { BinIcon, Button, ErrorIcon, SelectBox, Tooltip, useToast } from '@plitvice/ui';
 import { differenceInCalendarDays, parse, startOfToday } from 'date-fns';
-import useFileUploaded from '@/pages/fileUploads/Uploaded.hooks.ts';
+import useFileUploaded from '@/pages/fileUpload/uploaded.hooks.ts';
 import CommonChips from '@/components/CommonChips.tsx';
 import { MoreVertIcon } from '@plitvice/ui';
 import { DropdownList, SelectOption } from '@plitvice/ui/components/selectbox/DropdownList.tsx';
-import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
+
+type Props = {
+    userEncryptKey: string;
+    presetList: SelectOption[];
+};
 
 const columnHelper = createColumnHelper<UploadedFileItem>();
 const today = startOfToday();
 const date = new Date();
 
-const FileUploadedList = () => {
+const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
     const { t } = useTranslation();
-    const { userId } = useGlobalContext();
     const { showToast } = useToast();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'uploadedAt', desc: false }]);
     const [isOpenPresetAll, setIsOpenPresetAll] = useState(false);
-    const { uploadedList, presetOptionList, changePreset, changePresetAll, removeFile, runEncoding } = useFileUploaded({
-        userId: userId,
-    });
+    const { uploadedList, changePreset, changePresetAll, removeFile, runEncoding } = useFileUploaded(userEncryptKey);
     const availableEncoding = useCallback(() => {
-        if (uploadedList.length > 0 && presetOptionList.length > 0) {
-            const presetIdList = new Set(presetOptionList.map((preset) => preset.value));
+        if (uploadedList.length > 0 && presetList.length > 0) {
+            const presetIdList = new Set(presetList.map((preset) => preset.value));
             return uploadedList.some((uploaded) => !presetIdList.has(uploaded.presetId));
         } else {
             return true;
         }
-    }, [uploadedList, presetOptionList]);
+    }, [uploadedList, presetList]);
 
     const handleChangePresetAll = useCallback(
         (option: SelectOption) => {
@@ -53,9 +54,9 @@ const FileUploadedList = () => {
         (data: UploadedFileItem[]) => {
             runEncoding(data).then((result) => {
                 if (result) {
-                    showToast(t('fileUploads.section1.infoSuccess'), 'info');
+                    showToast(t('fileUpload.section1.infoSuccess'), 'info');
                 } else {
-                    showToast(t('fileUploads.section1.errorQueued'), 'error');
+                    showToast(t('fileUpload.section1.errorQueued'), 'error');
                 }
             });
         },
@@ -64,7 +65,7 @@ const FileUploadedList = () => {
 
     const handleRemoveFile = useCallback(
         (programId: string) => {
-            const isConfirmed = confirm(t('fileUploads.section0.alertDelete', { programId }));
+            const isConfirmed = confirm(t('fileUpload.section0.alertDelete', { programId }));
             if (isConfirmed) {
                 removeFile(programId);
             }
@@ -96,13 +97,13 @@ const FileUploadedList = () => {
             }),
             columnHelper.accessor('presetId', {
                 id: 'presetStatus',
-                header: t('fileUploads.section1.tableCol0'),
+                header: t('fileUpload.section1.tableCol0'),
                 cell: (info) => {
-                    const foundItem = presetOptionList.find((item) => item.value === info.getValue());
+                    const foundItem = presetList.find((item) => item.value === info.getValue());
                     return foundItem ? (
-                        <StatusChip color={'blue'}>{t('fileUploads.section1.ready')}</StatusChip>
+                        <StatusChip color={'blue'}>{t('fileUpload.section1.ready')}</StatusChip>
                     ) : (
-                        <StatusChip color={'red'}>{t('fileUploads.section1.error')}</StatusChip>
+                        <StatusChip color={'red'}>{t('fileUpload.section1.error')}</StatusChip>
                     );
                 },
                 meta: { thStyle: 'text-center', tdStyle: 'text-center' },
@@ -111,8 +112,8 @@ const FileUploadedList = () => {
                 id: 'presetSelector',
                 header: () => (
                     <div className={`relative flex items-center justify-between pr-[8px]`}>
-                        <p>{t('fileUploads.section1.tableCol1')}</p>
-                        <Tooltip className={`h-[24px]`} text={t('fileUploads.section1.tooltipPreset')}>
+                        <p>{t('fileUpload.section1.tableCol1')}</p>
+                        <Tooltip className={`h-[24px]`} text={t('fileUpload.section1.tooltipPreset')}>
                             <button
                                 className={`rounded-full ${isOpenPresetAll ? 'bg-blue-100 text-blue-600' : 'text-grey-50'} hover:text-blue-600`}
                                 onClick={() => setIsOpenPresetAll(!isOpenPresetAll)}
@@ -123,21 +124,21 @@ const FileUploadedList = () => {
                         <DropdownList
                             size={'medium'}
                             isFocused={isOpenPresetAll}
-                            optionList={presetOptionList}
+                            optionList={presetList}
                             onSelected={handleChangePresetAll}
                         />
                     </div>
                 ),
                 cell: (info) => {
                     const origin = info.row.original;
-                    const findIndex = presetOptionList.findIndex((item) => item.value === origin.presetId);
-                    if (presetOptionList.length > 0 && findIndex > -1) {
+                    const findIndex = presetList.findIndex((item) => item.value === origin.presetId);
+                    if (presetList.length > 0 && findIndex > -1) {
                         return (
                             <div className={`pb-[5px] pt-[1px]`}>
                                 <SelectBox
                                     size={'medium'}
                                     border={false}
-                                    optionList={presetOptionList}
+                                    optionList={presetList}
                                     value={origin.presetId}
                                     onChange={(value) => changePreset(origin.programId, value as number)}
                                 />
@@ -146,7 +147,7 @@ const FileUploadedList = () => {
                     } else {
                         return (
                             <div className={`flex items-center justify-between pr-[8px] text-red-600`}>
-                                <p className={`text-r16 pl-[12px]`}>{t('fileUploads.section1.errorDesc')}</p>
+                                <p className={`text-r16 pl-[12px]`}>{t('fileUpload.section1.errorDesc')}</p>
                                 <ErrorIcon />
                             </div>
                         );
@@ -155,7 +156,7 @@ const FileUploadedList = () => {
                 meta: { thStyle: 'px-[22px]', tdStyle: 'pl-[12px] pr-[22px]' },
             }),
             columnHelper.accessor('fileName', {
-                header: ({ column }) => <SortHeader title={t('fileUploads.section1.tableCol2')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('fileUpload.section1.tableCol2')} column={column} />,
                 cell: (info) => (
                     <div className={`flex gap-[4px]`}>
                         {info.row.original.languages ? (
@@ -172,7 +173,7 @@ const FileUploadedList = () => {
                 meta: { thStyle: 'px-[22px]', tdStyle: 'px-[22px]' },
             }),
             columnHelper.accessor('programId', {
-                header: ({ column }) => <SortHeader title={t('fileUploads.section1.tableCol3')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('fileUpload.section1.tableCol3')} column={column} />,
                 cell: (info) => (
                     <div className={`flex gap-[4px]`}>
                         <a
@@ -189,14 +190,14 @@ const FileUploadedList = () => {
             }),
             columnHelper.accessor('createdAt', {
                 id: 'uploadedAt',
-                header: ({ column }) => <SortHeader title={t('fileUploads.section1.tableCol4')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('fileUpload.section1.tableCol4')} column={column} />,
                 cell: (info) => info.getValue().split(' ')[0],
                 enableSorting: true,
                 meta: { thStyle: 'pl-[22px]', tdStyle: 'pl-[22px]' },
             }),
             columnHelper.accessor('createdAt', {
                 id: 'destroyAt',
-                header: () => t('fileUploads.section1.tableCol5'),
+                header: () => t('fileUpload.section1.tableCol5'),
                 cell: (info) => {
                     const createdAt = parse(info.getValue(), 'yyyy-MM-dd HH:mm:ss', date);
                     const dayDiff = differenceInCalendarDays(today, createdAt) - 7;
@@ -205,7 +206,7 @@ const FileUploadedList = () => {
                 meta: { thStyle: 'text-center', tdStyle: 'text-center' },
             }),
         ],
-        [changePreset, handleChangePresetAll, handleRemoveFile, isOpenPresetAll, presetOptionList, t],
+        [changePreset, handleChangePresetAll, handleRemoveFile, isOpenPresetAll, presetList, t],
     );
 
     const table = useReactTable({
@@ -256,7 +257,7 @@ const FileUploadedList = () => {
                                 {row.getVisibleCells().map((cell, index) => (
                                     <td
                                         key={`${cell.id}-${index}`}
-                                        className={`border-grey-20 text-r16 text-grey-90 border-b ${cell.column.columnDef.meta?.tdStyle || ''}`}
+                                        className={`border-grey-20 text-r16 text-grey-90 h-[50px] border-b ${cell.column.columnDef.meta?.tdStyle || ''}`}
                                     >
                                         {cell.column.id === 'rowNumber'
                                             ? rowIndex + 1
@@ -271,7 +272,7 @@ const FileUploadedList = () => {
                     <p
                         className={`text-r16 text-grey-40 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pt-[52px]`}
                     >
-                        {t('fileUploads.section1.empty')}
+                        {t('fileUpload.section1.empty')}
                     </p>
                 )}
             </div>
@@ -281,7 +282,7 @@ const FileUploadedList = () => {
                 disabled={availableEncoding()}
                 onClick={() => handleRunEncoding(uploadedList)}
             >
-                {t('fileUploads.section1.btn')}
+                {t('fileUpload.section1.btn')}
             </Button>
         </>
     );

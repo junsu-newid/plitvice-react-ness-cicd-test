@@ -1,22 +1,33 @@
 import { useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router';
+import { data, LoaderFunctionArgs, useLoaderData } from 'react-router';
 import { QueueFileItem, FileListResponse } from '@/api/models/queueList.ts';
 import { useTranslation } from 'react-i18next';
-import { DateRange, DateRangePickerBox, WarningIcon } from '@plitvice/ui';
+import { DateRange, DateRangePickerBox } from '@plitvice/ui';
 import QueueStatusList from '@/pages/queueStatus/List.tsx';
-import { QueueStatusType } from '@/types/enum.ts';
+import { COOKIE, ENCRYPT_KEY, QueueStatusType } from '@/types/enum.ts';
 import { startOfDay, subDays } from 'date-fns';
-import { fetchFileList } from '@/api/services/fileList.ts';
-import { formatDateForInput, getUserId, parseDateFromInput } from '@/utils';
+import { fetchFileList } from '@/api/services/queueList.ts';
+import { formatDateForInput, getDefaultDateRange, parseDateFromInput } from '@/utils';
 import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
-import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
 import QueueStatusMetadataSheet from '@/pages/queueStatus/Metadata.tsx';
+import { getSession } from '@/session.server.ts';
+
+type LoaderProps = {
+    userEncryptKey: string;
+    queueList: FileListResponse;
+};
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+    const session = await getSession(request.headers.get(COOKIE));
+    const userEncryptKey = await session.get(ENCRYPT_KEY);
+    const { startDate, endDate } = getDefaultDateRange();
+    return data({ userEncryptKey, queueList: await fetchFileList(userEncryptKey, startDate, endDate) });
+};
 
 const QueueStatusPage = () => {
     const { t } = useTranslation();
-    const { isUploading } = useGlobalContext();
-    const initialData = useLoaderData() as FileListResponse;
-    const [data, setData] = useState(initialData);
+    const { userEncryptKey, queueList } = useLoaderData<LoaderProps>();
+    const [data, setData] = useState(queueList);
     const allFiles = data.data.encodingFileList;
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [filteredData, setFilteredData] = useState<QueueFileItem[]>([]);
@@ -38,7 +49,6 @@ const QueueStatusPage = () => {
         to: today,
     };
     const [dateRange, setDateRange] = useState<DateRange>(INITIAL_DATE_RANGE);
-    // const [loading, setLoading] = useState(false);  // 추후 로딩페이지 생길시 다시 진행
 
     type onDateRangeChangeProps = {
         startDate: Date;
@@ -52,21 +62,13 @@ const QueueStatusPage = () => {
         if (!rangeFrom || !rangeTo) return;
 
         try {
-            // setLoading(true);
-            const userId = getUserId();
-            const payload = {
-                uploadUserId: userId,
-                startDate: parseDateFromInput(formatDateForInput(rangeFrom)),
-                endDate: parseDateFromInput(formatDateForInput(rangeTo)),
-            };
-
-            const newData = await fetchFileList(payload);
+            const startDate = parseDateFromInput(formatDateForInput(rangeFrom));
+            const endDate = parseDateFromInput(formatDateForInput(rangeTo));
+            const newData = await fetchFileList(userEncryptKey, startDate, endDate);
             setData(newData);
             setDateRange({ from: rangeFrom, to: rangeTo });
         } catch (error) {
             console.error('API call failed:', error);
-        } finally {
-            // setLoading(false);
         }
     };
 
@@ -80,9 +82,11 @@ const QueueStatusPage = () => {
                     width={276}
                     showTime={false}
                     value={dateRange}
-                    onChange={(item: { from: Date; to: Date }) =>
-                        onDateRangeChange({ startDate: item.from, endDate: item.to })
-                    }
+                    onChange={(value) => {
+                        if (value && value.from && value.to) {
+                            onDateRangeChange({ startDate: value.from, endDate: value.to });
+                        }
+                    }}
                 />
             </div>
             <div className={`flex w-[1128px] gap-[12px] pb-[12px]`}>
@@ -112,12 +116,6 @@ const QueueStatusPage = () => {
                 <QueueStatusList data={filteredData} onItemClick={setSelectedItem} />
             </div>
             <QueueStatusMetadataSheet content={selectedItem} onClose={() => setSelectedItem(undefined)} />
-            {isUploading ? (
-                <div className={`fixed right-[36px] top-[96px] flex items-center gap-[4px]`}>
-                    <WarningIcon className={`animate-[warning-color-anim_2s_ease-in-out_infinite]`} />
-                    <p className={`text-r14`}>{t('fileUploads.alertNowUploading')}</p>
-                </div>
-            ) : null}
         </div>
     );
 };

@@ -1,23 +1,19 @@
 import { useCallback, useState } from 'react';
 import {
-    deleteUploadsFiles,
+    deleteUploadFiles,
     notifyUploadCompletion,
     requestPresignedFile,
     validateFile,
-} from '@/api/services/fileUploads.ts';
+} from '@/api/services/fileUpload.ts';
 import {
     PartUploadResult,
     splitFileIntoChunks,
     uploadChunk,
     uploadSubtitleFile,
-} from '@/pages/fileUploads/Uploading.utils.ts';
+} from '@/pages/fileUpload/uploading.utils.ts';
 import { MediaFile, MediaFileStatus } from '@/types/mediainfo.types.ts';
 
-interface Props {
-    userId: string;
-}
-
-function useFileUploads({ userId }: Props) {
+function useFileUpload(userEncryptKey: string) {
     const [isUploading, setIsUploading] = useState(false);
     const [fileList, setFileList] = useState<MediaFile[]>([]);
     const [abortController, setAbortController] = useState<AbortController | null>(null);
@@ -40,19 +36,19 @@ function useFileUploads({ userId }: Props) {
             controller: AbortController,
         ) => {
             try {
-                const validate = await validateFile(file.origin.name, userId);
+                const validate = await validateFile(file.origin.name, userEncryptKey);
                 if (validate) {
                     onStatus('uploaded');
                     return;
                 }
 
-                const presignedResponse = await requestPresignedFile(file, userId);
+                const presignedResponse = await requestPresignedFile(file, userEncryptKey);
                 const videoFileInfo = presignedResponse.data;
 
                 if (file.subtitles && file.subtitles.length > 0 && videoFileInfo.subtitles) {
                     for (const subtitle of file.subtitles) {
                         if (controller.signal.aborted) {
-                            deleteUploadsFiles([videoFileInfo.programId], userId);
+                            deleteUploadFiles([videoFileInfo.programId], userEncryptKey);
                             return;
                         }
 
@@ -69,7 +65,7 @@ function useFileUploads({ userId }: Props) {
                 }
 
                 if (controller.signal.aborted) {
-                    deleteUploadsFiles([videoFileInfo.programId], userId);
+                    deleteUploadFiles([videoFileInfo.programId], userEncryptKey);
                     return;
                 }
 
@@ -78,7 +74,7 @@ function useFileUploads({ userId }: Props) {
                 const uploadResults: PartUploadResult[] = [];
                 for (let i = 0; i < chunks.length; i++) {
                     if (controller.signal.aborted) {
-                        deleteUploadsFiles([videoFileInfo.programId], userId);
+                        deleteUploadFiles([videoFileInfo.programId], userEncryptKey);
                         return;
                     }
 
@@ -92,7 +88,7 @@ function useFileUploads({ userId }: Props) {
                         file.origin.type,
                         partNumber,
                         controller.signal,
-                        () => deleteUploadsFiles([videoFileInfo.programId], userId),
+                        () => deleteUploadFiles([videoFileInfo.programId], userEncryptKey),
                     );
                     uploadResults.push(result);
 
@@ -105,14 +101,12 @@ function useFileUploads({ userId }: Props) {
                     return;
                 }
 
-                const completionData = {
-                    programId: videoFileInfo.programId,
-                    uploadId: videoFileInfo.uploadId,
-                    completedAt: new Date().toISOString(),
-                    parts: uploadResults,
-                };
-
-                await notifyUploadCompletion(completionData, userId);
+                await notifyUploadCompletion(
+                    videoFileInfo.programId,
+                    videoFileInfo.uploadId,
+                    uploadResults,
+                    userEncryptKey,
+                );
                 onStatus('uploaded');
             } catch (error) {
                 if (error instanceof Error && error.name !== 'AbortError') {
@@ -120,10 +114,10 @@ function useFileUploads({ userId }: Props) {
                 }
             }
         },
-        [userId],
+        [userEncryptKey],
     );
 
-    const runUploads = useCallback(async () => {
+    const runUpload = useCallback(async () => {
         if (isUploading) return;
         setIsUploading(true);
 
@@ -158,19 +152,18 @@ function useFileUploads({ userId }: Props) {
         setIsUploading(false);
     }, [fileList, isUploading, uploadSingleFile]);
 
-    const pauseUploads = useCallback(() => {
+    const pauseUpload = useCallback(() => {
         setIsUploading(false);
         abortController?.abort();
     }, [abortController]);
 
     return {
-        userId: 'minho',
         isUploading,
         fileList,
         setFileList,
         removeFile,
-        runUploads,
-        pauseUploads,
+        runUpload,
+        pauseUpload,
     };
 }
-export default useFileUploads;
+export default useFileUpload;

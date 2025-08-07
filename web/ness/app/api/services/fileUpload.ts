@@ -8,12 +8,13 @@ import {
     UploadedFileItem,
 } from '@/api/models/fileUploads.ts';
 import { MediaFile } from '@/types/mediainfo.types.ts';
+import { PartUploadResult } from '@/pages/fileUpload/uploading.utils.ts';
 
-export const validateFile = async (fileName: string, userId: string): Promise<boolean | null> => {
+export const validateFile = async (fileName: string, userEncryptKey: string): Promise<boolean | null> => {
     try {
         const response = await api.post('upload/files/validate', {
             json: { files: [fileName] },
-            searchParams: { uploadUserId: userId },
+            searchParams: { userEncryptKey },
         });
         const result = await response.json<FileValidateResponse>();
 
@@ -23,7 +24,7 @@ export const validateFile = async (fileName: string, userId: string): Promise<bo
     }
 };
 
-export const requestPresignedFile = async (file: MediaFile, uploadUserId: string): Promise<FileUploadResponse> => {
+export const requestPresignedFile = async (file: MediaFile, userEncryptKey: string): Promise<FileUploadResponse> => {
     const response = await api.post('upload/file', {
         json: {
             fileName: file?.metadata?.fileName || '',
@@ -38,34 +39,23 @@ export const requestPresignedFile = async (file: MediaFile, uploadUserId: string
             audioBitRate: file?.metadata?.audioBitRate || 0,
             subtitleFiles: file?.subtitles?.map((sub) => sub.file.name) || null,
         },
-        searchParams: {
-            uploadUserId,
-        },
+        searchParams: { userEncryptKey },
     });
 
     return await response.json<FileUploadResponse>();
 };
 
-// 업로드 완료 알림 API
 export const notifyUploadCompletion = async (
-    completionData: {
-        programId: string;
-        uploadId: string;
-        completedAt: string;
-        parts: {
-            PartNumber: number;
-            ETag: string;
-        }[];
-    },
-    uploadUserId: string,
+    programId: string,
+    uploadId: string,
+    parts: PartUploadResult[],
+    userEncryptKey: string,
 ): Promise<UploadCompletionResponse> => {
-    const requestData: UploadCompletionRequest = { files: [completionData] };
+    const requestData: UploadCompletionRequest = { files: [{ programId, uploadId, parts }] };
     try {
         const response = await api.post('upload/files/completed', {
             json: requestData,
-            searchParams: {
-                uploadUserId,
-            },
+            searchParams: { userEncryptKey },
         });
 
         return await response.json<UploadCompletionResponse>();
@@ -73,10 +63,9 @@ export const notifyUploadCompletion = async (
         console.error('업로드 완료 알림 에러:', {
             error,
             requestData,
-            uploadUserId,
+            userEncryptKey,
         });
 
-        // 에러 상세 정보 로그
         if (error instanceof Error) {
             console.error('에러 메시지:', error.message);
             console.error('에러 스택:', error.stack);
@@ -86,30 +75,25 @@ export const notifyUploadCompletion = async (
     }
 };
 
-export const fetchUploadedFiles = async (uploadUserId: string): Promise<FileListResponse> => {
-    const response = await api.get('upload/files', {
-        searchParams: {
-            uploadUserId,
-        },
-    });
-
+export const fetchUploadedFiles = async (userEncryptKey: string): Promise<FileListResponse> => {
+    const response = await api.get('upload/files', { searchParams: { userEncryptKey } });
     return await response.json<FileListResponse>();
 };
 
-export const deleteUploadsFiles = (programIdList: string[], uploadUserId: string) =>
+export const deleteUploadFiles = (programIdList: string[], userEncryptKey: string) =>
     api.delete('upload/files', {
         json: { programIds: programIdList },
-        searchParams: { uploadUserId },
+        searchParams: { userEncryptKey },
     });
 
 export const requestRunEncoding = async (
     fileList: UploadedFileItem[],
-    uploadUserId: string,
+    userEncryptKey: string,
     isAutoEncoding: boolean,
 ): Promise<FileListResponse> => {
     const response = await api.post('encoding/queue', {
         json: { encodingQueues: fileList },
-        searchParams: { uploadUserId, isAutoEncoding },
+        searchParams: { userEncryptKey, isAutoEncoding },
     });
 
     return await response.json<FileListResponse>();

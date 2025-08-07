@@ -1,6 +1,3 @@
-/**
- * 바이트를 읽기 쉬운 형태로 변환
- */
 export const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -23,20 +20,6 @@ export const formatBitrate = (bps: number) => {
     } else {
         return `${(bps / 1000000).toFixed(1)} Mbps`;
     }
-};
-
-import Cookies from 'js-cookie';
-
-/**
- * 쿠키에서 사용자 ID를 가져오는 함수
- * 쿠키는 브라우저 메모리에 저장되어 있으므로 네트워크 요청이나 파일 시스템 접근이 필요하지 않아 동기 함수로 작성.
- */
-export const getUserId = () => {
-    const userId = Cookies.get('previous_id_logged');
-    if (!userId) {
-        throw new Error('User ID not found in cookies');
-    }
-    return userId;
 };
 
 export const firstUpperCase = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);

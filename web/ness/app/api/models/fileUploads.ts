@@ -56,7 +56,6 @@ interface UploadCompletionRequest {
     files: Array<{
         programId: string;
         uploadId: string;
-        completedAt: string;
         parts: Array<{
             PartNumber: number;
             ETag: string;
@@ -86,46 +85,6 @@ interface FileListResponse {
     data: UploadedFileItem[];
 }
 
-export interface FileValidationRequest {
-    fileName: string;
-}
-
-export interface FileValidationResponse {
-    code: number;
-    data: boolean;
-    msg: string;
-}
-
-export interface FileUploadInitiateRequest {
-    file_name: string;
-    file_size: number;
-    file_type: string;
-    upload_path: string;
-    upload_user: string;
-}
-
-export interface FileUploadInitiateResponse {
-    file_id: string;
-    parts: Array<{
-        part_number: number;
-        url: string;
-    }>;
-}
-
-export interface FileUploadCompleteRequest {
-    file_id: string;
-    parts: Array<{
-        part_number: number;
-        etag: string;
-    }>;
-}
-
-export interface FileUploadCompleteResponse {
-    file_id: string;
-    file_url: string;
-}
-
-// 타입들을 export (다른 곳에서 사용할 수 있도록)
 export type {
     FileValidateRequest,
     FileValidateResponse,

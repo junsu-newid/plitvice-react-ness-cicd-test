@@ -1,15 +1,21 @@
-import { useLoaderData } from 'react-router';
+import { LoaderFunctionArgs, useLoaderData } from 'react-router';
 import { PresetItem, PresetResponse } from '@/api/models/preset.ts';
 import { useTranslation } from 'react-i18next';
-import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
 import EncodingPresetList from '@/pages/presetList/List.tsx';
 import EncodingPresetMetadataSheet from '@/pages/presetList/Metadata.tsx';
 import { useState } from 'react';
-import { WarningIcon } from '@plitvice/ui';
+import { fetchPresetList } from '@/api/services/preset.ts';
+import { getSession } from '@/session.server.ts';
+import { COOKIE, ENCRYPT_KEY } from '@/types/enum.ts';
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+    const session = await getSession(request.headers.get(COOKIE));
+    const userEncryptKey = await session.get(ENCRYPT_KEY);
+    return await fetchPresetList(userEncryptKey);
+};
 
 const EncodingPresetPage = () => {
     const { t } = useTranslation();
-    const { isUploading } = useGlobalContext();
     const presetData = useLoaderData() as PresetResponse;
     const [selectedItem, setSelectedItem] = useState<PresetItem>();
 
@@ -23,19 +29,15 @@ const EncodingPresetPage = () => {
             <p className={`text-r14 text-grey-60 whitespace-pre-line pb-[24px] pt-[12px]`}>
                 {t('presetList.description')}
             </p>
-            <div className="relative h-full overflow-auto rounded-[4px] border border-gray-200 bg-white">
+            <div className="border-grey-20 relative h-full overflow-auto rounded-[4px] border bg-white">
                 {(!presetData.data || presetData.data.length === 0) && (
-                    <div className="flex h-32 items-center justify-center text-gray-500">업로드된 파일이 없습니다.</div>
+                    <div className="text-grey-50 flex h-full items-center justify-center">
+                        {t('presetList.emptyList')}
+                    </div>
                 )}
                 <EncodingPresetList data={presetData.data} onItemClick={setSelectedItem} />
             </div>
             <EncodingPresetMetadataSheet content={selectedItem} onClose={handleDrawerClose} />
-            {isUploading ? (
-                <div className={`fixed right-[36px] top-[96px] flex items-center gap-[4px]`}>
-                    <WarningIcon className={`animate-[warning-color-anim_2s_ease-in-out_infinite]`} />
-                    <p className={`text-r14`}>{t('fileUploads.alertNowUploading')}</p>
-                </div>
-            ) : null}
         </div>
     );
 };

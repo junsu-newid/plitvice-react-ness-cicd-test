@@ -1,20 +1,24 @@
-import { useLoaderData } from 'react-router';
+import { LoaderFunctionArgs, useLoaderData } from 'react-router';
 import { ServerInstance, ServerStatusResponse } from '@/api/models/serverStatus.ts';
 import { useTranslation } from 'react-i18next';
-import { ServerStatusType } from '@/types/enum.ts';
+import { COOKIE, ENCRYPT_KEY, ServerStatusType } from '@/types/enum.ts';
 import ServerStatusList from '@/pages/serverStatus/List.tsx';
 import { useEffect, useState } from 'react';
 import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
-import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
-import { WarningIcon } from '@plitvice/ui';
+import { fetchServerStatus } from '@/api/services/serverStatus.ts';
+import { getSession } from '@/session.server.ts';
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+    const session = await getSession(request.headers.get(COOKIE));
+    const userEncryptKey = await session.get(ENCRYPT_KEY);
+    return await fetchServerStatus(userEncryptKey);
+};
 
 const ServerStatusPage = () => {
     const { t } = useTranslation();
-    const { isUploading } = useGlobalContext();
-    const serverStatusData = useLoaderData() as ServerStatusResponse;
+    const serverStatusData: ServerStatusResponse = useLoaderData();
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [filteredData, setFilteredData] = useState<ServerInstance[]>([]);
-    serverStatusData.data = sample;
 
     useEffect(() => {
         setFilteredData(
@@ -49,16 +53,12 @@ const ServerStatusPage = () => {
             </div>
             <div className="border-grey-20 relative h-full overflow-auto rounded-[4px] border bg-white">
                 {(!filteredData || filteredData.length === 0) && (
-                    <div className="text-grey-90 flex h-32 items-center justify-center">업로드된 파일이 없습니다.</div>
+                    <div className="text-grey-50 flex h-full items-center justify-center">
+                        {t('presetList.emptyList')}
+                    </div>
                 )}
                 <ServerStatusList data={filteredData} />
             </div>
-            {isUploading ? (
-                <div className={`fixed right-[36px] top-[96px] flex items-center gap-[4px]`}>
-                    <WarningIcon className={`animate-[warning-color-anim_2s_ease-in-out_infinite]`} />
-                    <p className={`text-r14`}>{t('fileUploads.alertNowUploading')}</p>
-                </div>
-            ) : null}
         </div>
     );
 };
@@ -70,231 +70,4 @@ const StatusSetting: StatusBoxProps[] = [
     { type: ServerStatusType[2], titleSlice: 'R', color: 'bg-[#BAF8D7] border-[#15A271] text-[#15A271]' },
     { type: ServerStatusType[3], titleSlice: 'SP', color: 'bg-[#FFEACC] border-[#F68855] text-[#F68855]' },
     { type: ServerStatusType[4], titleSlice: 'SD', color: 'bg-[#EBEBEB] border-[#8E8E90] text-[#8E8E90]' },
-];
-
-const sample = [
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'in-house',
-        status: 'pending',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'stopping',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'stopped',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
-    {
-        createdAt: '04-14-2025 14:16:40',
-        instanceId: 'i-01e1ec0fdcad64db2',
-        instanceName: '10.0.10.99.test.encoder.ec2.seoul',
-        serverType: 'cloud',
-        status: 'running',
-        updatedAt: '06-26-2025 08:08:37',
-    },
 ];

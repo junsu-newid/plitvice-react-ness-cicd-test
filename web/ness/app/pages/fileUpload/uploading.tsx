@@ -1,28 +1,30 @@
-import { BinIcon, Button, Tooltip } from '@plitvice/ui';
-import { useSetAtom } from 'jotai';
-import { loadingState } from '@/stores';
-import { MediaFile, MediaFileStatus, MediaSubFile } from '@/types/mediainfo.types.ts';
-import FileDropzone from './FileDropzone.tsx';
-import { formatDuration, formatFileSize, getFileName, getLanguageCode } from '@/utils';
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { useTranslation } from 'react-i18next';
-import { useMediaMetadata } from '@/hooks/useMediaInfo.ts';
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { BinIcon, Button, Tooltip } from '@plitvice/ui';
+import { formatDuration, formatFileSize, getFileName, getLanguageCode } from '@/utils';
+import { MediaFile, MediaFileStatus, MediaSubFile } from '@/types/mediainfo.types.ts';
+import { useMediaMetadata } from '@/hooks/useMediaInfo.ts';
+import FileDropzone from './fileDropzone.tsx';
 import CommonChips from '@/components/CommonChips.tsx';
-import { useGlobalContext } from '@/hooks/useGlobal.context.tsx';
+
+type Props = {
+    isUploading: boolean;
+    fileList: MediaFile[];
+    setFileList: (fileList: MediaFile[]) => void;
+    removeFile: (fileName: string) => void;
+    runUpload: () => void;
+    pauseUpload: () => void;
+};
 
 const columnHelper = createColumnHelper<MediaFile>();
 
-const FileUploadingList = () => {
+const FileUploadingList = ({ isUploading, fileList, setFileList, removeFile, runUpload, pauseUpload }: Props) => {
     const { t } = useTranslation();
-    const setLoading = useSetAtom(loadingState);
     const { extractMetadata } = useMediaMetadata();
-    const { isUploading, fileList, setFileList, removeFile, runUploads, pauseUploads } = useGlobalContext();
 
     const handleAddFile = useCallback(
         async (newMediaList: File[], newSubList: File[]) => {
-            setLoading(true);
-
             const extractedList = await extractMetadata(newMediaList);
             const newAddedList: MediaFile[] = [];
 
@@ -30,7 +32,7 @@ const FileUploadingList = () => {
                 const mediaFile = fileList.find((file) => file.origin.name === newFile.origin.name);
                 if (mediaFile) {
                     const isConfirmed = confirm(
-                        t('fileUploads.section0.confirmDuplicated', { fileName: mediaFile.origin.name }),
+                        t('fileUpload.section0.confirmDuplicated', { fileName: mediaFile.origin.name }),
                     );
                     if (isConfirmed) {
                         newAddedList.push(newFile);
@@ -62,15 +64,13 @@ const FileUploadingList = () => {
                 });
                 return resultList;
             });
-
-            setLoading(false);
         },
-        [setLoading, extractMetadata, setFileList, fileList, t],
+        [extractMetadata, setFileList, fileList, t],
     );
 
     const handleRemoveFile = useCallback(
         (file: MediaFile) => {
-            const isConfirmed = confirm(t('fileUploads.section0.alertDelete', { fileName: file.origin.name }));
+            const isConfirmed = confirm(t('fileUpload.section0.alertDelete', { fileName: file.origin.name }));
             if (isConfirmed) {
                 removeFile(file.origin.name);
             }
@@ -78,27 +78,27 @@ const FileUploadingList = () => {
         [removeFile, t],
     );
 
-    const handleRunUploads = useCallback(() => {
-        const isConfirmed = confirm(t('fileUploads.section0.confirmUploading'));
+    const handleRunUpload = useCallback(() => {
+        const isConfirmed = confirm(t('fileUpload.section0.confirmUploading'));
         if (isConfirmed) {
-            runUploads();
+            runUpload();
         }
-    }, [runUploads, t]);
+    }, [runUpload, t]);
 
-    const handlePauseUploads = useCallback(() => {
-        const isConfirmed = confirm(t('fileUploads.section0.confirmPause'));
+    const handlePauseUpload = useCallback(() => {
+        const isConfirmed = confirm(t('fileUpload.section0.confirmPause'));
         if (isConfirmed) {
-            pauseUploads();
+            pauseUpload();
         }
-    }, [pauseUploads, t]);
+    }, [pauseUpload, t]);
 
     const renderProgress = useCallback(
         (status?: MediaFileStatus, progress = 0) => {
             let progressBar = <></>;
-            let tooltipText = t('fileUploads.section0.pending');
+            let tooltipText = t('fileUpload.section0.pending');
             switch (status) {
                 case 'uploading':
-                    tooltipText = t('fileUploads.section0.uploading');
+                    tooltipText = t('fileUpload.section0.uploading');
                     progressBar = (
                         <div
                             className="h-full overflow-hidden rounded-full bg-blue-600 transition-all duration-300"
@@ -107,15 +107,15 @@ const FileUploadingList = () => {
                     );
                     break;
                 case 'uploaded':
-                    tooltipText = t('fileUploads.section0.uploaded');
+                    tooltipText = t('fileUpload.section0.uploaded');
                     progressBar = <div className="h-full w-full rounded-full bg-green-600" />;
                     break;
                 case 'encoded':
-                    tooltipText = t('fileUploads.section0.encoded');
+                    tooltipText = t('fileUpload.section0.encoded');
                     progressBar = <div className="h-full w-full rounded-full bg-yellow-400" />;
                     break;
                 case 'error':
-                    tooltipText = t('fileUploads.section0.error');
+                    tooltipText = t('fileUpload.section0.error');
                     progressBar = <div className="h-full w-full rounded-full bg-red-600" />;
                     break;
             }
@@ -156,7 +156,7 @@ const FileUploadingList = () => {
                 meta: { tdStyle: 'pl-[12px] text-left' },
             }),
             columnHelper.accessor('origin.name', {
-                header: () => t('fileUploads.section0.tableCol0'),
+                header: () => t('fileUpload.section0.tableCol0'),
                 cell: ({ row }) => (
                     <div className={`flex gap-[4px]`}>
                         {row.original.subtitles ? (
@@ -175,18 +175,18 @@ const FileUploadingList = () => {
                 },
             }),
             columnHelper.accessor('metadata.duration', {
-                header: () => t('fileUploads.section0.tableCol1'),
+                header: () => t('fileUpload.section0.tableCol1'),
                 cell: ({ getValue }) => formatDuration(getValue()),
                 meta: { tdStyle: 'px-[22px]' },
             }),
             columnHelper.accessor('origin.size', {
-                header: () => t('fileUploads.section0.tableCol2'),
+                header: () => t('fileUpload.section0.tableCol2'),
                 cell: ({ getValue }) => formatFileSize(getValue()),
                 meta: { tdStyle: 'px-[22px]' },
             }),
             columnHelper.display({
                 id: 'progress',
-                header: t('fileUploads.section0.tableCol3'),
+                header: t('fileUpload.section0.tableCol3'),
                 cell: ({ row }) => renderProgress(row.original.status, row.original.progress),
                 meta: { tdStyle: 'px-[22px]' },
             }),
@@ -251,7 +251,7 @@ const FileUploadingList = () => {
                     <p
                         className={`text-r16 text-grey-40 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pt-[52px]`}
                     >
-                        {t('fileUploads.section0.empty')}
+                        {t('fileUpload.section0.empty')}
                     </p>
                 )}
             </div>
@@ -259,9 +259,9 @@ const FileUploadingList = () => {
                 variant={isUploading ? 'default' : 'normal'}
                 size="medium"
                 disabled={fileList.length === 0 || !fileList.find((file) => file.status === 'pending')}
-                onClick={isUploading ? handlePauseUploads : handleRunUploads}
+                onClick={isUploading ? handlePauseUpload : handleRunUpload}
             >
-                {isUploading ? t('fileUploads.section0.btnPause') : t('fileUploads.section0.btnRun')}
+                {isUploading ? t('fileUpload.section0.btnPause') : t('fileUpload.section0.btnRun')}
             </Button>
         </>
     );

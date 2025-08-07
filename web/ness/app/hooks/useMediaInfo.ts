@@ -9,7 +9,7 @@ export const useMediaMetadata = () => {
     useEffect(() => {
         mediaInfoFactory({
             format: 'JSON',
-            locateFile: () => '/MediaInfoModule.wasm',
+            locateFile: () => 'MediaInfoModule.wasm',
         })
             .then((mi) => {
                 mediaInfoRef.current = mi;

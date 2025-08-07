@@ -1,7 +1,6 @@
 import path from 'path';
 import { reactRouter } from '@react-router/dev/vite';
 import { defineConfig, searchForWorkspaceRoot } from 'vite';
-import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import tailwindcss from '@tailwindcss/vite';
@@ -11,7 +10,6 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 export default defineConfig({
     base: '/ness/',
     plugins: [
-        react(),
         reactRouter(),
         tsconfigPaths(),
         svgr(),

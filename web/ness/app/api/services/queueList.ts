@@ -1,12 +1,16 @@
 import api from '../index.ts';
-import { FileListParams, FileListResponse } from '@/api/models/queueList.ts';
+import { FileListResponse } from '@/api/models/queueList.ts';
 import { format } from 'date-fns';
 
-export const fetchFileList = async (params: FileListParams): Promise<FileListResponse> => {
+export const fetchFileList = async (
+    userEncryptKey: string,
+    startDate: string,
+    endDate: string,
+): Promise<FileListResponse> => {
     const searchParams = new URLSearchParams({
-        uploadUserId: params.uploadUserId,
-        startDate: normalizeDate(params.startDate) || '2024-01-01',
-        endDate: normalizeDate(params.endDate) || format(new Date(), 'yyyy-MM-dd'),
+        userEncryptKey: userEncryptKey,
+        startDate: normalizeDate(startDate) || '01-01-2024',
+        endDate: normalizeDate(endDate) || format(new Date(), 'MM-dd-yyyy'),
     });
 
     return await api.get(`encoding/files?${searchParams.toString()}`).json<FileListResponse>();
