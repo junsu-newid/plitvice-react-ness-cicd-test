@@ -6,25 +6,22 @@ import FileUploadingList from './uploading.tsx';
 import FileUploadedList from './uploaded.tsx';
 import useFileUpload from '@/pages/fileUpload/index.hook.ts';
 import { fetchPresetList } from '@/api/services/preset.ts';
-import { data, LoaderFunctionArgs, useLoaderData } from 'react-router';
-import { getSession } from '@/session.server.ts';
-import { COOKIE, ENCRYPT_KEY } from '@/types/enum.ts';
+import { data, useLoaderData } from 'react-router';
+import { commonLoader } from '@/middleware/auth.ts';
 
 enum TabMenuType {
     UPLOADING = 'uploading',
     UPLOADED = 'uploaded',
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const session = await getSession(request.headers.get(COOKIE));
-    const userEncryptKey = await session.get(ENCRYPT_KEY);
+export const loader = commonLoader(async ({ userEncryptKey }: { userEncryptKey: string }) => {
     const res = await fetchPresetList(userEncryptKey);
     const presetList: SelectOption[] = [];
     res.data.map((item) => {
         presetList.push({ value: item.id, label: item.name });
     });
     return data({ userEncryptKey, presetList });
-};
+});
 
 const FileUploadPage = () => {
     const { t } = useTranslation();
