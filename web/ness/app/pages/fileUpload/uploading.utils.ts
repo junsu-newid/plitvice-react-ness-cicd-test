@@ -1,4 +1,5 @@
 import ky from 'ky';
+
 import { CHUNK_SIZE } from '@/types/enum.ts';
 
 export interface PartUploadResult {

@@ -2,7 +2,7 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-        "types": ["node", "vite/client"],
+        "types": [ "vite/client"],
         "rootDirs": [".", "./.react-router/types"],
         "baseUrl": ".",
         "paths": {
@@ -14,6 +14,6 @@
         "noUncheckedSideEffectImports": true
     },
     "include": ["**/*", "**/.server/**/*", "**/.client/**/*", ".react-router/types/**/*"],
-    "exclude": ["../node_modules", "build", ".react-router"],
+    "exclude": ["../node_modules", "build"],
     "references": [{ "path": "../../shared/util/tsconfig.app.json" }, { "path": "../../shared/ui/tsconfig.app.json" }]
 }
