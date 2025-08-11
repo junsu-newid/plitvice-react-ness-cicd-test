@@ -1,29 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { data, useLoaderData } from 'react-router';
-
 import { TFunction } from 'i18next';
-
 import { SelectOption, TabMenu, WarningIcon } from '@plitvice/ui';
-
-import { fetchPresetList } from '@/api/services/preset.ts';
-
-import useFileUpload from '@/pages/fileUpload/index.hook.ts';
-
-import { commonLoader } from '@/middleware/auth.ts';
-
-import FileUploadedList from './uploaded.tsx';
 import FileUploadingList from './uploading.tsx';
+import FileUploadedList from './uploaded.tsx';
+import useFileUpload from '@/pages/fileUpload/index.hook.ts';
+import { fetchPresetList } from '@/api/services/preset.ts';
+import { data, useLoaderData } from 'react-router';
+import { commonLoader } from '@/middleware/auth.ts';
 
 enum TabMenuType {
     UPLOADING = 'uploading',
     UPLOADED = 'uploaded',
-}
-
-interface LoaderProps {
-    userEncryptKey: string;
-    presetList: SelectOption[];
 }
 
 export const loader = commonLoader(async ({ userEncryptKey }: { userEncryptKey: string }) => {
@@ -37,12 +25,9 @@ export const loader = commonLoader(async ({ userEncryptKey }: { userEncryptKey: 
 
 const FileUploadPage = () => {
     const { t } = useTranslation();
-
-    const { userEncryptKey, presetList } = useLoaderData<LoaderProps>();
-
-    const [tabMenu, setTabMenu] = useState(TabMenuType.UPLOADING);
-
+    const { userEncryptKey, presetList } = useLoaderData();
     const { isUploading, fileList, setFileList, removeFile, runUpload, pauseUpload } = useFileUpload(userEncryptKey);
+    const [tabMenu, setTabMenu] = useState(TabMenuType.UPLOADING);
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {

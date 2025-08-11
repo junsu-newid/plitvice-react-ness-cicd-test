@@ -1,7 +1,5 @@
 import { useTranslation } from 'react-i18next';
-
 import { Drawer, Button, Tooltip } from '@plitvice/ui';
-
 import { QueueFileItem } from '@/api/models/queueList.ts';
 
 type Props = {

@@ -1,5 +1,4 @@
 import { Column } from '@tanstack/react-table';
-
 import { SortingIcon } from '@plitvice/ui';
 
 type Props<T extends object> = {

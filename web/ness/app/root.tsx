@@ -1,6 +1,4 @@
 import { ReactNode, useMemo } from 'react';
-
-import { I18nextProvider, useTranslation } from 'react-i18next';
 import {
     isRouteErrorResponse,
     Links,
@@ -12,24 +10,18 @@ import {
     useLoaderData,
     data,
 } from 'react-router';
-
-import { TFunction } from 'i18next';
-
-import { ToastProvider } from '@plitvice/ui';
-import { SideNavBar } from '@plitvice/ui/components/navigation/SideNavBar.tsx';
-import { SideNavSection } from '@plitvice/ui/components/navigation/sideNavBar.types.ts';
-import '@plitvice/ui/styles/global.css';
-
-import LoadingMask from '@/components/LoadingMask.tsx';
-
-import FileUploadPage from '@/pages/fileUpload';
-
-import { COOKIE, ENCRYPT_KEY } from '@/types/enum.ts';
-
-import i18n from '@/locales';
-import { getSession } from '@/session.server.ts';
-
 import type { Route } from './+types/root';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import i18n from '@/locales';
+import { ToastProvider } from '@plitvice/ui';
+import '@plitvice/ui/styles/global.css';
+import LoadingMask from '@/components/LoadingMask.tsx';
+import FileUploadPage from '@/pages/fileUpload';
+import { SideNavBar } from '@plitvice/ui/components/navigation/SideNavBar.tsx';
+import { TFunction } from 'i18next';
+import { SideNavSection } from '@plitvice/ui/components/navigation/sideNavBar.types.ts';
+import { getSession } from '@/session.server.ts';
+import { COOKIE, ENCRYPT_KEY } from '@/types/enum.ts';
 
 export const links: Route.LinksFunction = () => [];
 

@@ -1,6 +1,5 @@
 import { MouseEvent, ChangeEvent, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
-
 import { Button } from '@plitvice/ui';
 
 const WHITELIST_MEDIA_EXTENSIONS = {

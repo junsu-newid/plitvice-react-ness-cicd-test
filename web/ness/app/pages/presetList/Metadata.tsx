@@ -1,11 +1,8 @@
+import { PresetItem } from '@/api/models/preset.ts';
 import { useTranslation } from 'react-i18next';
-
+import { firstUpperCase } from '@/utils';
 import { Drawer, Button, StatusChip, useToast } from '@plitvice/ui';
 import { copyToClipboard } from '@plitvice/util/index.ts';
-
-import { PresetItem } from '@/api/models/preset.ts';
-
-import { firstUpperCase } from '@/utils';
 
 type Props = {
     content?: PresetItem;

@@ -1,11 +1,8 @@
-import { initReactI18next } from 'react-i18next';
-
 import { InitOptions } from 'i18next';
-
-import i18n from 'i18next';
-
 import enCommon from './en/common.json';
 import koCommon from './ko/common.json';
+import { initReactI18next } from 'react-i18next';
+import i18n from 'i18next';
 
 const resources = {
     en: {

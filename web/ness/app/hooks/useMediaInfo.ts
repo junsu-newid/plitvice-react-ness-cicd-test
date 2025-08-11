@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-
 import mediaInfoFactory, { MediaInfo } from 'mediainfo.js';
-
 import type { MediaFile, MediaInfoResult, MediaMetadata, Track } from '@/types/mediainfo.types';
 
 export const useMediaMetadata = () => {
