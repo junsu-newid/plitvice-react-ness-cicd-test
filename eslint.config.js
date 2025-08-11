@@ -34,7 +34,10 @@ export default [
             'react/react-in-jsx-scope': 'off',
             'react-hooks/rules-of-hooks': 'error',
             'react-hooks/exhaustive-deps': 'warn',
-            'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+            'react-refresh/only-export-components': [
+                'warn',
+                { allowConstantExport: false, allowExportNames: ['loader', 'action', 'meta', 'links', 'headers'] },
+            ],
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
             '@typescript-eslint/explicit-module-boundary-types': 'off',
             // import plugin rules
@@ -70,5 +73,25 @@ export default [
     prettierConfig,
     {
         ignores: ['node_modules', 'dist', 'build', 'public', '**/.react-router'],
+    },
+    {
+        // remix 로드함수 에러 방지
+        files: ['web/ness/app/pages/**/*.{ts,tsx}', 'web/ness/app/routes/**/*.{ts,tsx}'],
+        rules: {
+            'react-refresh/only-export-components': [
+                'warn',
+                {
+                    allowConstantExport: true,
+                    allowExportNames: ['loader', 'action', 'meta', 'links', 'headers'],
+                },
+            ],
+        },
+    },
+    {
+        // ANY 허용
+        files: ['web/ness/app/middleware/**/*.{ts,tsx}'],
+        rules: {
+            '@typescript-eslint/no-explicit-any': 'off',
+        },
     },
 ];
