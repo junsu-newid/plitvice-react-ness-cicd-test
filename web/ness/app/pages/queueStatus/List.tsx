@@ -1,3 +1,6 @@
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
     Column,
     createColumnHelper,
@@ -7,14 +10,16 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { QueueFileItem } from '@/api/models/queueList.ts';
+
 import { StatusChip, Tooltip } from '@plitvice/ui';
 import { StatusColor } from '@plitvice/ui/components/chips/StatusChip.tsx';
-import { QueueStatusType } from '@/types/enum.ts';
-import SortHeader from '@/components/SortHeader.tsx';
+
+import { QueueFileItem } from '@/api/models/queueList.ts';
+
 import CommonChips from '@/components/CommonChips.tsx';
+import SortHeader from '@/components/SortHeader.tsx';
+
+import { QueueStatusType } from '@/types/enum.ts';
 
 interface Props {
     data: QueueFileItem[];

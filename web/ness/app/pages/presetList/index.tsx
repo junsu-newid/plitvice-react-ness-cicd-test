@@ -1,22 +1,23 @@
-import { LoaderFunctionArgs, useLoaderData } from 'react-router';
-import { PresetItem, PresetResponse } from '@/api/models/preset.ts';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { data, useLoaderData } from 'react-router';
+
+import { PresetItem, PresetResponse } from '@/api/models/preset.ts';
+
+import { fetchPresetList } from '@/api/services/preset.ts';
+
 import EncodingPresetList from '@/pages/presetList/List.tsx';
 import EncodingPresetMetadataSheet from '@/pages/presetList/Metadata.tsx';
-import { useState } from 'react';
-import { fetchPresetList } from '@/api/services/preset.ts';
-import { getSession } from '@/session.server.ts';
-import { COOKIE, ENCRYPT_KEY } from '@/types/enum.ts';
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const session = await getSession(request.headers.get(COOKIE));
-    const userEncryptKey = await session.get(ENCRYPT_KEY);
-    return await fetchPresetList(userEncryptKey);
-};
+import { commonLoader } from '@/middleware/auth';
+
+export const loader = commonLoader(async ({ userEncryptKey }: { userEncryptKey: string }) => {
+    return data({ presetData: await fetchPresetList(userEncryptKey) });
+});
 
 const EncodingPresetPage = () => {
     const { t } = useTranslation();
-    const presetData = useLoaderData() as PresetResponse;
+    const { presetData } = useLoaderData<{ presetData: PresetResponse }>();
     const [selectedItem, setSelectedItem] = useState<PresetItem>();
 
     const handleDrawerClose = (): void => {

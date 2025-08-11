@@ -1,3 +1,6 @@
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
     createColumnHelper,
     flexRender,
@@ -6,16 +9,22 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table';
-import { ServerInstance } from '@/api/models/serverStatus.ts';
-import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import { StatusChip, Button, useToast } from '@plitvice/ui';
-import { ServerStatusType } from '@/types/enum.ts';
-import { firstUpperCase } from '@/utils';
-import SortHeader from '@/components/SortHeader.tsx';
+
 import { StatusColor } from '@plitvice/ui/components/chips/StatusChip.tsx';
-import CommonChips from '@/components/CommonChips.tsx';
+
+import { ServerInstance } from '@/api/models/serverStatus.ts';
+
 import { putServerStatus } from '@/api/services/serverStatus.ts';
+
+import CommonChips from '@/components/CommonChips.tsx';
+
+import SortHeader from '@/components/SortHeader.tsx';
+
+import { ServerStatusType } from '@/types/enum.ts';
+
+import { firstUpperCase } from '@/utils';
 
 interface Props {
     data: ServerInstance[];

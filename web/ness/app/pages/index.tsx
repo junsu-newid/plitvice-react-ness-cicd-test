@@ -1,6 +1,8 @@
 import { LoaderFunctionArgs, redirect } from 'react-router';
-import { commitSession, getSession } from '@/session.server.ts';
+
 import { COOKIE, ENCRYPT_KEY } from '@/types/enum.ts';
+
+import { commitSession, getSession } from '@/session.server.ts';
 
 export async function loader({ request }: LoaderFunctionArgs) {
     const session = await getSession(request.headers.get(COOKIE));

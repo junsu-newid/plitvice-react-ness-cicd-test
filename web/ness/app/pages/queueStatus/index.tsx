@@ -1,37 +1,46 @@
 import { useEffect, useState } from 'react';
-import { data, LoaderFunctionArgs, useLoaderData } from 'react-router';
-import { QueueFileItem, FileListResponse } from '@/api/models/queueList.ts';
-import { useTranslation } from 'react-i18next';
-import { DateRange, DateRangePickerBox } from '@plitvice/ui';
-import QueueStatusList from '@/pages/queueStatus/List.tsx';
-import { COOKIE, ENCRYPT_KEY, QueueStatusType } from '@/types/enum.ts';
-import { startOfDay, subDays } from 'date-fns';
-import { fetchFileList } from '@/api/services/queueList.ts';
-import { formatDateForInput, getDefaultDateRange, parseDateFromInput } from '@/utils';
-import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
-import QueueStatusMetadataSheet from '@/pages/queueStatus/Metadata.tsx';
-import { getSession } from '@/session.server.ts';
 
-type LoaderProps = {
+import { useTranslation } from 'react-i18next';
+import { data, useLoaderData } from 'react-router';
+
+import { startOfDay, subDays } from 'date-fns';
+
+import { DateRange, DateRangePickerBox } from '@plitvice/ui';
+
+import { QueueFileItem, FileListResponse } from '@/api/models/queueList.ts';
+import { fetchFileList } from '@/api/services/queueList.ts';
+
+import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
+
+import QueueStatusList from '@/pages/queueStatus/List.tsx';
+import QueueStatusMetadataSheet from '@/pages/queueStatus/Metadata.tsx';
+
+import { QueueStatusType } from '@/types/enum.ts';
+
+import { commonLoader } from '@/middleware/auth';
+import { formatDateForInput, getDefaultDateRange, parseDateFromInput } from '@/utils';
+
+interface LoaderProps {
     userEncryptKey: string;
     queueList: FileListResponse;
-};
+}
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const session = await getSession(request.headers.get(COOKIE));
-    const userEncryptKey = await session.get(ENCRYPT_KEY);
+export const loader = commonLoader(async ({ userEncryptKey }: { userEncryptKey: string }) => {
     const { startDate, endDate } = getDefaultDateRange();
     return data({ userEncryptKey, queueList: await fetchFileList(userEncryptKey, startDate, endDate) });
-};
+});
 
 const QueueStatusPage = () => {
     const { t } = useTranslation();
+
     const { userEncryptKey, queueList } = useLoaderData<LoaderProps>();
+
     const [data, setData] = useState(queueList);
-    const allFiles = data.data.encodingFileList;
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [filteredData, setFilteredData] = useState<QueueFileItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<QueueFileItem>();
+
+    const allFiles = data.data.encodingFileList;
 
     useEffect(() => {
         setFilteredData(

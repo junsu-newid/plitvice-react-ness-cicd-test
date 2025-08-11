@@ -1,22 +1,31 @@
-import { LoaderFunctionArgs, useLoaderData } from 'react-router';
-import { ServerInstance, ServerStatusResponse } from '@/api/models/serverStatus.ts';
-import { useTranslation } from 'react-i18next';
-import { COOKIE, ENCRYPT_KEY, ServerStatusType } from '@/types/enum.ts';
-import ServerStatusList from '@/pages/serverStatus/List.tsx';
 import { useEffect, useState } from 'react';
-import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
-import { fetchServerStatus } from '@/api/services/serverStatus.ts';
-import { getSession } from '@/session.server.ts';
+import { useTranslation } from 'react-i18next';
+import { data, LoaderFunctionArgs, useLoaderData } from 'react-router';
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const session = await getSession(request.headers.get(COOKIE));
-    const userEncryptKey = await session.get(ENCRYPT_KEY);
-    return await fetchServerStatus(userEncryptKey);
-};
+import { ServerInstance, ServerStatusResponse } from '@/api/models/serverStatus.ts';
+
+import { fetchServerStatus } from '@/api/services/serverStatus.ts';
+
+import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
+
+import ServerStatusList from '@/pages/serverStatus/List.tsx';
+
+import { COOKIE, ENCRYPT_KEY, ServerStatusType } from '@/types/enum.ts';
+
+import { commonLoader } from '@/middleware/auth';
+
+interface LoaderProps {
+    userEncryptKey: string;
+    serverStatusData: ServerStatusResponse;
+}
+
+export const loader = commonLoader(async ({ userEncryptKey }: LoaderProps) => {
+    return data({ userEncryptKey, serverStatusData: await fetchServerStatus(userEncryptKey) });
+});
 
 const ServerStatusPage = () => {
     const { t } = useTranslation();
-    const serverStatusData: ServerStatusResponse = useLoaderData();
+    const { serverStatusData } = useLoaderData<LoaderProps>();
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [filteredData, setFilteredData] = useState<ServerInstance[]>([]);
 

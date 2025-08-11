@@ -1,4 +1,5 @@
 import { useAtomValue } from 'jotai';
+
 import { loadingState } from '@/stores';
 
 function LoadingMask() {

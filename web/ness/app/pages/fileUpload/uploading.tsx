@@ -1,12 +1,19 @@
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+
 import { BinIcon, Button, Tooltip } from '@plitvice/ui';
-import { formatDuration, formatFileSize, getFileName, getLanguageCode } from '@/utils';
-import { MediaFile, MediaFileStatus, MediaSubFile } from '@/types/mediainfo.types.ts';
-import { useMediaMetadata } from '@/hooks/useMediaInfo.ts';
-import FileDropzone from './fileDropzone.tsx';
+
 import CommonChips from '@/components/CommonChips.tsx';
+
+import { useMediaMetadata } from '@/hooks/useMediaInfo.ts';
+
+import { MediaFile, MediaFileStatus, MediaSubFile } from '@/types/mediainfo.types.ts';
+
+import { formatDuration, formatFileSize, getFileName, getLanguageCode } from '@/utils';
+
+import FileDropzone from './fileDropzone.tsx';
 
 type Props = {
     isUploading: boolean;
