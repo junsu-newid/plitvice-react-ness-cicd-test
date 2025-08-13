@@ -1,10 +1,15 @@
-import { getSession } from "@/session.server";
-import { COOKIE, ENCRYPT_KEY } from "@/types/enum";
-import { LoaderFunctionArgs } from "react-router";
+import { LoaderFunctionArgs } from 'react-router';
 
-export const getUserEncryptKeyFromSession = async ({request}: LoaderFunctionArgs) =>{
+import { COOKIE, ENCRYPT_KEY } from '@/types/enum';
+
+import { getSession } from '@/session.server';
+
+export const getUserEncryptKeyFromSession = async ({ request }: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get(COOKIE));
     // 임시
-    session.set(ENCRYPT_KEY, '20EVUqAhRwzlvABlIdEZXw3Myx4LQ3aDkNOtFc5ZeJ_ZaXHkeHyUpPNso38z3Zfla2dHvIM9NemlifYE_wIKOlo4fcKnd3aPZiK_r8bei-krNhZ8tIXtSBEHs5bUn-nRF_FaslrP00rJHlAdIRIBi2sDP4VD2fPRdpyR31DXWUnZhrwBVxMbquuJwB8RaL8iuphMK_amr7V5jYFQgJsBZeP456IaXF2baL7qJr1H098aE6wQcMT81R5Sx8tQEsnSZHKjBB7UkBrnoA0MeIT3ec3ryyP82OXTNjZR7GaBbEmaSN_ki6_z1AqsBb34XItga0I7HNIR3ggBKpqQJeAyfRaehvbAIxW28Alh_EkxB7kcmdi72ma3hyrJQV6hQ4ekMyK2AYcfxp3SqmIvsOqID-jF3SvZ0S7WXCrQRvbVZ428J5AZ5xiYxFUBldmzf-i2kgcOSIJ_2WI=');
+    session.set(
+        ENCRYPT_KEY,
+        '8-TVgRMrDIMZbg3dLSfO6_7jZd69tt7Y8Oys7RnzsDkAfSgbOkv5XH2ZAUGOhto5hiw5Fo1yVG_j8RdHDjosCnIlAQgasTR3CPVKSB0vJ2ajMIsHTTJusE5kr-ZaoCbA72ohTkew6HbmprptdDPpzzDzFj_cl0SSC-opkDEUCho_EfEW5xWrAOdd1qicjGAyPym_OpUZFgBQkf9ArH8z2atpgnaPbeekaU8c-qY7kr23OlB2aSTWOPPrjrshvKwp1Z_0-6P5Isj8rJ57Gjegtih7C2rsNmE2DSAHrNA9yruBlZIpl-rNCMCL7VrqrP1BzVkcUozq57V18jlTjy5P4d2emGOL0UCkjKgKws1Uwg==',
+    );
     return session.get(ENCRYPT_KEY) as string;
-} 
+};
