@@ -1,29 +1,38 @@
 import { ReactNode, useMemo } from 'react';
+
+import { I18nextProvider, useTranslation } from 'react-i18next';
 import {
+    data,
     isRouteErrorResponse,
     Links,
+    LoaderFunctionArgs,
     Meta,
     Outlet,
     Scripts,
     ScrollRestoration,
-    LoaderFunctionArgs,
     useLoaderData,
-    data,
+    useLocation,
+    useNavigate,
 } from 'react-router';
-import type { Route } from './+types/root';
-import { I18nextProvider, useTranslation } from 'react-i18next';
-import i18n from '@/locales';
-import { ToastProvider } from '@plitvice/ui';
-import '@plitvice/ui/styles/global.css';
-import LoadingMask from '@/components/LoadingMask.tsx';
-import FileUploadPage from '@/pages/fileUpload';
-import { SideNavBar } from '@plitvice/ui/components/navigation/SideNavBar.tsx';
+
 import { TFunction } from 'i18next';
+
+import { ToastProvider } from '@plitvice/ui';
+import { SideNavBar } from '@plitvice/ui/components/navigation/SideNavBar.tsx';
 import { SideNavSection } from '@plitvice/ui/components/navigation/sideNavBar.types.ts';
-import { getSession } from '@/session.server.ts';
+
+import '@plitvice/ui/styles/global.css';
+
+import GlobalLoading from '@/components/LoadingMask.tsx';
+
+import FileUploadPage from '@/routes/file-upload.tsx';
+
 import { COOKIE, ENCRYPT_KEY } from '@/types/enum.ts';
 
-export const links: Route.LinksFunction = () => [];
+import i18n from '@/locales';
+import { getSession } from '@/session.server.ts';
+
+import type { Route } from './+types/root';
 
 export async function loader({ request }: LoaderFunctionArgs) {
     const session = await getSession(request.headers.get(COOKIE));
@@ -70,6 +79,8 @@ export default function App() {
     const { t } = useTranslation();
     const { userEncryptKey } = useLoaderData();
     const navMap = useMemo(() => getNavMap(t), [t]);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     return (
         <I18nextProvider i18n={i18n}>
@@ -80,12 +91,13 @@ export default function App() {
                             <SideNavBar
                                 width={0}
                                 sectionList={navMap}
-                                onNavigate={(path) => (document.location.href = path)}
+                                onNavigate={navigate}
+                                defaultSelected={location.pathname.slice(1)}
                             />
                         </nav>
                         <main className={'bg-grey-5 border-grey-20 relative h-full w-full overflow-auto border-l'}>
                             <Outlet />
-                            <LoadingMask />
+                            <GlobalLoading />
                         </main>{' '}
                     </>
                 ) : (
@@ -93,7 +105,7 @@ export default function App() {
                         <main className={`col-span-2 h-full w-full overflow-hidden`}>
                             <FileUploadPage />
                         </main>
-                        <LoadingMask />
+                        <GlobalLoading />
                     </>
                 )}
             </ToastProvider>
@@ -139,15 +151,15 @@ const getNavMap = (t: TFunction): SideNavSection[] => {
         {
             title: t('nav.home.encoding.title'),
             child: [
-                { path: '/ness/file-upload', label: t('nav.home.encoding.fileUpload') },
-                { path: '/ness/queue-status', label: t('nav.home.encoding.queueStatus') },
+                { path: 'file-upload', label: t('nav.home.encoding.fileUpload') },
+                { path: 'queue-status', label: t('nav.home.encoding.queueStatus') },
             ],
         },
         {
             title: t('nav.home.operations.title'),
             child: [
-                { path: '/ness/server-status', label: t('nav.home.operations.serverStatus') },
-                { path: '/ness/preset-list', label: t('nav.home.operations.presetList') },
+                { path: 'server-status', label: t('nav.home.operations.serverStatus') },
+                { path: 'preset-list', label: t('nav.home.operations.presetList') },
             ],
         },
     ];
