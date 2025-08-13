@@ -3,7 +3,7 @@ import { useFetchers, useNavigation } from 'react-router';
 
 import IconLoading from '@/assets/icLoading.svg?react';
 
-export default function GlobalLoading() {
+export const GlobalLoading = () => {
     const navigation = useNavigation();
     const fetchers = useFetchers();
     const busy = navigation.state !== 'idle' || fetchers.some((f) => f.state !== 'idle');
@@ -33,4 +33,4 @@ export default function GlobalLoading() {
             />
         </div>
     );
-}
+};

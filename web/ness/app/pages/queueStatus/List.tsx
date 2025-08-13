@@ -16,8 +16,9 @@ import { StatusColor } from '@plitvice/ui/components/chips/StatusChip.tsx';
 
 import { QueueFileItem } from '@/api/models/queueList.ts';
 
-import CommonChips from '@/components/CommonChips.tsx';
-import SortHeader from '@/components/SortHeader.tsx';
+import { CommonChips } from '@/components/CommonChips.tsx';
+
+import { SortHeader } from '@/components/SortHeader.tsx';
 
 import { QueueStatusType } from '@/types/enum.ts';
 
@@ -27,7 +28,7 @@ interface Props {
 }
 const columnHelper = createColumnHelper<QueueFileItem>();
 
-function QueueStatusList({ data, onItemClick }: Props) {
+export const QueueStatusList = ({ data, onItemClick }: Props) => {
     const { t } = useTranslation();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'status', desc: false }]);
 
@@ -205,5 +206,4 @@ function QueueStatusList({ data, onItemClick }: Props) {
             </tbody>
         </table>
     );
-}
-export default QueueStatusList;
+};

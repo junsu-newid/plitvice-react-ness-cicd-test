@@ -5,7 +5,7 @@ import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '
 
 import { BinIcon, Button, Tooltip } from '@plitvice/ui';
 
-import CommonChips from '@/components/CommonChips.tsx';
+import { CommonChips } from '@/components/CommonChips.tsx';
 
 import { useMediaMetadata } from '@/hooks/useMediaInfo.ts';
 

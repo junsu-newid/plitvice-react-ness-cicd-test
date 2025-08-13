@@ -4,7 +4,7 @@ import { COOKIE, ENCRYPT_KEY } from '@/types/enum.ts';
 
 import { commitSession, getSession } from '@/session.server.ts';
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get(COOKIE));
     const url = new URL(request.url);
     const userEncryptKey = url.searchParams.get(ENCRYPT_KEY);
@@ -19,7 +19,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
 
     return redirect('file-upload', { headers: { 'Set-Cookie': await commitSession(session) } });
-}
+};
 
 export default function AppIndex() {
     return <></>;

@@ -9,7 +9,7 @@ type Props = {
     onClose: () => void;
 };
 
-function QueueStatusMetadataSheet({ content, onClose }: Props) {
+export const QueueStatusMetadataSheet = ({ content, onClose }: Props) => {
     const { t } = useTranslation();
 
     return (
@@ -49,5 +49,4 @@ function QueueStatusMetadataSheet({ content, onClose }: Props) {
             </div>
         </Drawer>
     );
-}
-export default QueueStatusMetadataSheet;
+};

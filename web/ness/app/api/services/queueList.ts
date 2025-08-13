@@ -18,7 +18,7 @@ export const fetchFileList = async (
     return await api.get(`encoding/files?${searchParams.toString()}`).json<FileListResponse>();
 };
 
-function normalizeDate(date: string) {
+const normalizeDate = (date: string) => {
     const parts = date.split(/[-/.]/);
     let year, month, day;
     if (parts[0].length === 4) {
@@ -35,4 +35,4 @@ function normalizeDate(date: string) {
     const formattedDay = String(dayNum).padStart(2, '0');
 
     return `${formattedMonth}-${formattedDay}-${yearNum}`;
-}
+};

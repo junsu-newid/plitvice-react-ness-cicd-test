@@ -23,7 +23,7 @@ import { SideNavSection } from '@plitvice/ui/components/navigation/sideNavBar.ty
 
 import '@plitvice/ui/styles/global.css';
 
-import GlobalLoading from '@/components/LoadingMask.tsx';
+import { GlobalLoading } from '@/components/LoadingMask.tsx';
 
 import FileUploadPage from '@/routes/file-upload.tsx';
 
@@ -34,12 +34,12 @@ import { getSession } from '@/session.server.ts';
 
 import type { Route } from './+types/root';
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
     const session = await getSession(request.headers.get(COOKIE));
     return data({ userEncryptKey: session.get(ENCRYPT_KEY) });
-}
+};
 
-export function Layout({ children }: { children: ReactNode }) {
+export const Layout = ({ children }: { children: ReactNode }) => {
     return (
         <html lang="en">
             <head>
@@ -73,9 +73,9 @@ export function Layout({ children }: { children: ReactNode }) {
             </body>
         </html>
     );
-}
+};
 
-export default function App() {
+const App = () => {
     const { t } = useTranslation();
     const { userEncryptKey } = useLoaderData();
     const navMap = useMemo(() => getNavMap(t), [t]);
@@ -111,9 +111,10 @@ export default function App() {
             </ToastProvider>
         </I18nextProvider>
     );
-}
+};
+export default App;
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
     const { t } = useTranslation();
     const navMap = useMemo(() => getNavMap(t), [t]);
     let message = 'Oops!';
@@ -144,7 +145,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
             </main>
         </>
     );
-}
+};
 
 const getNavMap = (t: TFunction): SideNavSection[] => {
     return [

@@ -12,7 +12,7 @@ type Props = {
     onClose: () => void;
 };
 
-function EncodingPresetMetadataSheet({ content, onClose }: Props) {
+export const EncodingPresetMetadataSheet = ({ content, onClose }: Props) => {
     const { t } = useTranslation();
     const { showToast } = useToast();
 
@@ -82,5 +82,4 @@ function EncodingPresetMetadataSheet({ content, onClose }: Props) {
             </div>
         </Drawer>
     );
-}
-export default EncodingPresetMetadataSheet;
+};

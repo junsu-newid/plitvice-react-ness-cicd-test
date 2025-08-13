@@ -6,7 +6,7 @@ type Props<T extends object> = {
     title: string;
     column: Column<T, string>;
 };
-function SortHeader<T extends object>({ title, column }: Props<T>) {
+export const SortHeader = <T extends object>({ title, column }: Props<T>) => {
     const sorted = column.getIsSorted();
     const opacity = sorted == false ? 'opacity-0 group-hover:opacity-100' : 'opacity-100';
     const rotate = sorted === 'desc' ? 'rotate-180' : '';
@@ -20,5 +20,4 @@ function SortHeader<T extends object>({ title, column }: Props<T>) {
             <SortingIcon className={`text-grey-50 group-hover:text-blue-600 ${opacity} ${rotate}`} />
         </p>
     );
-}
-export default SortHeader;
+};

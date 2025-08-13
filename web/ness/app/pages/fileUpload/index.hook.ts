@@ -16,7 +16,7 @@ import {
 
 import { MediaFile, MediaFileStatus } from '@/types/mediainfo.types.ts';
 
-function useFileUpload(userEncryptKey: string) {
+export const useFileUpload = (userEncryptKey: string) => {
     const [isUploading, setIsUploading] = useState(false);
     const [fileList, setFileList] = useState<MediaFile[]>([]);
     const [abortController, setAbortController] = useState<AbortController | null>(null);
@@ -168,5 +168,4 @@ function useFileUpload(userEncryptKey: string) {
         runUpload,
         pauseUpload,
     };
-}
-export default useFileUpload;
+};
