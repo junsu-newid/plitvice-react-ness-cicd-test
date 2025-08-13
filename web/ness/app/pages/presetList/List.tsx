@@ -1,6 +1,6 @@
-import { PresetItem } from '@/api/models/preset.ts';
-import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
     createColumnHelper,
     flexRender,
@@ -9,12 +9,16 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table';
-import SortHeader from '@/components/SortHeader.tsx';
+
 import { Tooltip } from '@plitvice/ui';
+
+import { PresetItem } from '@/api/models/preset.ts';
+
 import CommonChips from '@/components/CommonChips.tsx';
+import SortHeader from '@/components/SortHeader.tsx';
 
 interface Props {
-    data: PresetItem[];
+    data?: PresetItem[];
     onItemClick: (item: PresetItem) => void;
 }
 const columnHelper = createColumnHelper<PresetItem>();
