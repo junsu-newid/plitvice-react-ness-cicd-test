@@ -1,13 +1,36 @@
-import { useAtomValue } from 'jotai';
-import { loadingState } from '@/stores';
+import { useEffect, useState } from 'react';
+import { useFetchers, useNavigation } from 'react-router';
 
-function LoadingMask() {
-    const isLoading = useAtomValue(loadingState);
+import IconLoading from '@/assets/icLoading.svg?react';
 
-    return isLoading ? (
-        <div className={`fixed left-0 top-0 z-[99999] flex h-full w-full items-center justify-center bg-[#ffffffbb]`}>
-            <p className={`text-b28`}>Loading</p>
+export default function GlobalLoading() {
+    const navigation = useNavigation();
+    const fetchers = useFetchers();
+    const busy = navigation.state !== 'idle' || fetchers.some((f) => f.state !== 'idle');
+
+    const [show, setShow] = useState(false);
+    useEffect(() => {
+        if (busy) {
+            const id = setTimeout(() => setShow(true), 200);
+            return () => clearTimeout(id);
+        }
+        setShow(false);
+    }, [busy]);
+
+    if (!show) return null;
+
+    return (
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-white/70">
+            <style>{`
+        @keyframes pulse-scale {
+          0%, 100% { transform: scale(1); }
+          45% { transform: scale(0.5); }
+        }
+      `}</style>
+            <IconLoading
+                className="h-24 w-24"
+                style={{ animation: 'pulse-scale 1.067s cubic-bezier(0.58,0.79,0.15,1) infinite' }}
+            />
         </div>
-    ) : null;
+    );
 }
-export default LoadingMask;
