@@ -1,7 +1,8 @@
 import { PassThrough } from 'node:stream';
-import { EntryContext } from 'react-router';
+
+import { EntryContext, ServerRouter } from 'react-router';
+
 import { createReadableStreamFromReadable } from '@react-router/node';
-import { ServerRouter } from 'react-router';
 import { renderToPipeableStream } from 'react-dom/server';
 
 export default function handleRequest(

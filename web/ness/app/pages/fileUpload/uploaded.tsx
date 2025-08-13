@@ -6,13 +6,12 @@ import {
     flexRender,
     getCoreRowModel,
     getSortedRowModel,
-    useReactTable,
     SortingState,
+    useReactTable,
 } from '@tanstack/react-table';
 import { differenceInCalendarDays, parse, startOfToday } from 'date-fns';
 
-import { BinIcon, Button, ErrorIcon, SelectBox, Tooltip, useToast } from '@plitvice/ui';
-import { MoreVertIcon } from '@plitvice/ui';
+import { BinIcon, Button, ErrorIcon, MoreVertIcon, SelectBox, Tooltip, useToast } from '@plitvice/ui';
 import { StatusChip } from '@plitvice/ui/components/chips/StatusChip.tsx';
 import { DropdownList, SelectOption } from '@plitvice/ui/components/selectbox/DropdownList.tsx';
 

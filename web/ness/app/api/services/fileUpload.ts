@@ -1,4 +1,3 @@
-import api from '../index.ts';
 import {
     FileListResponse,
     FileUploadResponse,
@@ -7,8 +6,12 @@ import {
     UploadCompletionResponse,
     UploadedFileItem,
 } from '@/api/models/fileUploads.ts';
-import { MediaFile } from '@/types/mediainfo.types.ts';
+
 import { PartUploadResult } from '@/pages/fileUpload/uploading.utils.ts';
+
+import { MediaFile } from '@/types/mediainfo.types.ts';
+
+import api from '../index.ts';
 
 export const validateFile = async (fileName: string, userEncryptKey: string): Promise<boolean | null> => {
     try {
