@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useRouteLoaderData } from 'react-router';
@@ -22,7 +22,7 @@ enum TabMenuType {
 const FileUploadPage = () => {
     const { t } = useTranslation();
     const { userEncryptKey } = useRouteLoaderData('root');
-    const presetList: SelectOption[] = [];
+    const presetList = useMemo<SelectOption[]>(() => [], []);
     const { isUploading, fileList, setFileList, removeFile, runUpload, pauseUpload } = useFileUpload(userEncryptKey);
     const [tabMenu, setTabMenu] = useState(TabMenuType.UPLOADING);
 
