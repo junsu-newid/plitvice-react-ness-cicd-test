@@ -15,7 +15,7 @@ function QueueStatusMetadataSheet({ content, onClose }: Props) {
     return (
         <Drawer width={552} open={content !== undefined} onClose={onClose} className={`px-[36px] py-[48px]`}>
             <div className={`flex items-center justify-between gap-[12px]`}>
-                <Tooltip text={content?.programTitle ? content.programTitle : ''}>
+                <Tooltip text={content?.programTitle ?? ''}>
                     <h2 className={`line-clamp-1 break-all`}>{content?.programTitle}</h2>
                 </Tooltip>
 
