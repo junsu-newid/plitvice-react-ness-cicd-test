@@ -71,4 +71,17 @@ export default [
     {
         ignores: ['node_modules', 'dist', 'build', 'public', '**/.react-router'],
     },
+    {
+        // remix 로드함수 에러 방지
+        files: ['web/ness/app/**/*.{ts,tsx}', 'web/ness/app/pages/**/*.{ts,tsx}', 'web/ness/app/routes/**/*.{ts,tsx}'],
+        rules: {
+            'react-refresh/only-export-components': [
+                'warn',
+                {
+                    allowConstantExport: true,
+                    allowExportNames: ['loader', 'action'],
+                },
+            ],
+        },
+    },
 ];
