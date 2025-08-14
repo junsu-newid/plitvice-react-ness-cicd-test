@@ -23,11 +23,11 @@ import { SideNavSection } from '@plitvice/ui/components/navigation/sideNavBar.ty
 
 import '@plitvice/ui/styles/global.css';
 
-import { GlobalLoading } from '@/components/LoadingMask.tsx';
-
 import FileUploadPage from '@/routes/file-upload.tsx';
 
 import { COOKIE, ENCRYPT_KEY } from '@/types/enum.ts';
+
+import { GlobalLoading } from '@/components';
 
 import i18n from '@/locales';
 import { getSession } from '@/session.server.ts';

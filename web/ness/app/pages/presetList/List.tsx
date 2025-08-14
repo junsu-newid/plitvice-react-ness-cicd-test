@@ -14,8 +14,7 @@ import { Tooltip } from '@plitvice/ui';
 
 import { PresetItem } from '@/api/models/preset.ts';
 
-import { CommonChips } from '@/components/CommonChips.tsx';
-import { SortHeader } from '@/components/SortHeader.tsx';
+import { CommonChips, SortHeader } from '@/components';
 
 interface Props {
     data?: PresetItem[];

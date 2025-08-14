@@ -5,11 +5,11 @@ import { useRouteLoaderData } from 'react-router';
 import { ServerInstance, ServerStatusResponse } from '@/api/models/serverStatus.ts';
 import { fetchServerStatus } from '@/api/services/serverStatus.ts';
 
-import { StatusBox, StatusBoxProps } from '@/components/StatusBox.tsx';
-
 import { ServerStatusList } from '@/pages/serverStatus/List.tsx';
 
 import { ServerStatusType } from '@/types/enum.ts';
+
+import { StatusBox, StatusBoxProps } from '@/components';
 
 const ServerStatusPage = () => {
     const { t } = useTranslation();

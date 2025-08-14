@@ -5,11 +5,11 @@ import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '
 
 import { BinIcon, Button, Tooltip } from '@plitvice/ui';
 
-import { CommonChips } from '@/components/CommonChips.tsx';
-
 import { useMediaMetadata } from '@/hooks/useMediaInfo.ts';
 
 import { MediaFile, MediaFileStatus, MediaSubFile } from '@/types/mediainfo.types.ts';
+
+import { CommonChips } from '@/components';
 
 import { formatDuration, formatFileSize, getFileName, getLanguageCode } from '@/utils';
 

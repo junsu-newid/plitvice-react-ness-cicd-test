@@ -17,11 +17,9 @@ import { DropdownList, SelectOption } from '@plitvice/ui/components/selectbox/Dr
 
 import { UploadedFileItem } from '@/api/models/fileUploads.ts';
 
-import { CommonChips } from '@/components/CommonChips.tsx';
-
-import { SortHeader } from '@/components/SortHeader.tsx';
-
 import { useFileUploaded } from '@/pages/fileUpload/uploaded.hooks.ts';
+
+import { CommonChips, SortHeader } from '@/components';
 
 interface Props {
     userEncryptKey: string;

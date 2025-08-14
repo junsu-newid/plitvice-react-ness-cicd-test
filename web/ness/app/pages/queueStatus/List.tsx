@@ -16,11 +16,9 @@ import { StatusColor } from '@plitvice/ui/components/chips/StatusChip.tsx';
 
 import { QueueFileItem } from '@/api/models/queueList.ts';
 
-import { CommonChips } from '@/components/CommonChips.tsx';
-
-import { SortHeader } from '@/components/SortHeader.tsx';
-
 import { QueueStatusType } from '@/types/enum.ts';
+
+import { CommonChips, SortHeader } from '@/components';
 
 interface Props {
     data: QueueFileItem[];

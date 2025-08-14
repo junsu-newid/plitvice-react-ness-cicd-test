@@ -11,13 +11,13 @@ import { DateRange, DateRangePickerBox } from '@plitvice/ui';
 import { FileListResponse, QueueFileItem } from '@/api/models/queueList.ts';
 import { fetchFileList } from '@/api/services/queueList.ts';
 
-import { StatusBox, StatusBoxProps } from '@/components/StatusBox.tsx';
-
 import { QueueStatusList } from '@/pages/queueStatus/List.tsx';
 
 import { QueueStatusMetadataSheet } from '@/pages/queueStatus/Metadata.tsx';
 
 import { QueueStatusType } from '@/types/enum.ts';
+
+import { StatusBox, StatusBoxProps } from '@/components';
 
 import { formatDateForInput, getDefaultDateRange, parseDateFromInput } from '@/utils';
 
