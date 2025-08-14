@@ -24,32 +24,16 @@ import { formatDateForInput, getDefaultDateRange, parseDateFromInput } from '@/u
 const QueueStatusPage = () => {
     const { t } = useTranslation();
     const { userEncryptKey } = useRouteLoaderData('root');
-    const { startDate, endDate } = getDefaultDateRange();
     const [data, setData] = useState<FileListResponse | null>(null);
-    const allFiles = useMemo<QueueFileItem[]>(() => data?.data.encodingFileList ?? [], [data]);
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [filteredData, setFilteredData] = useState<QueueFileItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<QueueFileItem>();
 
-    useEffect(() => {
-        if (!userEncryptKey) return;
-
-        fetchFileList(userEncryptKey, startDate, endDate).then((res) => {
-            setData(res);
-        });
-    }, [userEncryptKey, startDate, endDate]);
-
-    useEffect(() => {
-        setFilteredData(
-            selectedStatus === 0
-                ? allFiles
-                : allFiles.filter((item) => item.status === StatusSetting[selectedStatus].type),
-        );
-    }, [allFiles, selectedStatus]);
+    const allFiles = useMemo<QueueFileItem[]>(() => data?.data.encodingFileList ?? [], [data]);
+    const { startDate, endDate } = getDefaultDateRange();
 
     const today = startOfDay(new Date());
     const thirtyDaysAgo = startOfDay(subDays(today, 30));
-
     const INITIAL_DATE_RANGE: DateRange = {
         from: thirtyDaysAgo,
         to: today,
@@ -77,6 +61,22 @@ const QueueStatusPage = () => {
             console.error('API call failed:', error);
         }
     };
+
+    useEffect(() => {
+        if (!userEncryptKey) return;
+
+        fetchFileList(userEncryptKey, startDate, endDate).then((res) => {
+            setData(res);
+        });
+    }, [userEncryptKey, startDate, endDate]);
+
+    useEffect(() => {
+        setFilteredData(
+            selectedStatus === 0
+                ? allFiles
+                : allFiles.filter((item) => item.status === StatusSetting[selectedStatus].type),
+        );
+    }, [allFiles, selectedStatus]);
 
     return (
         <div className={'bg-grey-5 flex h-full min-w-[1200px] flex-col gap-[12px] p-[36px]'}>

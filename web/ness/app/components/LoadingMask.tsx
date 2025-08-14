@@ -5,10 +5,10 @@ import IconLoading from '@/assets/icLoading.svg?react';
 
 export const GlobalLoading = () => {
     const navigation = useNavigation();
+    const [show, setShow] = useState(false);
     const fetchers = useFetchers();
     const busy = navigation.state !== 'idle' || fetchers.some((f) => f.state !== 'idle');
 
-    const [show, setShow] = useState(false);
     useEffect(() => {
         if (busy) {
             const id = setTimeout(() => setShow(true), 200);

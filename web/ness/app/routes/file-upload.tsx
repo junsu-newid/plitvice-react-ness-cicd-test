@@ -21,9 +21,9 @@ enum TabMenuType {
 const FileUploadPage = () => {
     const { t } = useTranslation();
     const { userEncryptKey } = useRouteLoaderData('root');
+    const [tabMenu, setTabMenu] = useState(TabMenuType.UPLOADING);
     const presetList = useMemo<SelectOption[]>(() => [], []);
     const { isUploading, fileList, setFileList, removeFile, runUpload, pauseUpload } = useFileUpload(userEncryptKey);
-    const [tabMenu, setTabMenu] = useState(TabMenuType.UPLOADING);
 
     useEffect(() => {
         if (!userEncryptKey) return;

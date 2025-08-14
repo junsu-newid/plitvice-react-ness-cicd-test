@@ -33,8 +33,8 @@ const columnHelper = createColumnHelper<ServerInstance>();
 
 export const ServerStatusList = ({ data }: Props) => {
     const { t } = useTranslation();
-    const { showToast } = useToast();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'instanceName', desc: false }]);
+    const { showToast } = useToast();
 
     const handlePutStatus = (instanceId: string, status: string) => {
         putServerStatus(instanceId, status)

@@ -77,9 +77,9 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 
 const App = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { userEncryptKey } = useLoaderData();
     const navMap = useMemo(() => getNavMap(t), [t]);
-    const navigate = useNavigate();
     const location = useLocation();
 
     return (
