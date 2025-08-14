@@ -10,8 +10,8 @@ import { SelectOption, TabMenu, WarningIcon } from '@plitvice/ui';
 import { fetchPresetList } from '@/api/services/preset.ts';
 
 import { useFileUpload } from '@/pages/fileUpload/index.hook.ts';
-import FileUploadedList from '@/pages/fileUpload/uploaded.tsx';
-import FileUploadingList from '@/pages/fileUpload/uploading.tsx';
+import { FileUploadedList } from '@/pages/fileUpload/uploaded.tsx';
+import { FileUploadingList } from '@/pages/fileUpload/uploading.tsx';
 
 enum TabMenuType {
     UPLOADING = 'uploading',

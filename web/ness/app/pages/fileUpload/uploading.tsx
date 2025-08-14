@@ -26,7 +26,14 @@ type Props = {
 
 const columnHelper = createColumnHelper<MediaFile>();
 
-const FileUploadingList = ({ isUploading, fileList, setFileList, removeFile, runUpload, pauseUpload }: Props) => {
+export const FileUploadingList = ({
+    isUploading,
+    fileList,
+    setFileList,
+    removeFile,
+    runUpload,
+    pauseUpload,
+}: Props) => {
     const { t } = useTranslation();
     const { extractMetadata } = useMediaMetadata();
 
@@ -273,4 +280,3 @@ const FileUploadingList = ({ isUploading, fileList, setFileList, removeFile, run
         </>
     );
 };
-export default FileUploadingList;

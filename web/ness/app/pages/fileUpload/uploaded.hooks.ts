@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { UploadedFileItem } from '@/api/models/fileUploads.ts';
 import { deleteUploadFiles, fetchUploadedFiles, requestRunEncoding } from '@/api/services/fileUpload.ts';
 
-const useFileUploaded = (userEncryptKey: string) => {
+export const useFileUploaded = (userEncryptKey: string) => {
     const [uploadedList, setUploadedList] = useState<UploadedFileItem[]>([]);
 
     const changePreset = useCallback((programId: string, presetId: number) => {
@@ -58,4 +58,3 @@ const useFileUploaded = (userEncryptKey: string) => {
         runEncoding,
     };
 };
-export default useFileUploaded;

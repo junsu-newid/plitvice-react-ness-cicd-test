@@ -21,7 +21,7 @@ import { CommonChips } from '@/components/CommonChips.tsx';
 
 import { SortHeader } from '@/components/SortHeader.tsx';
 
-import useFileUploaded from '@/pages/fileUpload/uploaded.hooks.ts';
+import { useFileUploaded } from '@/pages/fileUpload/uploaded.hooks.ts';
 
 type Props = {
     userEncryptKey: string;
@@ -32,7 +32,7 @@ const columnHelper = createColumnHelper<UploadedFileItem>();
 const today = startOfToday();
 const date = new Date();
 
-const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
+export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
     const { t } = useTranslation();
     const { showToast } = useToast();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'uploadedAt', desc: false }]);
@@ -292,4 +292,3 @@ const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
         </>
     );
 };
-export default FileUploadedList;
