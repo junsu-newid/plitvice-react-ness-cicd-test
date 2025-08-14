@@ -24,10 +24,10 @@ const QueueStatusPage = () => {
     const { userEncryptKey } = useRouteLoaderData('root');
     const [data, setData] = useState<FileListResponse | null>(null);
     const [selectedStatus, setSelectedStatus] = useState(0);
-    const [filteredData, setFilteredData] = useState<QueueFileItem[]>([]);
+    const [filteredDataList, setFilteredDataList] = useState<QueueFileItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<QueueFileItem>();
 
-    const allFiles = useMemo<QueueFileItem[]>(() => data?.data.encodingFileList ?? [], [data]);
+    const allFileList = useMemo<QueueFileItem[]>(() => data?.data.encodingFileList ?? [], [data]);
     const { startDate, endDate } = getDefaultDateRange();
 
     const today = startOfDay(new Date());
@@ -69,12 +69,12 @@ const QueueStatusPage = () => {
     }, [userEncryptKey, startDate, endDate]);
 
     useEffect(() => {
-        setFilteredData(
+        setFilteredDataList(
             selectedStatus === 0
-                ? allFiles
-                : allFiles.filter((item) => item.status === StatusSetting[selectedStatus].type),
+                ? allFileList
+                : allFileList.filter((item) => item.status === StatusSetting[selectedStatus].type),
         );
-    }, [allFiles, selectedStatus]);
+    }, [allFileList, selectedStatus]);
 
     return (
         <div className={'bg-grey-5 flex h-full min-w-[1200px] flex-col gap-[12px] p-[36px]'}>
@@ -112,12 +112,12 @@ const QueueStatusPage = () => {
                 ))}
             </div>
             <div className="border-grey-20 relative flex-1 overflow-auto rounded-[4px] border bg-white">
-                {(!filteredData || filteredData.length === 0) && (
+                {(!filteredDataList || filteredDataList.length === 0) && (
                     <div className="text-grey-90 flex h-full items-center justify-center">
                         업로드된 파일이 없습니다.
                     </div>
                 )}
-                <QueueStatusList data={filteredData} onItemClick={setSelectedItem} />
+                <QueueStatusList data={filteredDataList} onItemClick={setSelectedItem} />
             </div>
             <QueueStatusMetadataSheet content={selectedItem} onClose={() => setSelectedItem(undefined)} />
         </div>

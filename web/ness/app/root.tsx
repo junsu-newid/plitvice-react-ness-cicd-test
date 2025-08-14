@@ -79,7 +79,7 @@ const App = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { userEncryptKey } = useLoaderData();
-    const navMap = useMemo(() => getNavMap(t), [t]);
+    const navMapList = useMemo(() => getNavMap(t), [t]);
     const location = useLocation();
 
     return (
@@ -90,7 +90,7 @@ const App = () => {
                         <nav className={`h-full overflow-y-auto pb-[48px] pt-[24px]`}>
                             <SideNavBar
                                 width={0}
-                                sectionList={navMap}
+                                sectionList={navMapList}
                                 onNavigate={navigate}
                                 defaultSelected={location.pathname.slice(1)}
                             />
