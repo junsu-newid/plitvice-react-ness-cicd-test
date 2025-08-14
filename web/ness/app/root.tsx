@@ -5,7 +5,6 @@ import {
     data,
     isRouteErrorResponse,
     Links,
-    LoaderFunctionArgs,
     Meta,
     Outlet,
     Scripts,
@@ -25,19 +24,17 @@ import '@plitvice/ui/styles/global.css';
 
 import FileUploadPage from '@/routes/file-upload.tsx';
 
-import { COOKIE, ENCRYPT_KEY } from '@/types/enum.ts';
-
 import { GlobalLoading } from '@/components';
 
 import i18n from '@/locales';
-import { getSession } from '@/session.server.ts';
+
+import { commonLoader } from './middleware/auth.ts';
 
 import type { Route } from './+types/root';
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const session = await getSession(request.headers.get(COOKIE));
-    return data({ userEncryptKey: session.get(ENCRYPT_KEY) });
-};
+export const loader = commonLoader(async ({ userEncryptKey }: { userEncryptKey: string }) => {
+    return data({ userEncryptKey });
+});
 
 export const Layout = ({ children }: { children: ReactNode }) => {
     return (

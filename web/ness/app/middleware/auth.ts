@@ -1,76 +1,33 @@
-// import { LoaderFunctionArgs } from 'react-router';
-//
-// import { getUserEncryptKeyFromSession } from '@/utils/sessionUtil';
-//
-// export const compose = (...middlewares: Function[]) => {
-//     return (loaderFn: Function) => {
-//         return middlewares.reduceRight((acc, middleware) => {
-//             return middleware(acc);
-//         }, loaderFn);
-//     };
-// };
-//
-// export const isLoggedIn = (loaderFn: Function) => {
-//     return async (args: LoaderFunctionArgs) => {
-//         const userEncryptKey = await getUserEncryptKeyFromSession(args);
-//         return loaderFn({ ...args, userEncryptKey });
-//     };
-// };
-//
-// export const withPermission = (requiredPermission: string) => (loaderFn: Function) => {
-//     return async ({ request, ...rest }: { request: Request; [key: string]: any }) => {
-//         // TODO?: group 추가 필요
-//         const userGroup = 'cp'; // 임시 기본값
-//         if (userGroup !== requiredPermission) {
-//             return new Response('', {
-//                 status: 302,
-//                 headers: {
-//                     Location: '/ness/file-upload',
-//                 },
-//             });
-//         }
-//         return loaderFn({ request, userGroup, ...rest });
-//     };
-// };
-//
-// // TODO: 에러 로직 점검
-// export const errorHandler = (loaderFn: Function) => {
-//     return async ({ request, ...rest }: { request: Request; [key: string]: any }) => {
-//         try {
-//             return await loaderFn({ request, ...rest });
-//         } catch (error) {
-//             console.log('Error caught in errorHandler:', error);
-//             if (error instanceof Response) {
-//                 console.log('API Response error:', error.status, error.statusText);
-//                 return new Response('', {
-//                     status: 302,
-//                     headers: {
-//                         Location: '/ness/login',
-//                     },
-//                 });
-//             }
-//
-//             if (error instanceof Error) {
-//                 console.log('General error:', error.message);
-//                 return new Response('', {
-//                     status: 302,
-//                     headers: {
-//                         Location: '/ness/login',
-//                     },
-//                 });
-//             }
-//
-//             // 기타 에러
-//             console.log('Unknown error:', error);
-//             return new Response('', {
-//                 status: 302,
-//                 headers: {
-//                     Location: '/ness/login',
-//                 },
-//             });
-//         }
-//     };
-// };
-//
-// export const commonLoader = compose(isLoggedIn, errorHandler);
-// export const commonLoaderWithPermission = compose(isLoggedIn, withPermission('admin'), errorHandler);
+import type { LoaderFunctionArgs } from 'react-router';
+
+import { HTTPError } from 'ky';
+
+import { getUserEncryptKeyFromSession } from '@/utils/sessionUtil';
+
+type LoaderContext = LoaderFunctionArgs & Record<string, unknown>;
+type Loader<T extends object = object> = (args: LoaderContext & T) => Promise<Response | unknown>;
+type Middleware = (next: Loader<object>) => Loader<object>;
+
+export const compose =
+    (...mws: Middleware[]) =>
+    (next: Loader<object>): Loader<object> =>
+        mws.reduceRight<Loader<object>>((acc, mw) => mw(acc), next);
+
+export const withUserSession: Middleware = (next) => async (args) => {
+    const { userEncryptKey, cookie } = await getUserEncryptKeyFromSession(args as LoaderFunctionArgs);
+    return next({ ...args, userEncryptKey, cookie });
+};
+
+export const errorHandler: Middleware = (next) => async (args) => {
+    try {
+        return await next(args);
+    } catch (error) {
+        if (error instanceof HTTPError && error.response.status === 401) {
+            return new Response('', { status: 302, headers: { Location: '/ness/' } });
+        }
+        return error;
+    }
+};
+
+export const commonLoader = <T extends object = object>(handler: Loader<T>): Loader =>
+    compose(withUserSession, errorHandler)(handler as Loader<object>);
