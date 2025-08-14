@@ -2,10 +2,8 @@ import { redirect } from 'react-router';
 
 import { commonLoader } from '@/middleware/auth';
 
-export const loader = commonLoader(async ({ setCookie }: { setCookie?: string }) => {
-    return redirect('file-upload', {
-        headers: setCookie ? { 'Set-Cookie': setCookie } : undefined,
-    });
+export const loader = commonLoader(async ({ cookie }: { cookie?: string }) => {
+    return redirect('file-upload', { headers: cookie ? { 'Set-Cookie': cookie } : undefined });
 });
 
 export default function AppIndex() {
