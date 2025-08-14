@@ -11,7 +11,7 @@ import { PartUploadResult } from '@/pages/fileUpload/uploading.utils.ts';
 
 import { MediaFile } from '@/types/mediainfo.types.ts';
 
-import api from '../index.ts';
+import { api } from '@/api';
 
 export const validateFile = async (fileName: string, userEncryptKey: string): Promise<boolean | null> => {
     try {

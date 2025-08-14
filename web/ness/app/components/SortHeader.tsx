@@ -2,10 +2,10 @@ import { Column } from '@tanstack/react-table';
 
 import { SortingIcon } from '@plitvice/ui';
 
-type Props<T extends object> = {
+interface Props<T extends object> {
     title: string;
     column: Column<T, string>;
-};
+}
 export const SortHeader = <T extends object>({ title, column }: Props<T>) => {
     const sorted = column.getIsSorted();
     const opacity = sorted == false ? 'opacity-0 group-hover:opacity-100' : 'opacity-100';

@@ -7,10 +7,10 @@ import { PresetItem } from '@/api/models/preset.ts';
 
 import { firstUpperCase } from '@/utils';
 
-type Props = {
+interface Props {
     content?: PresetItem;
     onClose: () => void;
-};
+}
 
 export const EncodingPresetMetadataSheet = ({ content, onClose }: Props) => {
     const { t } = useTranslation();

@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 
 import { FileListResponse } from '@/api/models/queueList.ts';
 
-import api from '../index.ts';
+import { api } from '@/api';
 
 export const fetchFileList = async (
     userEncryptKey: string,

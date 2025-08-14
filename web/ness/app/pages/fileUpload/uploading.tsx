@@ -15,14 +15,14 @@ import { formatDuration, formatFileSize, getFileName, getLanguageCode } from '@/
 
 import FileDropzone from './fileDropzone.tsx';
 
-type Props = {
+interface Props {
     isUploading: boolean;
     fileList: MediaFile[];
     setFileList: Dispatch<SetStateAction<MediaFile[]>>;
     removeFile: (fileName: string) => void;
     runUpload: () => void;
     pauseUpload: () => void;
-};
+}
 
 const columnHelper = createColumnHelper<MediaFile>();
 

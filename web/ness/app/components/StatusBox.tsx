@@ -1,4 +1,4 @@
-export type StatusBoxProps = {
+export interface StatusBoxProps {
     title?: string;
     titleSlice: string;
     color: string;
@@ -6,7 +6,7 @@ export type StatusBoxProps = {
     count?: number;
     selected?: boolean;
     onClick?: () => void;
-};
+}
 
 export const StatusBox = ({ title, titleSlice, color, count, selected, onClick }: StatusBoxProps) => {
     return (

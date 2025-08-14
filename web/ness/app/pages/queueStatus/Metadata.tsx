@@ -4,10 +4,10 @@ import { Button, Drawer, Tooltip } from '@plitvice/ui';
 
 import { QueueFileItem } from '@/api/models/queueList.ts';
 
-type Props = {
+interface Props {
     content?: QueueFileItem;
     onClose: () => void;
-};
+}
 
 export const QueueStatusMetadataSheet = ({ content, onClose }: Props) => {
     const { t } = useTranslation();

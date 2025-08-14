@@ -23,10 +23,10 @@ import { SortHeader } from '@/components/SortHeader.tsx';
 
 import { useFileUploaded } from '@/pages/fileUpload/uploaded.hooks.ts';
 
-type Props = {
+interface Props {
     userEncryptKey: string;
     presetList: SelectOption[];
-};
+}
 
 const columnHelper = createColumnHelper<UploadedFileItem>();
 const today = startOfToday();
