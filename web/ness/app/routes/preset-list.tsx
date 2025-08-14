@@ -6,8 +6,7 @@ import { PresetItem, PresetResponse } from '@/api/models/preset.ts';
 
 import { fetchPresetList } from '@/api/services/preset.ts';
 
-import { EncodingPresetList } from '@/pages/presetList/List.tsx';
-import { EncodingPresetMetadataSheet } from '@/pages/presetList/Metadata.tsx';
+import { EncodingPresetList, EncodingPresetMetadataSheet } from '@/pages/presetList';
 
 const EncodingPresetPage = () => {
     const { t } = useTranslation();

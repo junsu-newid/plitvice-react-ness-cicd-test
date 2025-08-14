@@ -5,6 +5,8 @@ import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '
 
 import { BinIcon, Button, Tooltip } from '@plitvice/ui';
 
+import FileDropzone from '@/pages/fileUpload/fileDropzone.tsx';
+
 import { useMediaMetadata } from '@/hooks/useMediaInfo.ts';
 
 import { MediaFile, MediaFileStatus, MediaSubFile } from '@/types/mediainfo.types.ts';
@@ -12,8 +14,6 @@ import { MediaFile, MediaFileStatus, MediaSubFile } from '@/types/mediainfo.type
 import { CommonChips } from '@/components';
 
 import { formatDuration, formatFileSize, getFileName, getLanguageCode } from '@/utils';
-
-import FileDropzone from './fileDropzone.tsx';
 
 interface Props {
     isUploading: boolean;
