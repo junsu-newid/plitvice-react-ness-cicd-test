@@ -5,7 +5,7 @@ import { useRouteLoaderData } from 'react-router';
 import { ServerInstance, ServerStatusResponse } from '@/api/models/serverStatus.ts';
 import { fetchServerStatus } from '@/api/services/serverStatus.ts';
 
-import { ServerStatusList } from '@/pages/serverStatus';
+import { ServerStatusList } from '@/routes/serverStatus/List.tsx';
 
 import { ServerStatusType } from '@/types/enum.ts';
 

@@ -22,7 +22,7 @@ import { SideNavSection } from '@plitvice/ui/components/navigation/sideNavBar.ty
 
 import '@plitvice/ui/styles/global.css';
 
-import FileUploadPage from '@/routes/file-upload.tsx';
+import FileUploadPage from '@/routes/fileUpload';
 
 import { GlobalLoading } from '@/components';
 

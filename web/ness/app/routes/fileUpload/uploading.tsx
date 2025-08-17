@@ -5,9 +5,9 @@ import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '
 
 import { BinIcon, Button, Tooltip } from '@plitvice/ui';
 
-import FileDropzone from '@/pages/fileUpload/fileDropzone.tsx';
-
 import { useMediaMetadata } from '@/hooks/useMediaInfo.ts';
+
+import FileDropzone from '@/routes/fileUpload/fileDropzone.tsx';
 
 import { MediaFile, MediaFileStatus, MediaSubFile } from '@/types/mediainfo.types.ts';
 

@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useRouteLoaderData } from 'react-router';
 
 import { PresetItem, PresetResponse } from '@/api/models/preset.ts';
-
 import { fetchPresetList } from '@/api/services/preset.ts';
 
-import { EncodingPresetList, EncodingPresetMetadataSheet } from '@/pages/presetList';
+import { EncodingPresetList } from '@/routes/presetList/List.tsx';
+import { EncodingPresetMetadataSheet } from '@/routes/presetList/Metadata.tsx';
 
 const EncodingPresetPage = () => {
     const { t } = useTranslation();

@@ -7,7 +7,7 @@ import {
     UploadedFileItem,
 } from '@/api/models/fileUploads.ts';
 
-import { PartUploadResult } from '@/pages/fileUpload/uploading.utils.ts';
+import { PartUploadResult } from '@/routes/fileUpload/uploading.utils.ts';
 
 import { MediaFile } from '@/types/mediainfo.types.ts';
 

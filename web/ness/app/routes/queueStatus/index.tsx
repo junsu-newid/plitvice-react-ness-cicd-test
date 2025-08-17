@@ -11,7 +11,9 @@ import { DateRange, DateRangePickerBox } from '@plitvice/ui';
 import { FileListResponse, QueueFileItem } from '@/api/models/queueList.ts';
 import { fetchFileList } from '@/api/services/queueList.ts';
 
-import { QueueStatusList, QueueStatusMetadataSheet } from '@/pages/queueStatus';
+import { QueueStatusList } from '@/routes/queueStatus/List.tsx';
+
+import { QueueStatusMetadataSheet } from '@/routes/queueStatus/Metadata.tsx';
 
 import { QueueStatusType } from '@/types/enum.ts';
 

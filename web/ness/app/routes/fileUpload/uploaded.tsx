@@ -17,7 +17,7 @@ import { DropdownList, SelectOption } from '@plitvice/ui/components/selectbox/Dr
 
 import { UploadedFileItem } from '@/api/models/fileUploads.ts';
 
-import { useFileUploaded } from '@/pages/fileUpload/uploaded.hooks.ts';
+import { useFileUploaded } from '@/routes/fileUpload/uploaded.hooks.ts';
 
 import { CommonChips, SortHeader } from '@/components';
 

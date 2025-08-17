@@ -5,11 +5,16 @@ import { useRouteLoaderData } from 'react-router';
 
 import { TFunction } from 'i18next';
 
-import { SelectOption, TabMenu, WarningIcon } from '@plitvice/ui';
+import { TabMenu } from '@plitvice/ui/components/navigation/TabMenu.tsx';
+import { SelectOption } from '@plitvice/ui/components/selectbox/DropdownList.tsx';
+
+import { WarningIcon } from '@plitvice/ui/index.ts';
 
 import { fetchPresetList } from '@/api/services/preset.ts';
 
-import { FileUploadedList, FileUploadingList, useFileUpload } from '@/pages/fileUpload';
+import { useFileUpload } from '@/routes/fileUpload/index.hook.ts';
+import { FileUploadedList } from '@/routes/fileUpload/uploaded.tsx';
+import { FileUploadingList } from '@/routes/fileUpload/uploading.tsx';
 
 enum TabMenuType {
     UPLOADING = 'uploading',
