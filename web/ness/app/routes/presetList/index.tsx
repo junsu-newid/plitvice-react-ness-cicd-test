@@ -8,9 +8,11 @@ import { fetchPresetList } from '@/api/services/preset.ts';
 import { EncodingPresetList } from '@/routes/presetList/List.tsx';
 import { EncodingPresetMetadataSheet } from '@/routes/presetList/Metadata.tsx';
 
+import { ROOT_ROUTE_ID } from '@/root.tsx';
+
 const EncodingPresetPage = () => {
     const { t } = useTranslation();
-    const { userEncryptKey } = useRouteLoaderData('root');
+    const { userEncryptKey } = useRouteLoaderData(ROOT_ROUTE_ID);
     const [presetData, setPresetData] = useState<PresetResponse | null>(null);
     const [selectedItem, setSelectedItem] = useState<PresetItem>();
 

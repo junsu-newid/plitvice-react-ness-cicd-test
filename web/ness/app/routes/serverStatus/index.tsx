@@ -10,10 +10,11 @@ import { ServerStatusList } from '@/routes/serverStatus/List.tsx';
 import { ServerStatusType } from '@/types/enum.ts';
 
 import { StatusBox, StatusBoxProps } from '@/components';
+import { ROOT_ROUTE_ID } from '@/root.tsx';
 
 const ServerStatusPage = () => {
     const { t } = useTranslation();
-    const { userEncryptKey } = useRouteLoaderData('root');
+    const { userEncryptKey } = useRouteLoaderData(ROOT_ROUTE_ID);
     const [serverStatusData, setServerStatusData] = useState<ServerStatusResponse | null>(null);
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [filteredData, setFilteredData] = useState<ServerInstance[]>([]);

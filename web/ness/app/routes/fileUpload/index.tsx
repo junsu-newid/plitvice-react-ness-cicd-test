@@ -16,6 +16,8 @@ import { useFileUpload } from '@/routes/fileUpload/index.hook.ts';
 import { FileUploadedList } from '@/routes/fileUpload/uploaded.tsx';
 import { FileUploadingList } from '@/routes/fileUpload/uploading.tsx';
 
+import { ROOT_ROUTE_ID } from '@/root.tsx';
+
 enum TabMenuType {
     UPLOADING = 'uploading',
     UPLOADED = 'uploaded',
@@ -23,7 +25,7 @@ enum TabMenuType {
 
 const FileUploadPage = () => {
     const { t } = useTranslation();
-    const { userEncryptKey } = useRouteLoaderData('root');
+    const { userEncryptKey } = useRouteLoaderData(ROOT_ROUTE_ID);
     const [tabMenu, setTabMenu] = useState(TabMenuType.UPLOADING);
     const presetList = useMemo<SelectOption[]>(() => [], []);
     const { isUploading, fileList, setFileList, removeFile, runUpload, pauseUpload } = useFileUpload(userEncryptKey);

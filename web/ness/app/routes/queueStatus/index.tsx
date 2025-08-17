@@ -19,11 +19,12 @@ import { QueueStatusType } from '@/types/enum.ts';
 
 import { StatusBox, StatusBoxProps } from '@/components';
 
+import { ROOT_ROUTE_ID } from '@/root.tsx';
 import { formatDateForInput, getDefaultDateRange, parseDateFromInput } from '@/utils';
 
 const QueueStatusPage = () => {
     const { t } = useTranslation();
-    const { userEncryptKey } = useRouteLoaderData('root');
+    const { userEncryptKey } = useRouteLoaderData(ROOT_ROUTE_ID);
     const [data, setData] = useState<FileListResponse | null>(null);
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [filteredDataList, setFilteredDataList] = useState<QueueFileItem[]>([]);

@@ -32,6 +32,8 @@ import { commonLoader } from './middleware/auth.ts';
 
 import type { Route } from './+types/root';
 
+export const ROOT_ROUTE_ID = 'root';
+
 export const loader = commonLoader(async ({ userEncryptKey }: { userEncryptKey: string }) => {
     return data({ userEncryptKey });
 });
