@@ -1,6 +1,6 @@
 import { redirect } from 'react-router';
 
-import { commonLoader } from '@/middleware/auth';
+import { commonLoader } from '@/middleware/auth.server.ts';
 
 export const loader = commonLoader(async ({ cookie }: { cookie?: string }) => {
     return redirect('file-upload', { headers: cookie ? { 'Set-Cookie': cookie } : undefined });

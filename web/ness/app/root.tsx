@@ -28,7 +28,7 @@ import { GlobalLoading } from '@/components';
 
 import i18n from '@/locales';
 
-import { commonLoader } from './middleware/auth.ts';
+import { commonLoader } from './middleware/auth.server.ts';
 
 import type { Route } from './+types/root';
 

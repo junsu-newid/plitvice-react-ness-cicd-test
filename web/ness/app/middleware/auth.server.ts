@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs } from 'react-router';
 
 import { HTTPError } from 'ky';
 
-import { getUserEncryptKeyFromSession } from '@/utils/sessionUtil';
+import { getUserEncryptKeyFromSession } from '@/utils/sessionUtil.server.ts';
 
 type LoaderContext = LoaderFunctionArgs & Record<string, unknown>;
 type Loader<T extends object = object> = (args: LoaderContext & T) => Promise<Response | unknown>;
