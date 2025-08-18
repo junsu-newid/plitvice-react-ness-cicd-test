@@ -44,8 +44,6 @@ export const loader = commonLoader(async ({ request, cookie }: LoaderFunctionArg
     }
 
     return null;
-
-    return null;
 });
 
 const FileUploadPage = () => {
