@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs } from 'react-router';
+import { redirect, type LoaderFunctionArgs } from 'react-router';
 
 import { HTTPError } from 'ky';
 
@@ -15,6 +15,9 @@ export const compose =
 
 export const withSession: Middleware = (next) => async (args) => {
     const { userEncryptKey, cookie } = await getSessionData(args as LoaderFunctionArgs);
+    if (!userEncryptKey && !args.request.url.includes('/error')) {
+        return redirect('/error');
+    }
     return next({ ...args, userEncryptKey, cookie });
 };
 
