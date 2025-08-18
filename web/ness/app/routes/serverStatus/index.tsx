@@ -1,36 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LoaderFunctionArgs, redirect, useRouteLoaderData } from 'react-router';
+import { data, useRouteLoaderData } from 'react-router';
 
 import { ServerInstance, ServerStatusResponse } from '@/api/models/serverStatus.ts';
 import { fetchServerStatus } from '@/api/services/serverStatus.ts';
 
 import { ServerStatusList } from '@/routes/serverStatus/List.tsx';
 
-import { ENCRYPT_KEY, ServerStatusType } from '@/types/enum.ts';
+import { ServerStatusType } from '@/types/enum.ts';
 
 import { StatusBox, StatusBoxProps } from '@/components';
 import { commonLoader } from '@/middleware/auth.server.ts';
 import { ROOT_ROUTE_ID } from '@/root.tsx';
 
-export const loader = commonLoader(async ({ request, cookie }: LoaderFunctionArgs & { cookie?: string }) => {
-    const url = new URL(request.url);
-
-    if (url.searchParams.has(ENCRYPT_KEY)) {
-        url.searchParams.delete(ENCRYPT_KEY); // URL 정리
-        return redirect('/server-status', {
-            headers: cookie ? { 'Set-Cookie': cookie } : undefined,
-        });
-    }
-
-    const cookieHeader = request.headers.get('Cookie');
-    const hasToken = cookieHeader?.includes('_t=');
-
-    if (!hasToken) {
-        return redirect('/error');
-    }
-
-    return null;
+export const loader = commonLoader(async ({ userEncryptKey, cookie }: { userEncryptKey: string; cookie?: string }) => {
+    return data({ userEncryptKey }, cookie ? { headers: { 'Set-Cookie': cookie } } : undefined);
 });
 
 const ServerStatusPage = () => {

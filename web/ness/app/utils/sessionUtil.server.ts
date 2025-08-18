@@ -1,27 +1,19 @@
-import { LoaderFunctionArgs } from 'react-router';
+import { LoaderFunctionArgs, SessionData } from 'react-router';
 
 import { COOKIE, ENCRYPT_KEY } from '@/types/enum';
 
 import { commitSession, getSession } from '@/session.server';
 
-type GetUserEncryptKeyResult = {
-    userEncryptKey: string;
-    cookie?: string;
-};
-
-export const getUserEncryptKeyFromSession = async ({
-    request,
-}: LoaderFunctionArgs): Promise<GetUserEncryptKeyResult> => {
+export const getSessionData = async ({ request }: LoaderFunctionArgs): Promise<SessionData> => {
     const url = new URL(request.url);
     const session = await getSession(request.headers.get(COOKIE));
-    const keyFromQuery = url.searchParams.get(ENCRYPT_KEY);
+    const urlEncryptKey = url.searchParams.get(ENCRYPT_KEY);
 
-    if (keyFromQuery) {
-        session.set(ENCRYPT_KEY, keyFromQuery);
+    if (urlEncryptKey) {
+        session.set(ENCRYPT_KEY, urlEncryptKey);
         const cookie = await commitSession(session);
-        return { userEncryptKey: keyFromQuery, cookie };
+        return { userEncryptKey: urlEncryptKey, cookie };
     }
 
-    const keyFromSession = (session.get(ENCRYPT_KEY) as string | undefined) ?? '';
-    return { userEncryptKey: keyFromSession };
+    return { userEncryptKey: session.get(ENCRYPT_KEY) as string, cookie: null };
 };

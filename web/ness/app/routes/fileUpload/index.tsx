@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { LoaderFunctionArgs, redirect, useRouteLoaderData } from 'react-router';
+import { data, useLoaderData } from 'react-router';
 
 import { TFunction } from 'i18next';
 
@@ -16,39 +16,20 @@ import { useFileUpload } from '@/routes/fileUpload/index.hook.ts';
 import { FileUploadedList } from '@/routes/fileUpload/uploaded.tsx';
 import { FileUploadingList } from '@/routes/fileUpload/uploading.tsx';
 
-import { ENCRYPT_KEY } from '@/types/enum.ts';
-
 import { commonLoader } from '@/middleware/auth.server.ts';
-import { ROOT_ROUTE_ID } from '@/root.tsx';
 
 enum TabMenuType {
     UPLOADING = 'uploading',
     UPLOADED = 'uploaded',
 }
 
-export const loader = commonLoader(async ({ request, cookie }: LoaderFunctionArgs & { cookie?: string }) => {
-    const url = new URL(request.url);
-
-    if (url.searchParams.has(ENCRYPT_KEY)) {
-        url.searchParams.delete(ENCRYPT_KEY); // URL 정리
-        return redirect('/file-upload', {
-            headers: cookie ? { 'Set-Cookie': cookie } : undefined,
-        });
-    }
-
-    const cookieHeader = request.headers.get('Cookie');
-    const hasToken = cookieHeader?.includes('_t=');
-
-    if (!hasToken) {
-        return redirect('/error');
-    }
-
-    return null;
+export const loader = commonLoader(async ({ userEncryptKey, cookie }: { userEncryptKey: string; cookie?: string }) => {
+    return data({ userEncryptKey }, cookie ? { headers: { 'Set-Cookie': cookie } } : undefined);
 });
 
 const FileUploadPage = () => {
     const { t } = useTranslation();
-    const { userEncryptKey } = useRouteLoaderData(ROOT_ROUTE_ID);
+    const { userEncryptKey } = useLoaderData();
     const [tabMenu, setTabMenu] = useState(TabMenuType.UPLOADING);
     const presetList = useMemo<SelectOption[]>(() => [], []);
     const { isUploading, fileList, setFileList, removeFile, runUpload, pauseUpload } = useFileUpload(userEncryptKey);
