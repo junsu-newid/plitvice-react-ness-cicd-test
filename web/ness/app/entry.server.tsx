@@ -1,15 +1,16 @@
 import { PassThrough } from 'node:stream';
-import { EntryContext } from 'react-router';
+
+import { EntryContext, ServerRouter } from 'react-router';
+
 import { createReadableStreamFromReadable } from '@react-router/node';
-import { ServerRouter } from 'react-router';
 import { renderToPipeableStream } from 'react-dom/server';
 
-export default function handleRequest(
+const handleRequest = (
     request: Request,
     responseStatusCode: number,
     responseHeaders: Headers,
     routerContext: EntryContext,
-) {
+) => {
     return new Promise((resolve, reject) => {
         const { pipe } = renderToPipeableStream(<ServerRouter context={routerContext} url={request.url} />, {
             onShellReady() {
@@ -32,4 +33,6 @@ export default function handleRequest(
             },
         });
     });
-}
+};
+
+export default handleRequest;

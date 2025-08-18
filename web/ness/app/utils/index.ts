@@ -51,7 +51,6 @@ export const getLanguageCode = (filename: string): string | null => {
     return null;
 };
 
-// 날짜 유틸리티 함수들 - MM-DD-YYYY 형식으로 변경
 export const formatDate = (date: Date): string => {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -59,14 +58,13 @@ export const formatDate = (date: Date): string => {
     return `${month}-${day}-${year}`;
 };
 
-// HTML input[type="date"]는 YYYY-MM-DD 형식을 사용하므로 변환 함수 추가
 export const formatDateForInput = (date: Date): string => {
-    return date.toISOString().split('T')[0]; // YYYY-MM-DD
+    return date.toISOString().split('T')[0];
 };
 
 export const parseDateFromInput = (dateString: string): string => {
     const [year, month, day] = dateString.split('-');
-    return `${month}-${day}-${year}`; // MM-DD-YYYY로 변환
+    return `${month}-${day}-${year}`;
 };
 
 export const getDefaultDateRange = () => {
@@ -75,7 +73,7 @@ export const getDefaultDateRange = () => {
     thirtyDaysAgo.setDate(today.getDate() - 30);
 
     return {
-        startDate: formatDate(thirtyDaysAgo), // MM-DD-YYYY
-        endDate: formatDate(today), // MM-DD-YYYY
+        startDate: formatDate(thirtyDaysAgo),
+        endDate: formatDate(today),
     };
 };

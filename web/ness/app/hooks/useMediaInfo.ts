@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+
 import mediaInfoFactory, { MediaInfo } from 'mediainfo.js';
+
 import type { MediaFile, MediaInfoResult, MediaMetadata, Track } from '@/types/mediainfo.types';
 
 export const useMediaMetadata = () => {
-    const mediaInfoRef = useRef<MediaInfo<'JSON'> | null>(null);
     const [isExtracting, setIsExtracting] = useState(false);
+    const mediaInfoRef = useRef<MediaInfo<'JSON'> | null>(null);
 
     useEffect(() => {
         mediaInfoFactory({

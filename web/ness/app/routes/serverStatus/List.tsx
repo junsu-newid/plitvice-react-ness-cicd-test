@@ -1,3 +1,6 @@
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
     createColumnHelper,
     flexRender,
@@ -6,26 +9,30 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table';
-import { ServerInstance } from '@/api/models/serverStatus.ts';
-import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { StatusChip, Button, useToast } from '@plitvice/ui';
-import { ServerStatusType } from '@/types/enum.ts';
-import { firstUpperCase } from '@/utils';
-import SortHeader from '@/components/SortHeader.tsx';
+
+import { Button, StatusChip, useToast } from '@plitvice/ui';
+
 import { StatusColor } from '@plitvice/ui/components/chips/StatusChip.tsx';
-import CommonChips from '@/components/CommonChips.tsx';
+
+import { ServerInstance } from '@/api/models/serverStatus.ts';
+
 import { putServerStatus } from '@/api/services/serverStatus.ts';
+
+import { ServerStatusType } from '@/types/enum.ts';
+
+import { CommonChips, SortHeader } from '@/components';
+
+import { firstUpperCase } from '@/utils';
 
 interface Props {
     data: ServerInstance[];
 }
 const columnHelper = createColumnHelper<ServerInstance>();
 
-function ServerStatusList({ data }: Props) {
+export const ServerStatusList = ({ data }: Props) => {
     const { t } = useTranslation();
-    const { showToast } = useToast();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'instanceName', desc: false }]);
+    const { showToast } = useToast();
 
     const handlePutStatus = (instanceId: string, status: string) => {
         putServerStatus(instanceId, status)
@@ -169,5 +176,4 @@ function ServerStatusList({ data }: Props) {
             </tbody>
         </table>
     );
-}
-export default ServerStatusList;
+};

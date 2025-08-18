@@ -1,6 +1,6 @@
-import { PresetItem } from '@/api/models/preset.ts';
-import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
     createColumnHelper,
     flexRender,
@@ -9,17 +9,20 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table';
-import SortHeader from '@/components/SortHeader.tsx';
+
 import { Tooltip } from '@plitvice/ui';
-import CommonChips from '@/components/CommonChips.tsx';
+
+import { PresetItem } from '@/api/models/preset.ts';
+
+import { CommonChips, SortHeader } from '@/components';
 
 interface Props {
-    data: PresetItem[];
+    data?: PresetItem[];
     onItemClick: (item: PresetItem) => void;
 }
 const columnHelper = createColumnHelper<PresetItem>();
 
-function EncodingPresetList({ data, onItemClick }: Props) {
+export const EncodingPresetList = ({ data, onItemClick }: Props) => {
     const { t } = useTranslation();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'name', desc: false }]);
 
@@ -128,10 +131,9 @@ function EncodingPresetList({ data, onItemClick }: Props) {
             </tbody>
         </table>
     );
-}
-export default EncodingPresetList;
+};
 
-function TypeChips({ type }: { type: string }) {
+const TypeChips = ({ type }: { type: string }) => {
     let bgColor = 'bg-grey-100';
     switch (type) {
         case 'mp4':
@@ -149,4 +151,4 @@ function TypeChips({ type }: { type: string }) {
             {type.slice(0, 3).toUpperCase()}
         </p>
     );
-}
+};

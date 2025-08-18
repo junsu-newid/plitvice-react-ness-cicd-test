@@ -1,30 +1,44 @@
-import { LoaderFunctionArgs, useLoaderData } from 'react-router';
-import { ServerInstance, ServerStatusResponse } from '@/api/models/serverStatus.ts';
-import { useTranslation } from 'react-i18next';
-import { COOKIE, ENCRYPT_KEY, ServerStatusType } from '@/types/enum.ts';
-import ServerStatusList from '@/pages/serverStatus/List.tsx';
 import { useEffect, useState } from 'react';
-import StatusBox, { StatusBoxProps } from '@/components/StatusBox.tsx';
-import { fetchServerStatus } from '@/api/services/serverStatus.ts';
-import { getSession } from '@/session.server.ts';
+import { useTranslation } from 'react-i18next';
+import { data, useRouteLoaderData } from 'react-router';
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const session = await getSession(request.headers.get(COOKIE));
-    const userEncryptKey = await session.get(ENCRYPT_KEY);
-    return await fetchServerStatus(userEncryptKey);
-};
+import { ServerInstance, ServerStatusResponse } from '@/api/models/serverStatus.ts';
+import { fetchServerStatus } from '@/api/services/serverStatus.ts';
+
+import { ServerStatusList } from '@/routes/serverStatus/List.tsx';
+
+import { ServerStatusType } from '@/types/enum.ts';
+
+import { StatusBox, StatusBoxProps } from '@/components';
+import { commonLoader } from '@/middleware/auth.server.ts';
+import { ROOT_ROUTE_ID } from '@/root.tsx';
+
+export const loader = commonLoader(async ({ userEncryptKey, cookie }: { userEncryptKey: string; cookie?: string }) => {
+    return data({ userEncryptKey }, cookie ? { headers: { 'Set-Cookie': cookie } } : undefined);
+});
 
 const ServerStatusPage = () => {
     const { t } = useTranslation();
-    const serverStatusData: ServerStatusResponse = useLoaderData();
+    const { userEncryptKey } = useRouteLoaderData(ROOT_ROUTE_ID);
+    const [serverStatusData, setServerStatusData] = useState<ServerStatusResponse | null>(null);
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [filteredData, setFilteredData] = useState<ServerInstance[]>([]);
 
     useEffect(() => {
+        if (!userEncryptKey) return;
+
+        fetchServerStatus(userEncryptKey).then((res) => {
+            setServerStatusData(res);
+        });
+    }, [userEncryptKey]);
+
+    useEffect(() => {
+        if (!serverStatusData) return;
+
         setFilteredData(
             selectedStatus === 0
-                ? serverStatusData?.data
-                : serverStatusData?.data?.filter((item) => item.status === StatusSetting[selectedStatus].type),
+                ? serverStatusData.data
+                : serverStatusData.data?.filter((item) => item.status === StatusSetting[selectedStatus].type),
         );
     }, [serverStatusData, selectedStatus]);
 
@@ -42,8 +56,8 @@ const ServerStatusPage = () => {
                         color={box.color}
                         count={
                             index === 0
-                                ? serverStatusData.data.length
-                                : serverStatusData.data.filter((item) => item.status.toLowerCase() === box.type).length
+                                ? serverStatusData?.data.length
+                                : serverStatusData?.data.filter((item) => item.status.toLowerCase() === box.type).length
                         }
                         selected={selectedStatus === index}
                         onClick={() => setSelectedStatus(index)}

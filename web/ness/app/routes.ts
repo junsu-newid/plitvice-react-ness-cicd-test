@@ -1,15 +1,12 @@
-import { type RouteConfig, route } from '@react-router/dev/routes';
+import { index, route, RouteConfig } from '@react-router/dev/routes';
 
-const routes: RouteConfig = [
-    route('ness', 'pages/index.tsx', { id: 'index' }),
-    route('ness/file-upload', 'pages/fileUpload/index.tsx', { id: 'fileUpload' }),
-    route('ness/queue-status', 'pages/queueStatus/index.tsx', { id: 'queueStatus' }),
-    route('ness/server-status', 'pages/serverStatus/index.tsx', { id: 'serverStatus' }),
-    route('ness/preset-list', 'pages/presetList/index.tsx', { id: 'presetList' }),
-];
-
-// if (process.env.NODE_ENV === 'development') {
-//     routes.push(route('/__playground', 'components/_playground/playground.tsx'));
-// }
-
+const routes = [
+    index('routes/index.tsx'),
+    route('file-upload', 'routes/fileUpload/index.tsx', { id: 'fileUpload' }),
+    route('queue-status', 'routes/queueStatus/index.tsx', { id: 'queueStatus' }),
+    route('server-status', 'routes/serverStatus/index.tsx', { id: 'serverStatus' }),
+    route('preset-list', 'routes/presetList/index.tsx', { id: 'presetList' }),
+    route('error', 'routes/error.tsx', { id: 'error' }),
+    route('*', 'routes/404.tsx', { id: '404' }),
+] satisfies RouteConfig;
 export default routes;

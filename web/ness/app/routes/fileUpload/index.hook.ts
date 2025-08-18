@@ -1,19 +1,22 @@
 import { useCallback, useState } from 'react';
+
 import {
     deleteUploadFiles,
     notifyUploadCompletion,
     requestPresignedFile,
     validateFile,
 } from '@/api/services/fileUpload.ts';
+
 import {
     PartUploadResult,
     splitFileIntoChunks,
     uploadChunk,
     uploadSubtitleFile,
-} from '@/pages/fileUpload/uploading.utils.ts';
+} from '@/routes/fileUpload/uploading.utils.ts';
+
 import { MediaFile, MediaFileStatus } from '@/types/mediainfo.types.ts';
 
-function useFileUpload(userEncryptKey: string) {
+export const useFileUpload = (userEncryptKey: string) => {
     const [isUploading, setIsUploading] = useState(false);
     const [fileList, setFileList] = useState<MediaFile[]>([]);
     const [abortController, setAbortController] = useState<AbortController | null>(null);
@@ -165,5 +168,4 @@ function useFileUpload(userEncryptKey: string) {
         runUpload,
         pauseUpload,
     };
-}
-export default useFileUpload;
+};

@@ -1,15 +1,18 @@
-import { PresetItem } from '@/api/models/preset.ts';
 import { useTranslation } from 'react-i18next';
-import { firstUpperCase } from '@/utils';
-import { Drawer, Button, StatusChip, useToast } from '@plitvice/ui';
+
+import { Button, Drawer, StatusChip, useToast } from '@plitvice/ui';
 import { copyToClipboard } from '@plitvice/util/index.ts';
 
-type Props = {
+import { PresetItem } from '@/api/models/preset.ts';
+
+import { firstUpperCase } from '@/utils';
+
+interface Props {
     content?: PresetItem;
     onClose: () => void;
-};
+}
 
-function EncodingPresetMetadataSheet({ content, onClose }: Props) {
+export const EncodingPresetMetadataSheet = ({ content, onClose }: Props) => {
     const { t } = useTranslation();
     const { showToast } = useToast();
 
@@ -79,5 +82,4 @@ function EncodingPresetMetadataSheet({ content, onClose }: Props) {
             </div>
         </Drawer>
     );
-}
-export default EncodingPresetMetadataSheet;
+};

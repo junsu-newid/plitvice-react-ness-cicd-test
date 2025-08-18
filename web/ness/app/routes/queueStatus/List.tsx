@@ -1,3 +1,6 @@
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
     Column,
     createColumnHelper,
@@ -7,14 +10,15 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { QueueFileItem } from '@/api/models/queueList.ts';
+
 import { StatusChip, Tooltip } from '@plitvice/ui';
 import { StatusColor } from '@plitvice/ui/components/chips/StatusChip.tsx';
+
+import { QueueFileItem } from '@/api/models/queueList.ts';
+
 import { QueueStatusType } from '@/types/enum.ts';
-import SortHeader from '@/components/SortHeader.tsx';
-import CommonChips from '@/components/CommonChips.tsx';
+
+import { CommonChips, SortHeader } from '@/components';
 
 interface Props {
     data: QueueFileItem[];
@@ -22,7 +26,7 @@ interface Props {
 }
 const columnHelper = createColumnHelper<QueueFileItem>();
 
-function QueueStatusList({ data, onItemClick }: Props) {
+export const QueueStatusList = ({ data, onItemClick }: Props) => {
     const { t } = useTranslation();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'status', desc: false }]);
 
@@ -200,5 +204,4 @@ function QueueStatusList({ data, onItemClick }: Props) {
             </tbody>
         </table>
     );
-}
-export default QueueStatusList;
+};

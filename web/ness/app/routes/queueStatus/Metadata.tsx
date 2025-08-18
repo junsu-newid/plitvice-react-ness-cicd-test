@@ -1,19 +1,21 @@
 import { useTranslation } from 'react-i18next';
-import { Drawer, Button, Tooltip } from '@plitvice/ui';
+
+import { Button, Drawer, Tooltip } from '@plitvice/ui';
+
 import { QueueFileItem } from '@/api/models/queueList.ts';
 
-type Props = {
+interface Props {
     content?: QueueFileItem;
     onClose: () => void;
-};
+}
 
-function QueueStatusMetadataSheet({ content, onClose }: Props) {
+export const QueueStatusMetadataSheet = ({ content, onClose }: Props) => {
     const { t } = useTranslation();
 
     return (
         <Drawer width={552} open={content !== undefined} onClose={onClose} className={`px-[36px] py-[48px]`}>
             <div className={`flex items-center justify-between gap-[12px]`}>
-                <Tooltip text={content?.programTitle}>
+                <Tooltip text={content?.programTitle ?? ''}>
                     <h2 className={`line-clamp-1 break-all`}>{content?.programTitle}</h2>
                 </Tooltip>
 
@@ -47,5 +49,4 @@ function QueueStatusMetadataSheet({ content, onClose }: Props) {
             </div>
         </Drawer>
     );
-}
-export default QueueStatusMetadataSheet;
+};

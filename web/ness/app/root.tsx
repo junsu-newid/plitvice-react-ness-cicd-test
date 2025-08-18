@@ -1,36 +1,44 @@
 import { ReactNode, useMemo } from 'react';
+
+import { I18nextProvider, useTranslation } from 'react-i18next';
 import {
+    data,
     isRouteErrorResponse,
     Links,
     Meta,
     Outlet,
     Scripts,
     ScrollRestoration,
-    LoaderFunctionArgs,
     useLoaderData,
-    data,
+    useLocation,
+    useNavigate,
 } from 'react-router';
-import type { Route } from './+types/root';
-import { I18nextProvider, useTranslation } from 'react-i18next';
-import i18n from '@/locales';
-import { ToastProvider } from '@plitvice/ui';
-import '@plitvice/ui/styles/global.css';
-import LoadingMask from '@/components/LoadingMask.tsx';
-import FileUploadPage from '@/pages/fileUpload';
-import { SideNavBar } from '@plitvice/ui/components/navigation/SideNavBar.tsx';
+
 import { TFunction } from 'i18next';
+
+import { ToastProvider } from '@plitvice/ui';
+import { SideNavBar } from '@plitvice/ui/components/navigation/SideNavBar.tsx';
 import { SideNavSection } from '@plitvice/ui/components/navigation/sideNavBar.types.ts';
-import { getSession } from '@/session.server.ts';
-import { COOKIE, ENCRYPT_KEY } from '@/types/enum.ts';
 
-export const links: Route.LinksFunction = () => [];
+import '@plitvice/ui/styles/global.css';
 
-export async function loader({ request }: LoaderFunctionArgs) {
-    const session = await getSession(request.headers.get(COOKIE));
-    return data({ userEncryptKey: session.get(ENCRYPT_KEY) });
-}
+import FileUploadPage from '@/routes/fileUpload';
 
-export function Layout({ children }: { children: ReactNode }) {
+import { GlobalLoading } from '@/components';
+
+import i18n from '@/locales';
+
+import { commonLoader } from './middleware/auth.server.ts';
+
+import type { Route } from './+types/root';
+
+export const ROOT_ROUTE_ID = 'root';
+
+export const loader = commonLoader(async ({ userEncryptKey }: { userEncryptKey: string }) => {
+    return data({ userEncryptKey });
+});
+
+export const Layout = ({ children }: { children: ReactNode }) => {
     return (
         <html lang="en">
             <head>
@@ -64,12 +72,14 @@ export function Layout({ children }: { children: ReactNode }) {
             </body>
         </html>
     );
-}
+};
 
-export default function App() {
+const App = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { userEncryptKey } = useLoaderData();
-    const navMap = useMemo(() => getNavMap(t), [t]);
+    const navMapList = useMemo(() => getNavMap(t), [t]);
+    const location = useLocation();
 
     return (
         <I18nextProvider i18n={i18n}>
@@ -79,13 +89,14 @@ export default function App() {
                         <nav className={`h-full overflow-y-auto pb-[48px] pt-[24px]`}>
                             <SideNavBar
                                 width={0}
-                                sectionList={navMap}
-                                onNavigate={(path) => (document.location.href = path)}
+                                sectionList={navMapList}
+                                onNavigate={navigate}
+                                defaultSelected={location.pathname.slice(1)}
                             />
                         </nav>
                         <main className={'bg-grey-5 border-grey-20 relative h-full w-full overflow-auto border-l'}>
                             <Outlet />
-                            <LoadingMask />
+                            <GlobalLoading />
                         </main>{' '}
                     </>
                 ) : (
@@ -93,15 +104,16 @@ export default function App() {
                         <main className={`col-span-2 h-full w-full overflow-hidden`}>
                             <FileUploadPage />
                         </main>
-                        <LoadingMask />
+                        <GlobalLoading />
                     </>
                 )}
             </ToastProvider>
         </I18nextProvider>
     );
-}
+};
+export default App;
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
     const { t } = useTranslation();
     const navMap = useMemo(() => getNavMap(t), [t]);
     let message = 'Oops!';
@@ -132,22 +144,22 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
             </main>
         </>
     );
-}
+};
 
 const getNavMap = (t: TFunction): SideNavSection[] => {
     return [
         {
             title: t('nav.home.encoding.title'),
             child: [
-                { path: '/ness/file-upload', label: t('nav.home.encoding.fileUpload') },
-                { path: '/ness/queue-status', label: t('nav.home.encoding.queueStatus') },
+                { path: 'file-upload', label: t('nav.home.encoding.fileUpload') },
+                { path: 'queue-status', label: t('nav.home.encoding.queueStatus') },
             ],
         },
         {
             title: t('nav.home.operations.title'),
             child: [
-                { path: '/ness/server-status', label: t('nav.home.operations.serverStatus') },
-                { path: '/ness/preset-list', label: t('nav.home.operations.presetList') },
+                { path: 'server-status', label: t('nav.home.operations.serverStatus') },
+                { path: 'preset-list', label: t('nav.home.operations.presetList') },
             ],
         },
     ];

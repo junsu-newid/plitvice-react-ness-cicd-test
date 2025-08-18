@@ -6,33 +6,31 @@ import {
     flexRender,
     getCoreRowModel,
     getSortedRowModel,
-    useReactTable,
     SortingState,
+    useReactTable,
 } from '@tanstack/react-table';
 import { differenceInCalendarDays, parse, startOfToday } from 'date-fns';
 
-import { BinIcon, Button, ErrorIcon, SelectBox, Tooltip, useToast } from '@plitvice/ui';
-import { MoreVertIcon } from '@plitvice/ui';
+import { BinIcon, Button, ErrorIcon, MoreVertIcon, SelectBox, Tooltip, useToast } from '@plitvice/ui';
 import { StatusChip } from '@plitvice/ui/components/chips/StatusChip.tsx';
 import { DropdownList, SelectOption } from '@plitvice/ui/components/selectbox/DropdownList.tsx';
 
 import { UploadedFileItem } from '@/api/models/fileUploads.ts';
 
-import CommonChips from '@/components/CommonChips.tsx';
-import SortHeader from '@/components/SortHeader.tsx';
+import { useFileUploaded } from '@/routes/fileUpload/uploaded.hooks.ts';
 
-import useFileUploaded from '@/pages/fileUpload/uploaded.hooks.ts';
+import { CommonChips, SortHeader } from '@/components';
 
-type Props = {
+interface Props {
     userEncryptKey: string;
     presetList: SelectOption[];
-};
+}
 
 const columnHelper = createColumnHelper<UploadedFileItem>();
 const today = startOfToday();
 const date = new Date();
 
-const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
+export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
     const { t } = useTranslation();
     const { showToast } = useToast();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'uploadedAt', desc: false }]);
@@ -292,4 +290,3 @@ const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
         </>
     );
 };
-export default FileUploadedList;

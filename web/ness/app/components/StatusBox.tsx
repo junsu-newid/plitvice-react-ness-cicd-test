@@ -1,4 +1,4 @@
-export type StatusBoxProps = {
+export interface StatusBoxProps {
     title?: string;
     titleSlice: string;
     color: string;
@@ -6,9 +6,9 @@ export type StatusBoxProps = {
     count?: number;
     selected?: boolean;
     onClick?: () => void;
-};
+}
 
-function StatusBox({ title, titleSlice, color, count, selected, onClick }: StatusBoxProps) {
+export const StatusBox = ({ title, titleSlice, color, count, selected, onClick }: StatusBoxProps) => {
     return (
         <button
             className={`hover:bg-grey-10 grid flex-1 grid-cols-[40px_1fr] items-center rounded-[4px] border bg-white p-[17px] ${selected ? 'border-grey-50' : 'border-grey-20'}`}
@@ -21,5 +21,4 @@ function StatusBox({ title, titleSlice, color, count, selected, onClick }: Statu
             <p className={`text-b24 pl-[20px] text-left`}>{count}</p>
         </button>
     );
-}
-export default StatusBox;
+};

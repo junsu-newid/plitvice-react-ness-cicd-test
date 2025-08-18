@@ -1,6 +1,8 @@
-import api from '../index.ts';
-import { FileListResponse } from '@/api/models/queueList.ts';
 import { format } from 'date-fns';
+
+import { FileListResponse } from '@/api/models/queueList.ts';
+
+import { api } from '@/api';
 
 export const fetchFileList = async (
     userEncryptKey: string,
@@ -16,7 +18,7 @@ export const fetchFileList = async (
     return await api.get(`encoding/files?${searchParams.toString()}`).json<FileListResponse>();
 };
 
-function normalizeDate(date: string) {
+const normalizeDate = (date: string) => {
     const parts = date.split(/[-/.]/);
     let year, month, day;
     if (parts[0].length === 4) {
@@ -33,4 +35,4 @@ function normalizeDate(date: string) {
     const formattedDay = String(dayNum).padStart(2, '0');
 
     return `${formattedMonth}-${formattedDay}-${yearNum}`;
-}
+};

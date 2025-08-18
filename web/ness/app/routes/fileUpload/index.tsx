@@ -1,33 +1,48 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TFunction } from 'i18next';
-import { SelectOption, TabMenu, WarningIcon } from '@plitvice/ui';
-import FileUploadingList from './uploading.tsx';
-import FileUploadedList from './uploaded.tsx';
-import useFileUpload from '@/pages/fileUpload/index.hook.ts';
-import { fetchPresetList } from '@/api/services/preset.ts';
+
 import { data, useLoaderData } from 'react-router';
-import { commonLoader } from '@/middleware/auth.ts';
+
+import { TFunction } from 'i18next';
+
+import { TabMenu } from '@plitvice/ui/components/navigation/TabMenu.tsx';
+import { SelectOption } from '@plitvice/ui/components/selectbox/DropdownList.tsx';
+
+import { WarningIcon } from '@plitvice/ui/index.ts';
+
+import { fetchPresetList } from '@/api/services/preset.ts';
+
+import { useFileUpload } from '@/routes/fileUpload/index.hook.ts';
+import { FileUploadedList } from '@/routes/fileUpload/uploaded.tsx';
+import { FileUploadingList } from '@/routes/fileUpload/uploading.tsx';
+
+import { commonLoader } from '@/middleware/auth.server.ts';
 
 enum TabMenuType {
     UPLOADING = 'uploading',
     UPLOADED = 'uploaded',
 }
 
-export const loader = commonLoader(async ({ userEncryptKey }: { userEncryptKey: string }) => {
-    const res = await fetchPresetList(userEncryptKey);
-    const presetList: SelectOption[] = [];
-    res.data.map((item) => {
-        presetList.push({ value: item.id, label: item.name });
-    });
-    return data({ userEncryptKey, presetList });
+export const loader = commonLoader(async ({ userEncryptKey, cookie }: { userEncryptKey: string; cookie?: string }) => {
+    return data({ userEncryptKey }, cookie ? { headers: { 'Set-Cookie': cookie } } : undefined);
 });
 
 const FileUploadPage = () => {
     const { t } = useTranslation();
-    const { userEncryptKey, presetList } = useLoaderData();
-    const { isUploading, fileList, setFileList, removeFile, runUpload, pauseUpload } = useFileUpload(userEncryptKey);
+    const { userEncryptKey } = useLoaderData();
     const [tabMenu, setTabMenu] = useState(TabMenuType.UPLOADING);
+    const presetList = useMemo<SelectOption[]>(() => [], []);
+    const { isUploading, fileList, setFileList, removeFile, runUpload, pauseUpload } = useFileUpload(userEncryptKey);
+
+    useEffect(() => {
+        if (!userEncryptKey) return;
+
+        fetchPresetList(userEncryptKey).then((res) => {
+            res.data.map((item) => {
+                presetList.push({ value: item.id, label: item.name });
+            });
+        });
+    }, [userEncryptKey]);
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {

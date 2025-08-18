@@ -1,25 +1,39 @@
-import { useCallback, useMemo } from 'react';
+import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { BinIcon, Button, Tooltip } from '@plitvice/ui';
-import { formatDuration, formatFileSize, getFileName, getLanguageCode } from '@/utils';
-import { MediaFile, MediaFileStatus, MediaSubFile } from '@/types/mediainfo.types.ts';
-import { useMediaMetadata } from '@/hooks/useMediaInfo.ts';
-import FileDropzone from './fileDropzone.tsx';
-import CommonChips from '@/components/CommonChips.tsx';
 
-type Props = {
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+
+import { BinIcon, Button, Tooltip } from '@plitvice/ui';
+
+import { useMediaMetadata } from '@/hooks/useMediaInfo.ts';
+
+import FileDropzone from '@/routes/fileUpload/fileDropzone.tsx';
+
+import { MediaFile, MediaFileStatus, MediaSubFile } from '@/types/mediainfo.types.ts';
+
+import { CommonChips } from '@/components';
+
+import { formatDuration, formatFileSize, getFileName, getLanguageCode } from '@/utils';
+
+interface Props {
     isUploading: boolean;
     fileList: MediaFile[];
-    setFileList: (fileList: MediaFile[]) => void;
+    setFileList: Dispatch<SetStateAction<MediaFile[]>>;
     removeFile: (fileName: string) => void;
     runUpload: () => void;
     pauseUpload: () => void;
-};
+}
 
 const columnHelper = createColumnHelper<MediaFile>();
 
-const FileUploadingList = ({ isUploading, fileList, setFileList, removeFile, runUpload, pauseUpload }: Props) => {
+export const FileUploadingList = ({
+    isUploading,
+    fileList,
+    setFileList,
+    removeFile,
+    runUpload,
+    pauseUpload,
+}: Props) => {
     const { t } = useTranslation();
     const { extractMetadata } = useMediaMetadata();
 
@@ -266,4 +280,3 @@ const FileUploadingList = ({ isUploading, fileList, setFileList, removeFile, run
         </>
     );
 };
-export default FileUploadingList;
