@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useRouteLoaderData } from 'react-router';
+import { LoaderFunctionArgs, redirect, useRouteLoaderData } from 'react-router';
 
 import { PresetItem, PresetResponse } from '@/api/models/preset.ts';
 import { fetchPresetList } from '@/api/services/preset.ts';
@@ -8,7 +8,30 @@ import { fetchPresetList } from '@/api/services/preset.ts';
 import { EncodingPresetList } from '@/routes/presetList/List.tsx';
 import { EncodingPresetMetadataSheet } from '@/routes/presetList/Metadata.tsx';
 
+import { ENCRYPT_KEY } from '@/types/enum.ts';
+
+import { commonLoader } from '@/middleware/auth.server.ts';
 import { ROOT_ROUTE_ID } from '@/root.tsx';
+
+export const loader = commonLoader(async ({ request, cookie }: LoaderFunctionArgs & { cookie?: string }) => {
+    const url = new URL(request.url);
+
+    if (url.searchParams.has(ENCRYPT_KEY)) {
+        url.searchParams.delete(ENCRYPT_KEY); // URL 정리
+        return redirect('/preset-list', {
+            headers: cookie ? { 'Set-Cookie': cookie } : undefined,
+        });
+    }
+
+    const cookieHeader = request.headers.get('Cookie');
+    const hasToken = cookieHeader?.includes('_t=');
+
+    if (!hasToken) {
+        return redirect('/error');
+    }
+
+    return null;
+});
 
 const EncodingPresetPage = () => {
     const { t } = useTranslation();

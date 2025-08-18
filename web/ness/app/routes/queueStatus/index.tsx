@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { useRouteLoaderData } from 'react-router';
+import { LoaderFunctionArgs, redirect, useRouteLoaderData } from 'react-router';
 
 import { startOfDay, subDays } from 'date-fns';
 
@@ -15,12 +15,32 @@ import { QueueStatusList } from '@/routes/queueStatus/List.tsx';
 
 import { QueueStatusMetadataSheet } from '@/routes/queueStatus/Metadata.tsx';
 
-import { QueueStatusType } from '@/types/enum.ts';
+import { ENCRYPT_KEY, QueueStatusType } from '@/types/enum.ts';
 
 import { StatusBox, StatusBoxProps } from '@/components';
-
+import { commonLoader } from '@/middleware/auth.server.ts';
 import { ROOT_ROUTE_ID } from '@/root.tsx';
 import { formatDateForInput, getDefaultDateRange, parseDateFromInput } from '@/utils';
+
+export const loader = commonLoader(async ({ request, cookie }: LoaderFunctionArgs & { cookie?: string }) => {
+    const url = new URL(request.url);
+
+    if (url.searchParams.has(ENCRYPT_KEY)) {
+        url.searchParams.delete(ENCRYPT_KEY); // URL 정리
+        return redirect('/queue-status', {
+            headers: cookie ? { 'Set-Cookie': cookie } : undefined,
+        });
+    }
+
+    const cookieHeader = request.headers.get('Cookie');
+    const hasToken = cookieHeader?.includes('_t=');
+
+    if (!hasToken) {
+        return redirect('/error');
+    }
+
+    return null;
+});
 
 const QueueStatusPage = () => {
     const { t } = useTranslation();
