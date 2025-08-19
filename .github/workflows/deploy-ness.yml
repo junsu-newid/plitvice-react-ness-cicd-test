@@ -1,0 +1,72 @@
+name: Deploy ness (main)
+
+on:
+  push:
+    branches: [ prod ]    # PR 머지 시 동작
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install deps (root)
+        run: pnpm install --frozen-lockfile
+
+      - name: Build web/ness
+        run: pnpm -F web/ness build
+
+      # 런타임 전용 포장물(out/)
+      - name: Prepare runtime artifact
+        run: |
+          mkdir -p out
+          cp -r web/ness/build out/build
+          cat > out/package.json <<'JSON'
+          {
+            "name": "ness-runtime",
+            "private": true,
+            "type": "module",
+            "version": "0.0.0",
+            "scripts": { "start": "react-router-serve ./build/server/index.js" },
+            "dependencies": { "@react-router/serve": "^7.7.1" }
+          }
+          JSON
+          cat > out/ecosystem.config.js <<'EOF'
+          module.exports = {
+            apps: [{
+              name: 'ness',
+              script: 'node_modules/.bin/react-router-serve',
+              args: './build/server/index.js',
+              cwd: '/var/www/nesspjs/current',
+              exec_mode: 'fork',
+              instances: 1,
+              env: { NODE_ENV: 'production', PORT: '3001' }
+            }]
+          };
+          EOF
+
+      - name: Add SSH key
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_ci
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ci
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Upload to server
+        run: |
+          rsync -az --delete -e "ssh -i ~/.ssh/id_ci" out/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/nesspjs/upload/
+
+      - name: Deploy on server
+        run: |
+          ssh -i ~/.ssh/id_ci ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "bash /var/www/nesspjs/deploy.sh"
