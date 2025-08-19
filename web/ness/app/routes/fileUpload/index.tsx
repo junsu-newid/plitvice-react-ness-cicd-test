@@ -62,7 +62,7 @@ const FileUploadPage = () => {
     return (
         <div className="bg-grey-5 relative flex h-full min-w-[1200px] flex-1 flex-col p-[36px]">
             <h1>{t('fileUpload.title')}</h1>
-            <h2>test6</h2>
+            <h2>test7</h2>
             <p className={`text-r14 text-grey-60 mt-[12px] whitespace-pre-line pb-[24px]`}>
                 {t('fileUpload.description')}
             </p>
