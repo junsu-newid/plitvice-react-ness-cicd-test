@@ -6,7 +6,7 @@ export const { getSession, commitSession, destroySession } = createCookieSession
         httpOnly: true,
         path: '/',
         sameSite: 'lax',
-        secrets: [import.meta.env.VITE_SESSION_SECRETS],
+        secrets: [process.env.SESSION_SECRETS ?? ''],
         maxAge: 60 * 60 * 24,
         secure: process.env.NODE_ENV === 'production',
     },
