@@ -24,13 +24,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build web/ness
-        run: pnpm -F web/ness build
+        run: pnpm -F ./web/ness build
 
       # 런타임 전용 포장물(out/)
       - name: Prepare runtime artifact
         run: |
           mkdir -p out
-          cp -r web/ness/build out/build
+          cp -r ./web/ness/build out/build
           cat > out/package.json <<'JSON'
           {
             "name": "ness-runtime",
