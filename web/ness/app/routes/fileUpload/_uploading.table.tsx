@@ -26,7 +26,7 @@ interface Props {
 
 const columnHelper = createColumnHelper<MediaFile>();
 
-export const FileUploadingList = ({
+export const FileUploadingTable = ({
     isUploading,
     fileList,
     setFileList,

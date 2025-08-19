@@ -12,8 +12,8 @@ import { fetchPresetList } from '@/api/services/preset.ts';
 
 import { useRootLoaderData } from '@/hooks/useRootLoaderData.ts';
 
-import { UploadingTable } from '@/routes/fileUpload/_uploaded.table.tsx';
-import { FileUploadingList } from '@/routes/fileUpload/_uploading.table.tsx';
+import { FileUploadedTable } from '@/routes/fileUpload/_uploaded.table.tsx';
+import { FileUploadingTable } from '@/routes/fileUpload/_uploading.table.tsx';
 import { useFileUpload } from '@/routes/fileUpload/index.hook.ts';
 
 import '@/styles/global.css';
@@ -77,7 +77,7 @@ const Index = () => {
                 ) : null}
                 <div className="flex h-full flex-col gap-[16px] overflow-auto">
                     {tabMenu === TabMenuType.UPLOADING ? (
-                        <FileUploadingList
+                        <FileUploadingTable
                             isUploading={isUploading}
                             fileList={fileList}
                             setFileList={setFileList}
@@ -86,7 +86,7 @@ const Index = () => {
                             pauseUpload={pauseUpload}
                         />
                     ) : (
-                        <UploadingTable userEncryptKey={userEncryptKey} presetList={presetList} />
+                        <FileUploadedTable userEncryptKey={userEncryptKey} presetList={presetList} />
                     )}
                 </div>
                 {isUploading ? (

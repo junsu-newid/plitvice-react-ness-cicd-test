@@ -23,6 +23,10 @@ export const useFileUploaded = (userEncryptKey: string) => {
     const removeFile = useCallback(
         (programId: string) => {
             deleteUploadFiles([programId], userEncryptKey);
+            setUploadedList((prev) => {
+                if (!prev) return [];
+                return prev.filter((item) => item.programId !== programId);
+            });
         },
         [userEncryptKey],
     );

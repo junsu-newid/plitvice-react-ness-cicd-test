@@ -30,7 +30,7 @@ const columnHelper = createColumnHelper<UploadedFileItem>();
 const today = startOfToday();
 const date = new Date();
 
-export const UploadingTable = ({ userEncryptKey, presetList }: Props) => {
+export const FileUploadedTable = ({ userEncryptKey, presetList }: Props) => {
     const { t } = useTranslation();
     const { showToast } = useToast();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'uploadedAt', desc: false }]);
