@@ -2,8 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { data, useLoaderData } from 'react-router';
-
 import { startOfDay, subDays } from 'date-fns';
 
 import { DateRange, DateRangePickerBox } from '@plitvice/ui';
@@ -11,24 +9,20 @@ import { DateRange, DateRangePickerBox } from '@plitvice/ui';
 import { FileListResponse, QueueFileItem } from '@/api/models/queueList.ts';
 import { fetchFileList } from '@/api/services/queueList.ts';
 
-import { QueueStatusList } from '@/routes/queueStatus/List.tsx';
+import { useRootLoaderData } from '@/hooks/useRootLoaderData.ts';
 
-import { QueueStatusMetadataSheet } from '@/routes/queueStatus/Metadata.tsx';
+import { Detail } from '@/routes/queueStatus/_detail.tsx';
+import { Table } from '@/routes/queueStatus/_table.tsx';
 
 import { QueueStatusType } from '@/types/enum.ts';
 
 import { StatusBox, StatusBoxProps } from '@/components';
-import { commonLoader } from '@/middleware/auth.server.ts';
 
 import { formatDateForInput, getDefaultDateRange, parseDateFromInput } from '@/utils';
 
-export const loader = commonLoader(async ({ userEncryptKey, cookie }: { userEncryptKey: string; cookie?: string }) => {
-    return data({ userEncryptKey }, cookie ? { headers: { 'Set-Cookie': cookie } } : undefined);
-});
-
-const QueueStatusPage = () => {
+const Index = () => {
     const { t } = useTranslation();
-    const { userEncryptKey } = useLoaderData();
+    const { userEncryptKey } = useRootLoaderData();
     const [data, setData] = useState<FileListResponse | null>(null);
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [filteredDataList, setFilteredDataList] = useState<QueueFileItem[]>([]);
@@ -85,8 +79,8 @@ const QueueStatusPage = () => {
 
     return (
         <div className={'bg-grey-5 flex h-full min-w-[1200px] flex-col gap-[12px] p-[36px]'}>
-            <h1>{t('queueStatus.title')}</h1>
-            <p className={`text-r14 text-grey-60 whitespace-pre-line pb-[12px]`}>{t('queueStatus.description')}</p>
+            <h1>{t('queueStatus:title')}</h1>
+            <p className={`text-r14 text-grey-60 whitespace-pre-line pb-[12px]`}>{t('queueStatus:description')}</p>
             <div className="flex pb-[12px]">
                 <DateRangePickerBox
                     placeholder="Set search date range"
@@ -103,7 +97,7 @@ const QueueStatusPage = () => {
             <div className={`flex w-[1128px] gap-[12px] pb-[12px]`}>
                 {StatusSetting.map((box, index) => (
                     <StatusBox
-                        title={t(`queueStatus.${box.type}`)}
+                        title={t(`queueStatus:${box.type}`)}
                         titleSlice={box.titleSlice}
                         color={box.color}
                         count={
@@ -124,14 +118,14 @@ const QueueStatusPage = () => {
                         업로드된 파일이 없습니다.
                     </div>
                 )}
-                <QueueStatusList data={filteredDataList} onItemClick={setSelectedItem} />
+                <Table data={filteredDataList} onItemClick={setSelectedItem} />
             </div>
-            <QueueStatusMetadataSheet content={selectedItem} onClose={() => setSelectedItem(undefined)} />
+            <Detail content={selectedItem} onClose={() => setSelectedItem(undefined)} />
         </div>
     );
 };
 
-export default QueueStatusPage;
+export default Index;
 
 const StatusSetting: StatusBoxProps[] = [
     { type: QueueStatusType[0], titleSlice: 'T', color: 'bg-[#D8E9FD] border-[#B2D4FF] text-[#4897F9]' },

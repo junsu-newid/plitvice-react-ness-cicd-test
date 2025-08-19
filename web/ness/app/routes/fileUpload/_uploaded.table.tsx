@@ -17,7 +17,7 @@ import { DropdownList, SelectOption } from '@plitvice/ui/components/selectbox/Dr
 
 import { UploadedFileItem } from '@/api/models/fileUploads.ts';
 
-import { useFileUploaded } from '@/routes/fileUpload/uploaded.hooks.ts';
+import { useFileUploaded } from '@/routes/fileUpload/_uploaded.hooks.ts';
 
 import { CommonChips, SortHeader } from '@/components';
 
@@ -30,7 +30,7 @@ const columnHelper = createColumnHelper<UploadedFileItem>();
 const today = startOfToday();
 const date = new Date();
 
-export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
+export const UploadingTable = ({ userEncryptKey, presetList }: Props) => {
     const { t } = useTranslation();
     const { showToast } = useToast();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'uploadedAt', desc: false }]);
@@ -57,9 +57,9 @@ export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
         (data: UploadedFileItem[]) => {
             runEncoding(data).then((result) => {
                 if (result) {
-                    showToast(t('fileUpload.section1.infoSuccess'), 'info');
+                    showToast(t('fileUpload:section1.infoSuccess'), 'info');
                 } else {
-                    showToast(t('fileUpload.section1.errorQueued'), 'error');
+                    showToast(t('fileUpload:section1.errorQueued'), 'error');
                 }
             });
         },
@@ -68,7 +68,7 @@ export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
 
     const handleRemoveFile = useCallback(
         (programId: string) => {
-            const isConfirmed = confirm(t('fileUpload.section0.alertDelete', { programId }));
+            const isConfirmed = confirm(t('fileUpload:section0.alertDelete', { programId }));
             if (isConfirmed) {
                 removeFile(programId);
             }
@@ -100,13 +100,13 @@ export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
             }),
             columnHelper.accessor('presetId', {
                 id: 'presetStatus',
-                header: t('fileUpload.section1.tableCol0'),
+                header: t('fileUpload:section1.tableCol0'),
                 cell: (info) => {
                     const foundItem = presetList.find((item) => item.value === info.getValue());
                     return foundItem ? (
-                        <StatusChip color={'blue'}>{t('fileUpload.section1.ready')}</StatusChip>
+                        <StatusChip color={'blue'}>{t('fileUpload:section1.ready')}</StatusChip>
                     ) : (
-                        <StatusChip color={'red'}>{t('fileUpload.section1.error')}</StatusChip>
+                        <StatusChip color={'red'}>{t('fileUpload:section1.error')}</StatusChip>
                     );
                 },
                 meta: { thStyle: 'text-center', tdStyle: 'text-center' },
@@ -115,8 +115,8 @@ export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
                 id: 'presetSelector',
                 header: () => (
                     <div className={`relative flex items-center justify-between pr-[8px]`}>
-                        <p>{t('fileUpload.section1.tableCol1')}</p>
-                        <Tooltip className={`h-[24px]`} text={t('fileUpload.section1.tooltipPreset')}>
+                        <p>{t('fileUpload:section1.tableCol1')}</p>
+                        <Tooltip className={`h-[24px]`} text={t('fileUpload:section1.tooltipPreset')}>
                             <button
                                 className={`rounded-full ${isOpenPresetAll ? 'bg-blue-100 text-blue-600' : 'text-grey-50'} hover:text-blue-600`}
                                 onClick={() => setIsOpenPresetAll(!isOpenPresetAll)}
@@ -150,7 +150,7 @@ export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
                     } else {
                         return (
                             <div className={`flex items-center justify-between pr-[8px] text-red-600`}>
-                                <p className={`text-r16 pl-[12px]`}>{t('fileUpload.section1.errorDesc')}</p>
+                                <p className={`text-r16 pl-[12px]`}>{t('fileUpload:section1.errorDesc')}</p>
                                 <ErrorIcon />
                             </div>
                         );
@@ -159,7 +159,7 @@ export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
                 meta: { thStyle: 'px-[22px]', tdStyle: 'pl-[12px] pr-[22px]' },
             }),
             columnHelper.accessor('fileName', {
-                header: ({ column }) => <SortHeader title={t('fileUpload.section1.tableCol2')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('fileUpload:section1.tableCol2')} column={column} />,
                 cell: (info) => (
                     <div className={`flex gap-[4px]`}>
                         {info.row.original.languages ? (
@@ -176,7 +176,7 @@ export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
                 meta: { thStyle: 'px-[22px]', tdStyle: 'px-[22px]' },
             }),
             columnHelper.accessor('programId', {
-                header: ({ column }) => <SortHeader title={t('fileUpload.section1.tableCol3')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('fileUpload:section1.tableCol3')} column={column} />,
                 cell: (info) => (
                     <div className={`flex gap-[4px]`}>
                         <a
@@ -193,14 +193,14 @@ export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
             }),
             columnHelper.accessor('createdAt', {
                 id: 'uploadedAt',
-                header: ({ column }) => <SortHeader title={t('fileUpload.section1.tableCol4')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('fileUpload:section1.tableCol4')} column={column} />,
                 cell: (info) => info.getValue().split(' ')[0],
                 enableSorting: true,
                 meta: { thStyle: 'pl-[22px]', tdStyle: 'pl-[22px]' },
             }),
             columnHelper.accessor('createdAt', {
                 id: 'destroyAt',
-                header: () => t('fileUpload.section1.tableCol5'),
+                header: () => t('fileUpload:section1.tableCol5'),
                 cell: (info) => {
                     const createdAt = parse(info.getValue(), 'yyyy-MM-dd HH:mm:ss', date);
                     const dayDiff = differenceInCalendarDays(today, createdAt) - 7;
@@ -275,7 +275,7 @@ export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
                     <p
                         className={`text-r16 text-grey-40 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pt-[52px]`}
                     >
-                        {t('fileUpload.section1.empty')}
+                        {t('fileUpload:section1.empty')}
                     </p>
                 )}
             </div>
@@ -285,7 +285,7 @@ export const FileUploadedList = ({ userEncryptKey, presetList }: Props) => {
                 disabled={availableEncoding()}
                 onClick={() => handleRunEncoding(uploadedList)}
             >
-                {t('fileUpload.section1.btn')}
+                {t('fileUpload:section1.btn')}
             </Button>
         </>
     );

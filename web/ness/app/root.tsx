@@ -1,18 +1,7 @@
 import { ReactNode, useMemo } from 'react';
 
 import { I18nextProvider, useTranslation } from 'react-i18next';
-import {
-    data,
-    isRouteErrorResponse,
-    Links,
-    Meta,
-    Outlet,
-    Scripts,
-    ScrollRestoration,
-    useLoaderData,
-    useLocation,
-    useNavigate,
-} from 'react-router';
+import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 
 import { TFunction } from 'i18next';
 
@@ -22,21 +11,11 @@ import { SideNavSection } from '@plitvice/ui/components/navigation/sideNavBar.ty
 
 import '@plitvice/ui/styles/global.css';
 
-import FileUploadPage from '@/routes/fileUpload';
-
 import { GlobalLoading } from '@/components';
 
 import i18n from '@/locales';
 
-import { commonLoader } from './middleware/auth.server.ts';
-
 import type { Route } from './+types/root';
-
-export const ROOT_ROUTE_ID = 'root';
-
-export const loader = commonLoader(async ({ userEncryptKey }: { userEncryptKey: string }) => {
-    return data({ userEncryptKey });
-});
 
 export const Layout = ({ children }: { children: ReactNode }) => {
     return (
@@ -49,24 +28,8 @@ export const Layout = ({ children }: { children: ReactNode }) => {
                 <Meta />
                 <Links />
             </head>
-            <body
-                style={{
-                    position: 'relative',
-                    width: '100vw',
-                    height: '100vh',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    overflow: 'hidden',
-                }}
-            >
-                <div className={`bg-blue-600 px-[24px] py-[16px]`}>
-                    <a href={`./`}>
-                        <img src={`/ness/logo.png`} width={110} height={28} alt={'logo'} />
-                    </a>
-                </div>
-                <div className={'relative grid h-full w-full grid-cols-[240px_1fr] justify-start overflow-hidden'}>
-                    {children}
-                </div>
+            <body style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
+                {children}
                 <ScrollRestoration />
                 <Scripts />
             </body>
@@ -75,38 +38,11 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 };
 
 const App = () => {
-    const { t } = useTranslation();
-    const navigate = useNavigate();
-    const { userEncryptKey } = useLoaderData();
-    const navMapList = useMemo(() => getNavMap(t), [t]);
-    const location = useLocation();
-
     return (
         <I18nextProvider i18n={i18n}>
             <ToastProvider>
-                {userEncryptKey !== 'cp' ? (
-                    <>
-                        <nav className={`h-full overflow-y-auto pb-[48px] pt-[24px]`}>
-                            <SideNavBar
-                                width={0}
-                                sectionList={navMapList}
-                                onNavigate={navigate}
-                                defaultSelected={location.pathname.slice(1)}
-                            />
-                        </nav>
-                        <main className={'bg-grey-5 border-grey-20 relative h-full w-full overflow-auto border-l'}>
-                            <Outlet />
-                            <GlobalLoading />
-                        </main>{' '}
-                    </>
-                ) : (
-                    <>
-                        <main className={`col-span-2 h-full w-full overflow-hidden`}>
-                            <FileUploadPage />
-                        </main>
-                        <GlobalLoading />
-                    </>
-                )}
+                <Outlet />
+                <GlobalLoading />
             </ToastProvider>
         </I18nextProvider>
     );

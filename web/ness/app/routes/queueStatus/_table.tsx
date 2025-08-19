@@ -26,7 +26,7 @@ interface Props {
 }
 const columnHelper = createColumnHelper<QueueFileItem>();
 
-export const QueueStatusList = ({ data, onItemClick }: Props) => {
+export const Table = ({ data, onItemClick }: Props) => {
     const { t } = useTranslation();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'status', desc: false }]);
 
@@ -57,12 +57,12 @@ export const QueueStatusList = ({ data, onItemClick }: Props) => {
     const columns = useMemo(
         () => [
             columnHelper.accessor('type', {
-                header: ({ column }) => <SortHeader title={t('queueStatus.tableCol0')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('queueStatus:tableCol0')} column={column} />,
                 cell: (info) => <CommonChips value={info.getValue()} />,
                 enableSorting: true,
             }),
             columnHelper.accessor('status', {
-                header: ({ column }) => <SortHeader title={t('queueStatus.tableCol1')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('queueStatus:tableCol1')} column={column} />,
                 cell: (info) => {
                     let chipColor: StatusColor = 'green';
                     switch (info.getValue()) {
@@ -92,7 +92,7 @@ export const QueueStatusList = ({ data, onItemClick }: Props) => {
             columnHelper.accessor('totalTimeSpent', {
                 header: () => (
                     <Tooltip text={'Encoding Process Time'}>
-                        <p>{t('queueStatus.tableCol2')}</p>
+                        <p>{t('queueStatus:tableCol2')}</p>
                     </Tooltip>
                 ),
                 cell: (info) => <p className={`text-center`}>{formatProcTime(info.getValue())}</p>,
@@ -101,7 +101,7 @@ export const QueueStatusList = ({ data, onItemClick }: Props) => {
             }),
             columnHelper.accessor('programTitle', {
                 header: ({ column }) => (
-                    <SortHeader title={t('queueStatus.tableCol3')} column={column as Column<QueueFileItem, string>} />
+                    <SortHeader title={t('queueStatus:tableCol3')} column={column as Column<QueueFileItem, string>} />
                 ),
                 cell: (info) => (
                     <div className={`flex items-center`}>
@@ -124,7 +124,7 @@ export const QueueStatusList = ({ data, onItemClick }: Props) => {
                 enableSorting: true,
             }),
             columnHelper.accessor('programId', {
-                header: ({ column }) => <SortHeader title={t('queueStatus.tableCol4')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('queueStatus:tableCol4')} column={column} />,
                 cell: (info) => (
                     <a
                         className={`line-clamp-1 break-all hover:text-blue-600 hover:underline`}
@@ -137,13 +137,13 @@ export const QueueStatusList = ({ data, onItemClick }: Props) => {
                 enableSorting: true,
             }),
             columnHelper.accessor('duration', {
-                header: () => t('queueStatus.tableCol5'),
+                header: () => t('queueStatus:tableCol5'),
                 cell: (info) => <p className={`text-center`}>{formatDuration(info.getValue()) || '-'}</p>,
                 enableSorting: true,
                 meta: { thStyle: 'text-center' },
             }),
             columnHelper.accessor('createdAt', {
-                header: ({ column }) => <SortHeader title={t('queueStatus.tableCol7')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('queueStatus:tableCol7')} column={column} />,
                 cell: (info) => <p>{info.getValue() || '-'}</p>,
                 enableSorting: true,
             }),

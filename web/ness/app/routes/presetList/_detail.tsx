@@ -12,7 +12,7 @@ interface Props {
     onClose: () => void;
 }
 
-export const EncodingPresetMetadataSheet = ({ content, onClose }: Props) => {
+export const Detail = ({ content, onClose }: Props) => {
     const { t } = useTranslation();
     const { showToast } = useToast();
 
@@ -20,7 +20,7 @@ export const EncodingPresetMetadataSheet = ({ content, onClose }: Props) => {
         if (text) {
             copyToClipboard(text).then((result) => {
                 if (result) {
-                    showToast(t('presetList.toastClipboard'), 'info');
+                    showToast(t('presetList:toastClipboard'), 'info');
                 }
             });
         }
@@ -62,14 +62,14 @@ export const EncodingPresetMetadataSheet = ({ content, onClose }: Props) => {
             {content?.options ? (
                 <div className={`border-grey-20 mt-[34px] rounded-[4px] border bg-white`}>
                     <div className={`bg-grey-10 p-[16px]`}>
-                        <h3>{t('presetList.drawerTitle0')}</h3>
+                        <h3>{t('presetList:drawerTitle0')}</h3>
                     </div>
                     <EncodingOption />
                 </div>
             ) : null}
             <div className={`border-grey-20 mt-[34px] rounded-[4px] border bg-white`}>
                 <div className={`bg-grey-10 p-[16px]`}>
-                    <h3>{t('presetList.drawerTitle1')}</h3>
+                    <h3>{t('presetList:drawerTitle1')}</h3>
                 </div>
                 <div className={`p-[16px]`}>
                     <p

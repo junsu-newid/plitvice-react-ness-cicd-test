@@ -3,4 +3,5 @@ export const QueueStatusType = ['totalQueues', 'pending', 'running', 'stopped', 
 
 export const CHUNK_SIZE = 50 * 1024 * 1024;
 export const COOKIE = 'Cookie';
-export const ENCRYPT_KEY = 'userEncryptKey';
+export const ENCRYPT_KEY = 'nie';
+export const GLOBAL_ROUTE_ID = 'ness';

@@ -1,0 +1,12 @@
+{
+    "encoding": {
+        "title": "Encoding",
+        "fileUpload": "File Upload"
+    },
+    "operation": {
+        "title": "Operations",
+        "queueStatus": "Queue Status",
+        "serverStatus": "Server Status",
+        "presetList": "Preset List"
+    }
+}

@@ -2,18 +2,24 @@ import { LoaderFunctionArgs, SessionData } from 'react-router';
 
 import { COOKIE, ENCRYPT_KEY } from '@/types/enum';
 
-import { commitSession, getSession } from '@/session.server';
+import { commitSession, getSession } from '@/libs/session.server.ts';
 
 export const getSessionData = async ({ request }: LoaderFunctionArgs): Promise<SessionData> => {
-    const url = new URL(request.url);
-    const session = await getSession(request.headers.get(COOKIE));
-    const urlEncryptKey = url.searchParams.get(ENCRYPT_KEY);
-
-    if (urlEncryptKey) {
-        session.set(ENCRYPT_KEY, urlEncryptKey);
-        const cookie = await commitSession(session);
-        return { userEncryptKey: urlEncryptKey, cookie };
+    let userEncryptKey: string | null = '';
+    if (process.env.NODE_ENV === 'production') {
+        const url = new URL(request.url);
+        userEncryptKey = url.searchParams.get(ENCRYPT_KEY);
+    } else {
+        userEncryptKey =
+            'VuWLWqo7OjxXPjtWU2wI3ia3zZh4NsVYk64ecipkKmrAazIJgjdoZYTDhzdW_EhPJOyLaip5uNMtOk0Q0zfhaSlfnVk79TVId2j29eL9XXuewJb-uFBBIAYc1qtKNyhzCgtMgqLwVMKqpJ13v76H88QueShzRpVLKxkU6vrowxwQxiT4rXi94az7G3udAYUBBjJt8dNfNUzhmYcWuvpD4ifObZeYtm9zBL6BORMO4jLMQc1By48IioTEybvXQ9kPw0BCGU40QEcZttPnnVehGNCHiHl5NrzW3MN3ZOP1REs3-iDOKpIcAoQjLHzeFnMU5E7xJjlZehT6SdxEljuOBLO7PQFw7nwD36Fy1b8Clw==';
     }
 
-    return { userEncryptKey: session.get(ENCRYPT_KEY) as string, cookie: null };
+    const session = await getSession(request.headers.get(COOKIE));
+    if (userEncryptKey) {
+        session.set(ENCRYPT_KEY, userEncryptKey);
+        await commitSession(session);
+        return { userEncryptKey: userEncryptKey, session };
+    }
+
+    return { userEncryptKey: session.get(ENCRYPT_KEY) as string, session: null };
 };

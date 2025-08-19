@@ -1,0 +1,21 @@
+{
+    "title": "Queue Status",
+    "description": "This page displays the list of encoded files from the past 30 days.\nYou can check the status and processing details of each task.",
+    "statusTitle": "Statistics",
+    "totalQueues": "Total Queues",
+    "pending": "Pending",
+    "running": "Running",
+    "stopped": "Stopped",
+    "completed": "Completed",
+    "tableTitle": "Encoding Files",
+    "tableCol0": "Server",
+    "tableCol1": "Status",
+    "tableCol2": "Proc Time",
+    "tableCol3": "Name",
+    "tableCol4": "Program ID",
+    "tableCol5": "Duration",
+    "tableCol7": "Created At",
+    "drawerTitle0": "Started At",
+    "drawerTitle1": "Finished At",
+    "drawerTitle2": "Note"
+}

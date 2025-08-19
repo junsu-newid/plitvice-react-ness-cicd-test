@@ -29,7 +29,7 @@ interface Props {
 }
 const columnHelper = createColumnHelper<ServerInstance>();
 
-export const ServerStatusList = ({ data }: Props) => {
+export const Table = ({ data }: Props) => {
     const { t } = useTranslation();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'instanceName', desc: false }]);
     const { showToast } = useToast();
@@ -49,12 +49,12 @@ export const ServerStatusList = ({ data }: Props) => {
     const columns = useMemo(
         () => [
             columnHelper.accessor('serverType', {
-                header: ({ column }) => <SortHeader title={t('serverStatus.tableCol0')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('serverStatus:tableCol0')} column={column} />,
                 cell: (info) => <CommonChips value={info.getValue()} />,
                 enableSorting: true,
             }),
             columnHelper.accessor('status', {
-                header: ({ column }) => <SortHeader title={t('serverStatus.tableCol1')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('serverStatus:tableCol1')} column={column} />,
                 cell: (info) => {
                     let chipColor: StatusColor = 'grey';
                     switch (info.getValue()) {
@@ -100,22 +100,22 @@ export const ServerStatusList = ({ data }: Props) => {
                 },
             }),
             columnHelper.accessor('instanceName', {
-                header: ({ column }) => <SortHeader title={t('serverStatus.tableCol2')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('serverStatus:tableCol2')} column={column} />,
                 cell: (info) => <p className={`line-clamp-1 break-all`}>{info.getValue()}</p>,
                 enableSorting: true,
             }),
             columnHelper.accessor('instanceId', {
-                header: ({ column }) => <SortHeader title={t('serverStatus.tableCol3')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('serverStatus:tableCol3')} column={column} />,
                 cell: (info) => <p className={`line-clamp-1 break-all`}>{info.getValue()}</p>,
                 enableSorting: true,
             }),
             columnHelper.accessor('createdAt', {
-                header: ({ column }) => <SortHeader title={t('serverStatus.tableCol4')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('serverStatus:tableCol4')} column={column} />,
                 cell: (info) => <p>{info.getValue()}</p>,
                 enableSorting: true,
             }),
             columnHelper.accessor('updatedAt', {
-                header: ({ column }) => <SortHeader title={t('serverStatus.tableCol5')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('serverStatus:tableCol5')} column={column} />,
                 cell: (info) => <p>{info.getValue()}</p>,
                 enableSorting: true,
             }),

@@ -22,19 +22,19 @@ interface Props {
 }
 const columnHelper = createColumnHelper<PresetItem>();
 
-export const EncodingPresetList = ({ data, onItemClick }: Props) => {
+export const Table = ({ data, onItemClick }: Props) => {
     const { t } = useTranslation();
     const [sorting, setSorting] = useState<SortingState>([{ id: 'name', desc: false }]);
 
     const columns = useMemo(
         () => [
             columnHelper.accessor('type', {
-                header: ({ column }) => <SortHeader title={t('presetList.tableCol0')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('presetList:tableCol0')} column={column} />,
                 cell: (info) => <TypeChips type={info.getValue()} />,
                 enableSorting: true,
             }),
             columnHelper.accessor('name', {
-                header: ({ column }) => <SortHeader title={t('presetList.tableCol1')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('presetList:tableCol1')} column={column} />,
                 cell: (info) => (
                     <p
                         onClick={() => onItemClick(info.row.original)}
@@ -46,17 +46,17 @@ export const EncodingPresetList = ({ data, onItemClick }: Props) => {
                 enableSorting: true,
             }),
             columnHelper.accessor('userGroup', {
-                header: ({ column }) => <SortHeader title={t('presetList.tableCol2')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('presetList:tableCol2')} column={column} />,
                 cell: (info) => <CommonChips value={info.getValue()} />,
                 enableSorting: true,
             }),
             columnHelper.accessor('companyName', {
-                header: ({ column }) => <SortHeader title={t('presetList.tableCol3')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('presetList:tableCol3')} column={column} />,
                 cell: (info) => <p>{info.getValue()}</p>,
                 enableSorting: true,
             }),
             columnHelper.accessor('notes', {
-                header: t('presetList.tableCol4'),
+                header: t('presetList:tableCol4'),
                 cell: (info) => (
                     <Tooltip text={info.getValue()}>
                         <p className={`line-clamp-2`}>{info.getValue()}</p>
@@ -64,12 +64,12 @@ export const EncodingPresetList = ({ data, onItemClick }: Props) => {
                 ),
             }),
             columnHelper.accessor('createdAt', {
-                header: ({ column }) => <SortHeader title={t('presetList.tableCol5')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('presetList:tableCol5')} column={column} />,
                 cell: (info) => <p>{info.getValue()}</p>,
                 enableSorting: true,
             }),
             columnHelper.accessor('updatedAt', {
-                header: ({ column }) => <SortHeader title={t('presetList.tableCol6')} column={column} />,
+                header: ({ column }) => <SortHeader title={t('presetList:tableCol6')} column={column} />,
                 cell: (info) => <p>{info.getValue()}</p>,
                 enableSorting: true,
             }),

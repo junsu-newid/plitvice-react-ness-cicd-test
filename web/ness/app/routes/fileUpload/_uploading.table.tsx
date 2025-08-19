@@ -7,7 +7,7 @@ import { BinIcon, Button, Tooltip } from '@plitvice/ui';
 
 import { useMediaMetadata } from '@/hooks/useMediaInfo.ts';
 
-import FileDropzone from '@/routes/fileUpload/fileDropzone.tsx';
+import FileDropzone from '@/routes/fileUpload/_fileDropzone.tsx';
 
 import { MediaFile, MediaFileStatus, MediaSubFile } from '@/types/mediainfo.types.ts';
 
@@ -46,7 +46,7 @@ export const FileUploadingList = ({
                 const mediaFile = fileList.find((file) => file.origin.name === newFile.origin.name);
                 if (mediaFile) {
                     const isConfirmed = confirm(
-                        t('fileUpload.section0.confirmDuplicated', { fileName: mediaFile.origin.name }),
+                        t('fileUpload:section0.confirmDuplicated', { fileName: mediaFile.origin.name }),
                     );
                     if (isConfirmed) {
                         newAddedList.push(newFile);
@@ -84,7 +84,7 @@ export const FileUploadingList = ({
 
     const handleRemoveFile = useCallback(
         (file: MediaFile) => {
-            const isConfirmed = confirm(t('fileUpload.section0.alertDelete', { fileName: file.origin.name }));
+            const isConfirmed = confirm(t('fileUpload:section0.alertDelete', { fileName: file.origin.name }));
             if (isConfirmed) {
                 removeFile(file.origin.name);
             }
@@ -93,14 +93,14 @@ export const FileUploadingList = ({
     );
 
     const handleRunUpload = useCallback(() => {
-        const isConfirmed = confirm(t('fileUpload.section0.confirmUploading'));
+        const isConfirmed = confirm(t('fileUpload:section0.confirmUploading'));
         if (isConfirmed) {
             runUpload();
         }
     }, [runUpload, t]);
 
     const handlePauseUpload = useCallback(() => {
-        const isConfirmed = confirm(t('fileUpload.section0.confirmPause'));
+        const isConfirmed = confirm(t('fileUpload:section0.confirmPause'));
         if (isConfirmed) {
             pauseUpload();
         }
@@ -109,10 +109,10 @@ export const FileUploadingList = ({
     const renderProgress = useCallback(
         (status?: MediaFileStatus, progress = 0) => {
             let progressBar = <></>;
-            let tooltipText = t('fileUpload.section0.pending');
+            let tooltipText = t('fileUpload:section0.pending');
             switch (status) {
                 case 'uploading':
-                    tooltipText = t('fileUpload.section0.uploading');
+                    tooltipText = t('fileUpload:section0.uploading');
                     progressBar = (
                         <div
                             className="h-full overflow-hidden rounded-full bg-blue-600 transition-all duration-300"
@@ -121,15 +121,15 @@ export const FileUploadingList = ({
                     );
                     break;
                 case 'uploaded':
-                    tooltipText = t('fileUpload.section0.uploaded');
+                    tooltipText = t('fileUpload:section0.uploaded');
                     progressBar = <div className="h-full w-full rounded-full bg-green-600" />;
                     break;
                 case 'encoded':
-                    tooltipText = t('fileUpload.section0.encoded');
+                    tooltipText = t('fileUpload:section0.encoded');
                     progressBar = <div className="h-full w-full rounded-full bg-yellow-400" />;
                     break;
                 case 'error':
-                    tooltipText = t('fileUpload.section0.error');
+                    tooltipText = t('fileUpload:section0.error');
                     progressBar = <div className="h-full w-full rounded-full bg-red-600" />;
                     break;
             }
@@ -170,7 +170,7 @@ export const FileUploadingList = ({
                 meta: { tdStyle: 'pl-[12px] text-left' },
             }),
             columnHelper.accessor('origin.name', {
-                header: () => t('fileUpload.section0.tableCol0'),
+                header: () => t('fileUpload:section0.tableCol0'),
                 cell: ({ row }) => (
                     <div className={`flex gap-[4px]`}>
                         {row.original.subtitles ? (
@@ -189,18 +189,18 @@ export const FileUploadingList = ({
                 },
             }),
             columnHelper.accessor('metadata.duration', {
-                header: () => t('fileUpload.section0.tableCol1'),
+                header: () => t('fileUpload:section0.tableCol1'),
                 cell: ({ getValue }) => formatDuration(getValue()),
                 meta: { tdStyle: 'px-[22px]' },
             }),
             columnHelper.accessor('origin.size', {
-                header: () => t('fileUpload.section0.tableCol2'),
+                header: () => t('fileUpload:section0.tableCol2'),
                 cell: ({ getValue }) => formatFileSize(getValue()),
                 meta: { tdStyle: 'px-[22px]' },
             }),
             columnHelper.display({
                 id: 'progress',
-                header: t('fileUpload.section0.tableCol3'),
+                header: t('fileUpload:section0.tableCol3'),
                 cell: ({ row }) => renderProgress(row.original.status, row.original.progress),
                 meta: { tdStyle: 'px-[22px]' },
             }),
@@ -265,7 +265,7 @@ export const FileUploadingList = ({
                     <p
                         className={`text-r16 text-grey-40 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pt-[52px]`}
                     >
-                        {t('fileUpload.section0.empty')}
+                        {t('fileUpload:section0.empty')}
                     </p>
                 )}
             </div>
@@ -275,7 +275,7 @@ export const FileUploadingList = ({
                 disabled={fileList.length === 0 || !fileList.find((file) => file.status === 'pending')}
                 onClick={isUploading ? handlePauseUpload : handleRunUpload}
             >
-                {isUploading ? t('fileUpload.section0.btnPause') : t('fileUpload.section0.btnRun')}
+                {isUploading ? t('fileUpload:section0.btnPause') : t('fileUpload:section0.btnRun')}
             </Button>
         </>
     );

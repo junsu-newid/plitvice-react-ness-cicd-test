@@ -12,7 +12,7 @@ import {
     splitFileIntoChunks,
     uploadChunk,
     uploadSubtitleFile,
-} from '@/routes/fileUpload/uploading.utils.ts';
+} from '@/routes/fileUpload/_uploading.utils.ts';
 
 import { MediaFile, MediaFileStatus } from '@/types/mediainfo.types.ts';
 

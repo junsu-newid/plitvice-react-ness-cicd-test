@@ -77,3 +77,6 @@ export const getDefaultDateRange = () => {
         endDate: formatDate(today),
     };
 };
+
+export const isNEWID = (userGroup: string[]) =>
+    userGroup.includes('newid') && (userGroup.includes('master') || userGroup.includes('general'));

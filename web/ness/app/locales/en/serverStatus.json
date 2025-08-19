@@ -1,0 +1,15 @@
+{
+    "title": "Server Status",
+    "description": "This page provides real-time monitoring of our internal cloud and on-premises servers,\nincluding their current status and encoding capabilities.",
+    "total": "Total",
+    "pending": "Pending",
+    "running": "Running",
+    "stopping": "Stopping",
+    "stopped": "Stopped",
+    "tableCol0": "Server",
+    "tableCol1": "Status",
+    "tableCol2": "Instance Name",
+    "tableCol3": "Instance ID",
+    "tableCol4": "Created At",
+    "tableCol5": "Updated At"
+}

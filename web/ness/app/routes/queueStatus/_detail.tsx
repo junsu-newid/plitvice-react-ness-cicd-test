@@ -9,7 +9,7 @@ interface Props {
     onClose: () => void;
 }
 
-export const QueueStatusMetadataSheet = ({ content, onClose }: Props) => {
+export const Detail = ({ content, onClose }: Props) => {
     const { t } = useTranslation();
 
     return (
@@ -25,7 +25,7 @@ export const QueueStatusMetadataSheet = ({ content, onClose }: Props) => {
             </div>
             <div className={`border-grey-20 mt-[34px] rounded-[4px] border bg-white`}>
                 <div className={`bg-grey-10 p-[16px]`}>
-                    <h3>{t('queueStatus.drawerTitle0')}</h3>
+                    <h3>{t('queueStatus:drawerTitle0')}</h3>
                 </div>
                 <div className={`p-[16px]`}>
                     <p>{content?.startedAt || '-'}</p>
@@ -33,7 +33,7 @@ export const QueueStatusMetadataSheet = ({ content, onClose }: Props) => {
             </div>
             <div className={`border-grey-20 mt-[34px] rounded-[4px] border bg-white`}>
                 <div className={`bg-grey-10 p-[16px]`}>
-                    <h3>{t('queueStatus.drawerTitle1')}</h3>
+                    <h3>{t('queueStatus:drawerTitle1')}</h3>
                 </div>
                 <div className={`p-[16px]`}>
                     <p>{content?.finishedAt || '-'}</p>
@@ -41,7 +41,7 @@ export const QueueStatusMetadataSheet = ({ content, onClose }: Props) => {
             </div>
             <div className={`border-grey-20 mt-[34px] rounded-[4px] border bg-white`}>
                 <div className={`bg-grey-10 p-[16px]`}>
-                    <h3>{t('queueStatus.drawerTitle2')}</h3>
+                    <h3>{t('queueStatus:drawerTitle2')}</h3>
                 </div>
                 <div className={`break-all p-[16px]`}>
                     <p className={`text-r16 whitespace-pre-line`}>{content?.notes || '-'}</p>

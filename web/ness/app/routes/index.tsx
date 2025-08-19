@@ -1,11 +1,16 @@
-import { redirect } from 'react-router';
+import { Outlet } from 'react-router';
 
-import { commonLoader } from '@/middleware/auth.server.ts';
+import { withSession } from '@/libs/auth.server.ts';
 
-export const loader = commonLoader(async ({ cookie }: { cookie?: string }) => {
-    return redirect('file-upload', { headers: cookie ? { 'Set-Cookie': cookie } : undefined });
-});
+export const loader = withSession(
+    async ({ userEncryptKey, userGroup }: { userEncryptKey: string; userGroup: string[] }) => {
+        return { userEncryptKey, userGroup };
+    },
+);
 
-export default function AppIndex() {
-    return <></>;
-}
+export type RootLoaderData = typeof loader;
+
+const Index = () => {
+    return <Outlet />;
+};
+export default Index;

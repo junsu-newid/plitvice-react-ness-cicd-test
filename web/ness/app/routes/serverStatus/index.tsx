@@ -1,25 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { data, useRouteLoaderData } from 'react-router';
 
 import { ServerInstance, ServerStatusResponse } from '@/api/models/serverStatus.ts';
 import { fetchServerStatus } from '@/api/services/serverStatus.ts';
 
-import { ServerStatusList } from '@/routes/serverStatus/List.tsx';
+import { useRootLoaderData } from '@/hooks/useRootLoaderData.ts';
+
+import { Table } from '@/routes/serverStatus/_table.tsx';
 
 import { ServerStatusType } from '@/types/enum.ts';
 
 import { StatusBox, StatusBoxProps } from '@/components';
-import { commonLoader } from '@/middleware/auth.server.ts';
-import { ROOT_ROUTE_ID } from '@/root.tsx';
 
-export const loader = commonLoader(async ({ userEncryptKey, cookie }: { userEncryptKey: string; cookie?: string }) => {
-    return data({ userEncryptKey }, cookie ? { headers: { 'Set-Cookie': cookie } } : undefined);
-});
-
-const ServerStatusPage = () => {
+const Index = () => {
     const { t } = useTranslation();
-    const { userEncryptKey } = useRouteLoaderData(ROOT_ROUTE_ID);
+    const { userEncryptKey } = useRootLoaderData();
     const [serverStatusData, setServerStatusData] = useState<ServerStatusResponse | null>(null);
     const [selectedStatus, setSelectedStatus] = useState(0);
     const [filteredData, setFilteredData] = useState<ServerInstance[]>([]);
@@ -44,14 +39,14 @@ const ServerStatusPage = () => {
 
     return (
         <div className="bg-grey-5 flex h-full min-w-[1200px] flex-col p-[36px]">
-            <h1>{t('serverStatus.title')}</h1>
+            <h1>{t('serverStatus:title')}</h1>
             <p className={`text-r14 text-grey-60 whitespace-pre-line pb-[24px] pt-[12px]`}>
-                {t('serverStatus.description')}
+                {t('serverStatus:description')}
             </p>
             <div className={`flex w-[1128px] gap-[12px] pb-[24px]`}>
                 {StatusSetting.map((box, index) => (
                     <StatusBox
-                        title={t(`serverStatus.${box.type}`)}
+                        title={t(`serverStatus:${box.type}`)}
                         titleSlice={box.titleSlice}
                         color={box.color}
                         count={
@@ -71,12 +66,12 @@ const ServerStatusPage = () => {
                         {t('presetList.emptyList')}
                     </div>
                 )}
-                <ServerStatusList data={filteredData} />
+                <Table data={filteredData} />
             </div>
         </div>
     );
 };
-export default ServerStatusPage;
+export default Index;
 
 const StatusSetting: StatusBoxProps[] = [
     { type: ServerStatusType[0], titleSlice: 'T', color: 'bg-[#D8E9FD] border-[#4897F9] text-[#4897F9]' },

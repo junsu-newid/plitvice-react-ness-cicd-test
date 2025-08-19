@@ -1,11 +1,12 @@
 {
-    "common": {
-        "appName": "NEWID",
-        "welcome": "환영합니다",
-        "hello": "안녕하세요"
-    },
+    "appName": "Ness Project",
     "button": {
-        "save": "저장",
-        "cancel": "취소"
+        "save": "Save",
+        "cancel": "Cancel",
+        "close": "Close",
+        "start": "Start",
+        "stop": "Stop",
+        "apply": "Apply",
+        "reset": "Reset"
     }
 }
