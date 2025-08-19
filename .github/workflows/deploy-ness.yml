@@ -31,29 +31,39 @@ jobs:
         run: |
           mkdir -p out
           cp -r ./web/ness/build out/build
-          cat > out/package.json <<'JSON'
-          {
-            "name": "ness-runtime",
-            "private": true,
-            "type": "module",
-            "version": "0.0.0",
-            "scripts": { "start": "react-router-serve ./build/server/index.js" },
-            "dependencies": { "@react-router/serve": "^7.7.1" }
+
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const base = path.resolve('web/ness'); 
+
+          const need = [
+            'react','react-dom','react-router','@react-router/node','@react-router/serve',
+            'isbot','i18next','react-i18next','i18next-resources-to-backend',
+            'date-fns','ky','@tanstack/react-table','mediainfo.js','react-dropzone',
+            'lucide-react','js-cookie','tailwind-merge'
+          ];
+
+          const deps = {};
+          for (const name of need) {
+            try {
+              const p = require.resolve(`${name}/package.json`, { paths: [base] });
+              deps[name] = require(p).version;
+            } catch (e) {
+            }
           }
-          JSON
-          cat > out/ecosystem.config.js <<'EOF'
-          module.exports = {
-            apps: [{
-              name: 'ness',
-              script: 'node_modules/.bin/react-router-serve',
-              args: './build/server/index.js',
-              cwd: '/var/www/nesspjs/current',
-              exec_mode: 'fork',
-              instances: 1,
-              env: { NODE_ENV: 'production', PORT: '3001' }
-            }]
+
+          const pkg = {
+            name: 'ness-runtime',
+            private: true,
+            type: 'module',
+            version: '0.0.0',
+            scripts: { start: 'react-router-serve ./build/server/index.js' },
+            dependencies: deps
           };
-          EOF
+          fs.writeFileSync('out/package.json', JSON.stringify(pkg, null, 2));
+          console.log('Runtime deps:', pkg.dependencies);
+          NODE
 
       - name: Add SSH key
         run: |
