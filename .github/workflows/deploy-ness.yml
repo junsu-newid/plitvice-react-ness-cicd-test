@@ -29,27 +29,26 @@ jobs:
 
           cd ${{ secrets.REMOTE_TARGET }}
 
+          # Node 20+ 보장 (없으면 설치)
           if ! command -v node >/dev/null 2>&1 || ! node -v | grep -qE '^v2[0-9]\.'; then
             echo "[setup] Installing Node.js 20..."
             curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
             sudo apt-get install -y nodejs
           fi
 
+          # ---- pnpm 보장: corepack enable 쓰지 말고 홈 디렉토리에 설치 ----
+          export PNPM_HOME="$HOME/.local/share/pnpm"
+          export PATH="$PNPM_HOME:$PATH"
           if ! command -v pnpm >/dev/null 2>&1; then
-            if command -v corepack >/dev/null 2>&1; then
-              corepack enable
-              VER=$(node -p "try{(require('./package.json').packageManager||'').split('@')[1]}catch(e){''}")
-              if [ -n "$VER" ]; then
-                corepack prepare pnpm@$VER --activate
-              else
-                corepack prepare pnpm@9 --activate
-              fi
-            else
-              npm i -g pnpm@9 || (npm config set prefix "$HOME/.npm-global" && npm i -g pnpm@9 && export PATH="$HOME/.npm-global/bin:$PATH")
-            fi
+            echo "[setup] Installing pnpm (user scope)..."
+            curl -fsSL https://get.pnpm.io/install.sh | sh -
+            # 설치 직후 셸에 즉시 적용
+            export PNPM_HOME="$HOME/.local/share/pnpm"
+            export PATH="$PNPM_HOME:$PATH"
           fi
           pnpm -v
 
+          # 의존성 설치 + /web/* 빌드
           git fetch origin
           git checkout stage
           git reset --hard origin/stage
@@ -61,6 +60,7 @@ jobs:
             pnpm -F "$d" run build
           done
 
+          # PM2 재가동 (확장자에 맞춰 선택)
           CFG=ecosystem.config.cjs; [ -f "$CFG" ] || CFG=ecosystem.config.js
           pm2 startOrReload "$CFG" --env stage --update-env
           pm2 save
