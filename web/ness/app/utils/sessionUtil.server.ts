@@ -6,8 +6,11 @@ import { commitSession, getSession } from '@/libs/session.server.ts';
 
 export const getSessionData = async ({ request }: LoaderFunctionArgs): Promise<SessionData> => {
     let userEncryptKey: string | null = '';
+    console.log('111');
     if (process.env.NODE_ENV === 'production') {
+        console.log('222');
         const url = new URL(request.url);
+        console.log('url', url);
         userEncryptKey = url.searchParams.get(ENCRYPT_KEY);
     } else {
         userEncryptKey =
@@ -17,6 +20,7 @@ export const getSessionData = async ({ request }: LoaderFunctionArgs): Promise<S
     const session = await getSession(request.headers.get(COOKIE));
     if (userEncryptKey) {
         session.set(ENCRYPT_KEY, userEncryptKey);
+        console.log('userEncryptKey@@@', userEncryptKey);
         await commitSession(session);
         return { userEncryptKey: userEncryptKey, session };
     }
