@@ -8,7 +8,7 @@ name: Stage deploy
 
 on:
   push:
-    branches: [ stage-js ]    # push시
+    branches: [ stage-js ]
 
 jobs:
   deploy-stage:
