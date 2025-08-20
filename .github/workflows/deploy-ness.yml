@@ -56,8 +56,8 @@ jobs:
 
           # 코드 동기화
           git fetch origin
-          git checkout stage
-          git reset --hard origin/stage
+          git checkout stage-js
+          git reset --hard origin/stage-js
 
           # 설치 + /web/* 빌드
           pnpm install --frozen-lockfile
