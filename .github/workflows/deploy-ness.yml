@@ -13,25 +13,26 @@ on:
 jobs:
   deploy-stage:
     runs-on: ubuntu-latest
+    environment: stage
+
     steps:
       - name: Add SSH key
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_ci
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ci
-          ssh-keyscan -H ${{ secrets.SSH_HOST_STAGE }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy on stage server
         run: |
-          ssh -i ~/.ssh/id_ci ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_STAGE }} 'bash -s' <<'SSH'
+          ssh -i ~/.ssh/id_ci ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} 'bash -s' <<'SSH'
           set -e
-          cd ${{ secrets.REMOTE_BASE_STAGE }}  
+          cd ${{ secrets.REMOTE_TARGET }}  
           git fetch origin
           git checkout stage
           git reset --hard origin/stage
 
           pnpm i --frozen-lockfile
 
-          # /web/* 모두 빌드
           for d in ./web/*; do
             [ -f "$d/package.json" ] || continue
             echo "[stage] building $d"
