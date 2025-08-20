@@ -1,44 +1,50 @@
-name: Stage deploy
+- name: Deploy on stage server
+  env:
+    SSH_HOST: ${{ secrets.REMOTE_HOST }}
+    SSH_USER: ${{ secrets.REMOTE_USER }}
+    REMOTE_TARGET: ${{ secrets.REMOTE_TARGET }}
+  run: |
+    set -euo pipefail
+    ssh -i ~/.ssh/id_ci "$SSH_USER"@"$SSH_HOST" "REMOTE_TARGET='$REMOTE_TARGET' bash -s" <<'SSH'
+    set -e
 
-#on:
-#  pull_request:
-#    branches: [ stage ]
-#    types: [ closed ]  # PR 머지 완료 시
-#  workflow_dispatch:
+    cd "$REMOTE_TARGET"
 
-on:
-  push:
-    branches: [ stage-js ]    # push시
+    # 0) Node 버전 점검(react-router v7은 Node >= 20 필요)
+    if ! node -v | grep -qE '^v2[0-9]\.'; then
+      echo "[setup] Node 20+ not found, installing..."
+      curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+      sudo apt-get install -y nodejs
+    fi
 
-jobs:
-  deploy-stage:
-    runs-on: ubuntu-latest
-    environment: stage
+    # 1) pnpm 보장
+    if ! command -v pnpm >/dev/null 2>&1; then
+      echo "[setup] enabling pnpm via corepack..."
+      if command -v corepack >/dev/null 2>&1; then
+        corepack enable
+        corepack prepare pnpm@9 --activate
+      else
+        echo "[setup] corepack not available, fallback to npm -g"
+        npm i -g pnpm@9 || (npm config set prefix "$HOME/.npm-global" && npm i -g pnpm@9 && export PATH="$HOME/.npm-global/bin:$PATH")
+      fi
+    fi
+    pnpm -v
 
-    steps:
-      - name: Add SSH key
-        run: |
-          install -m 600 -D /dev/null ~/.ssh/id_ci
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ci
-          ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
+    # 2) 코드 동기화
+    git fetch origin
+    git checkout stage
+    git reset --hard origin/stage
 
-      - name: Deploy on stage server
-        run: |
-          ssh -i ~/.ssh/id_ci ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} 'bash -s' <<'SSH'
-          set -e
-          cd ${{ secrets.REMOTE_TARGET }}  
-          git fetch origin
-          git checkout stage
-          git reset --hard origin/stage
+    # 3) 의존성 설치 + 빌드
+    pnpm i --frozen-lockfile
 
-          pnpm i --frozen-lockfile
+    for d in ./web/*; do
+      [ -f "$d/package.json" ] || continue
+      echo "[stage] building $d"
+      pnpm -F "$d" run build
+    done
 
-          for d in ./web/*; do
-            [ -f "$d/package.json" ] || continue
-            echo "[stage] building $d"
-            pnpm -F "$d" run build
-          done
-
-          pm2 startOrReload ecosystem.config.js --env stage
-          pm2 save
-          SSH
+    # 4) PM2 재가동 (파일 확장자 맞춰주세요: .cjs 쓰면 아래도 .cjs)
+    pm2 startOrReload ecosystem.config.cjs --env stage --update-env || pm2 startOrReload ecosystem.config.js --env stage --update-env
+    pm2 save
+    SSH
